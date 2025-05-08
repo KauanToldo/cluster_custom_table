@@ -1,7 +1,4 @@
 looker.plugins.visualizations.add({
-    // Id and Label are legacy properties that no longer have any function besides documenting
-    // what the visualization used to have. The properties are now set via the manifest
-    // form within the admin/visualizations page of Looker
     id: "hello_world",
     label: "Hello World",
     options: {
@@ -21,60 +18,98 @@ looker.plugins.visualizations.add({
   
       // Insert a <style> tag with some styles we'll use later.
       element.innerHTML = `
-        <style>
-          .hello-world-vis {
-            /* Vertical centering */
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            text-align: center;
-          }
-          .hello-world-text-large {
-            font-size: 72px;
-          }
-          .hello-world-text-small {
-            font-size: 18px;
-          }
+            <style>
+            .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            }
+            .custom-table th, .custom-table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+            }
+            .custom-table th {
+            background-color: #f2f2f2;
+            }
         </style>
       `;
   
       // Create a container element to let us center the text.
-      var container = element.appendChild(document.createElement("div"));
-      container.className = "hello-world-vis";
-  
-      // Create an element to contain the text.
-      this._textElement = container.appendChild(document.createElement("div"));
-  
+      this._tableContainer = element.appendChild(document.createElement("div"));
     },
     // Render in response to the data or settings changing
     updateAsync: function(data, element, config, queryResponse, details, done) {
-        
-      // Clear any errors from previous updates
-      this.clearErrors();
-  
+        this.clearErrors();
+
+        // Limpa o conteúdo anterior
+        this._tableContainer.innerHTML = "";
+
+        const fields = [
+            ...queryResponse.fields.dimensions,
+            ...queryResponse.fields.measures
+          ];
+
+        const table = document.createElement("table");
+        table.className = "custom-table";
+
+        // Cabeçalho da tabela
+        const thead = document.createElement("thead");
+        const headerRow = document.createElement("tr");
+
+        fields.forEach(field => {
+            const th = document.createElement("th");
+            th.textContent = field.label;
+            headerRow.appendChild(th);
+          });
+      
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        const tbody = document.createElement("tbody");
+
+        data.forEach(row => {
+            const tr = document.createElement("tr");
+      
+            fields.forEach(field => {
+              const td = document.createElement("td");
+              td.innerHTML = LookerCharts.Utils.htmlForCell(row[field.name]);
+              tr.appendChild(td);
+            });
+      
+            tbody.appendChild(tr);
+        });
+      
+        table.appendChild(tbody);
+        this._tableContainer.appendChild(table);
+      
+        done();
+
+
+
+
+
       // Throw some errors and exit if the shape of the data isn't what this chart needs
-      if (queryResponse.fields.dimensions.length == 0) {
-        this.addError({title: "No Dimensions", message: "This chart requires dimensions."});
-        return;
-      }
-      console.log(data)
-      console.log(queryResponse)
-      // Grab the first cell of the data
-      var firstRow = data[0];
-      var firstCell = firstRow[queryResponse.fields.dimensions[0].name];
+    //   if (queryResponse.fields.dimensions.length == 0) {
+    //     this.addError({title: "No Dimensions", message: "This chart requires dimensions."});
+    //     return;
+    //   }
+    //   console.log(data)
+    //   console.log(queryResponse)
+    //   // Grab the first cell of the data
+    //   var firstRow = data[0];
+    //   var firstCell = firstRow[queryResponse.fields.dimensions[0].name];
   
-      // Insert the data into the page
-      this._textElement.innerHTML = LookerCharts.Utils.htmlForCell(firstCell);
+    //   // Insert the data into the page
+    //   this._textElement.innerHTML = LookerCharts.Utils.htmlForCell(firstCell);
   
-      // Set the size to the user-selected size
-      if (config.font_size == "small") {
-        this._textElement.className = "hello-world-text-small";
-      } else {
-        this._textElement.className = "hello-world-text-large";
-      }
+    //   // Set the size to the user-selected size
+    //   if (config.font_size == "small") {
+    //     this._textElement.className = "hello-world-text-small";
+    //   } else {
+    //     this._textElement.className = "hello-world-text-large";
+    //   }
   
-      // We are done rendering! Let Looker know.
-      done()
+    //   // We are done rendering! Let Looker know.
+    //   done()
     }
   });
