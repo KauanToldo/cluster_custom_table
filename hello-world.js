@@ -100,6 +100,7 @@ looker.plugins.visualizations.add({
             measures.forEach(measure => {
             const div = document.createElement("div");
             div.className = "grid-cell grid-header-cell";
+            console.log(measure.label)
             label = measure.label.split('.').pop();
             div.textContent = label;
             tableGrid.appendChild(div);
@@ -110,7 +111,6 @@ looker.plugins.visualizations.add({
         measures.forEach(measure => {
             const div = document.createElement("div");
             div.className = "grid-cell grid-header-cell";
-            console.log(measure.label)
             label = measure.label.split('.').pop();
             div.textContent = label;
             tableGrid.appendChild(div);
