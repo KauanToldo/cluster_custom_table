@@ -57,6 +57,11 @@ looker.plugins.visualizations.add({
             .numeric {
                 text-align: right;
             }
+
+            .grid-cell span span a {
+                text-decoration: none;
+                color: #000000;
+            }
         </style>
       `;
   
