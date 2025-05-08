@@ -36,17 +36,26 @@ looker.plugins.visualizations.add({
                 background: white;
                 white-space: nowrap;
                 font-size: 12px;
+                text-decoration: none;
+                color: #000000;
             }
             .grid-header-cell {
                 font-weight: bold;
                 background-color: #f2f2f2;
                 font-size: 14px;
+                text-align: center;
+                display: flex;
+                justify-content: center;
+                align-items: center; 
             }
             .grid-header-cell:first-child {
                 border-top-left-radius: 8px;
             }
             .grid-header-cell:last-child {
                 border-top-right-radius: 8px;
+            }
+            .numeric {
+                text-align: right;
             }
         </style>
       `;
@@ -135,7 +144,7 @@ looker.plugins.visualizations.add({
             measures.forEach(measure => {
                 const cellData = row[measure.name][pivot.key];
                 const div = document.createElement("div");
-                div.className = "grid-cell";
+                div.className = "grid-cell numeric";
                 div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
                 tableGrid.appendChild(div);
             });
