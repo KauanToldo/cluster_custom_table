@@ -49,12 +49,12 @@ looker.plugins.visualizations.add({
                 align-items: center;
             }
 
-            .grid-header-cell pivot-dimension {
-                background-color: #012C75;
+            .pivot-dimension {
+                background-color: #012C75 !important;
             }
 
-            .grid-header-cell measure {
-                background-color: #007BFF;
+            .measure {
+                background-color: #007BFF !important;
             }
 
             .grid-header-cell:first-child {
