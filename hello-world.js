@@ -46,8 +46,17 @@ looker.plugins.visualizations.add({
                 text-align: center;
                 display: flex;
                 justify-content: center;
-                align-items: center; 
+                align-items: center;
             }
+
+            .grid-header-cell pivot-dimension {
+                background-color: #012C75;
+            }
+
+            .grid-header-cell measure {
+                background-color: #007BFF;
+            }
+
             .grid-header-cell:first-child {
                 border-top-left-radius: 8px;
             }
@@ -103,7 +112,7 @@ looker.plugins.visualizations.add({
         pivots.forEach(pivot => {
             const pivotLabel = pivot.metadata?.pivoted_label || pivot.label || pivot.key;
             const div = document.createElement("div");
-            div.className = "grid-cell grid-header-cell";
+            div.className = "grid-cell grid-header-cell pivot-dimension";
             div.style.gridColumn = `span ${measureCount}`;
             div.textContent = pivotLabel;
             tableGrid.appendChild(div);
@@ -113,7 +122,7 @@ looker.plugins.visualizations.add({
         pivots.forEach(() => {
             measures.forEach(measure => {
             const div = document.createElement("div");
-            div.className = "grid-cell grid-header-cell";
+            div.className = "grid-cell grid-header-cell measure";
             viewLabel = measure.view_label || ""; 
             rawLabel = measure.label;
             cleanLabel = rawLabel.replace(viewLabel + " ", "");
