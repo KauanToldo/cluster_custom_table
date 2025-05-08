@@ -24,9 +24,7 @@ looker.plugins.visualizations.add({
                 width: 100%;
                 border: 1px solid #000000;
                 border-radius: 8px;
-                overflow: hidden;
                 font-family: Arial, sans-serif;
-                grid-auto-columns: minmax(min-content, max-content)
             }
             .grid-header,
             .grid-row {
@@ -37,8 +35,6 @@ looker.plugins.visualizations.add({
                 padding: 10px;
                 background: white;
                 white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
                 font-size: 12px;
             }
             .grid-header-cell {
@@ -79,8 +75,6 @@ looker.plugins.visualizations.add({
         const tableGrid = document.createElement("div");
         tableGrid.className = "grid-table";
         tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, 1fr)`;
-        tableGrid.style.gridAutoFlow = "row";
-        tableGrid.style.gridAutoColumns = "minmax(min-content, max-content)";
 
         // HEADER ROW 1
         dimensions.forEach(dim => {
