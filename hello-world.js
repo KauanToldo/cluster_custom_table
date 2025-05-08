@@ -66,11 +66,16 @@ looker.plugins.visualizations.add({
 
         if (hasPivot) {
         // Cabeçalhos dos pivôs + medidas
-        pivots.forEach(pivot => {
-            measures.forEach(measure => {
-            const th = document.createElement("th");
-            th.textContent = `${measure.label} – ${pivot.label}`;
-            headerRow.appendChild(th);
+            pivots.forEach(pivot => {
+                measures.forEach(measure => {
+                const th = document.createElement("th");
+            
+                // Tenta pegar o valor do campo pivotado para compor o rótulo
+                const pivotValue = pivot.key || "—";
+                const pivotField = pivot.metadata?.pivoted_label || pivot.label || pivotValue;
+            
+                th.textContent = `${measure.label} – ${pivotField}`;
+                headerRow.appendChild(th);
             });
         });
         } else {
