@@ -73,6 +73,14 @@ looker.plugins.visualizations.add({
                 text-decoration: none;
                 color: #000000;
             }
+
+            .grid-row-even {
+                background-color: #ffffff;
+            }
+
+            .grid-row-odd {
+                background-color: #f5f5f5;
+            }
         </style>
       `;
   
@@ -145,35 +153,40 @@ looker.plugins.visualizations.add({
         });
         }
 
-        // BODY ROWS
-        data.forEach(row => {
-        // Dimensões
-        dimensions.forEach(dim => {
-            const div = document.createElement("div");
-            div.className = "grid-cell";
-            div.innerHTML = LookerCharts.Utils.htmlForCell(row[dim.name]);
-            tableGrid.appendChild(div);
-        });
+        // Salva a quantidade de células de cabeçalho
+        const headerCellCount = tableGrid.childElementCount;
 
-        if (hasPivot) {
-            pivots.forEach(pivot => {
-            measures.forEach(measure => {
-                const cellData = row[measure.name][pivot.key];
+        // BODY ROWS
+        data.forEach((row, rowIndex) => {
+            const rowClass = rowIndex % 2 === 0 ? "grid-row-even" : "grid-row-odd";
+          
+            // Dimensões
+            dimensions.forEach(dim => {
+              const div = document.createElement("div");
+              div.className = `grid-cell ${rowClass}`;
+              div.innerHTML = LookerCharts.Utils.htmlForCell(row[dim.name]);
+              tableGrid.appendChild(div);
+            });
+          
+            if (hasPivot) {
+              pivots.forEach(pivot => {
+                measures.forEach(measure => {
+                  const cellData = row[measure.name][pivot.key];
+                  const div = document.createElement("div");
+                  div.className = `grid-cell numeric ${rowClass}`;
+                  div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
+                  tableGrid.appendChild(div);
+                });
+              });
+            } else {
+              measures.forEach(measure => {
                 const div = document.createElement("div");
-                div.className = "grid-cell numeric";
-                div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
+                div.className = `grid-cell ${rowClass}`;
+                div.innerHTML = LookerCharts.Utils.htmlForCell(row[measure.name]);
                 tableGrid.appendChild(div);
-            });
-            });
-        } else {
-            measures.forEach(measure => {
-            const div = document.createElement("div");
-            div.className = "grid-cell";
-            div.innerHTML = LookerCharts.Utils.htmlForCell(row[measure.name]);
-            tableGrid.appendChild(div);
-            });
-        }
-        });
+              });
+            }
+          });
 
         this._tableContainer.appendChild(tableGrid);
         done();
