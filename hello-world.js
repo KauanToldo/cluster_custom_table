@@ -49,7 +49,7 @@ looker.plugins.visualizations.add({
     },
     // Render in response to the data or settings changing
     updateAsync: function(data, element, config, queryResponse, details, done) {
-  
+        
       // Clear any errors from previous updates
       this.clearErrors();
   
@@ -58,7 +58,8 @@ looker.plugins.visualizations.add({
         this.addError({title: "No Dimensions", message: "This chart requires dimensions."});
         return;
       }
-  
+      console.log(data)
+      console.log(queryResponse)
       // Grab the first cell of the data
       var firstRow = data[0];
       var firstCell = firstRow[queryResponse.fields.dimensions[0].name];
