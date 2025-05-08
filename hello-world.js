@@ -98,8 +98,6 @@ looker.plugins.visualizations.add({
         thead.appendChild(headerRowPivot);
         }
 
-        thead.appendChild(headerRow);
-
         // CORPO DA TABELA
         data.forEach(row => {
         const tr = document.createElement("tr");
