@@ -100,9 +100,10 @@ looker.plugins.visualizations.add({
             measures.forEach(measure => {
             const div = document.createElement("div");
             div.className = "grid-cell grid-header-cell";
-            console.log(measure.label)
-            label = measure.label.split('.').pop();
-            div.textContent = label;
+            viewLabel = measure.view_label || ""; 
+            rawLabel = measure.label;
+            cleanLabel = rawLabel.replace(viewLabel + " ", "");
+            div.textContent = cleanLabel;
             tableGrid.appendChild(div);
             });
         });
@@ -111,8 +112,10 @@ looker.plugins.visualizations.add({
         measures.forEach(measure => {
             const div = document.createElement("div");
             div.className = "grid-cell grid-header-cell";
-            label = measure.label.split('.').pop();
-            div.textContent = label;
+            viewLabel = measure.view_label || ""; 
+            rawLabel = measure.label;
+            cleanLabel = rawLabel.replace(viewLabel + " ", "");
+            div.textContent = cleanLabel;
             tableGrid.appendChild(div);
         });
         }
