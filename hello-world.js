@@ -55,36 +55,47 @@ looker.plugins.visualizations.add({
         const tbody = document.createElement("tbody");
 
         // CABEÇALHO
-        const headerRow = document.createElement("tr");
+        const headerRowPivot = document.createElement("tr");
+        const headerRowMeasure = document.createElement("tr");
 
         // Adiciona cabeçalhos das dimensões
         dimensions.forEach(dim => {
-        const th = document.createElement("th");
-        th.textContent = dim.label;
-        headerRow.appendChild(th);
-        });
+            const th = document.createElement("th");
+            th.textContent = dim.label;
+            th.rowSpan = 2; // ocupa duas linhas do cabeçalho
+            headerRowPivot.appendChild(th);
+          });
 
         if (hasPivot) {
-        // Cabeçalhos dos pivôs + medidas
-            pivots.forEach(pivot => {
-                measures.forEach(measure => {
-                const th = document.createElement("th");
-            
-                // Tenta pegar o valor do campo pivotado para compor o rótulo
-                const pivotValue = pivot.key || "—";
-                const pivotField = pivot.metadata?.pivoted_label || pivot.label || pivotValue;
-            
-                th.textContent = `${measure.label} – ${pivotField}`;
-                headerRow.appendChild(th);
+        // Agrupar por valores pivotados (ex: países)
+        pivots.forEach(pivot => {
+            const pivotKey = pivot.key;
+            const pivotLabel = pivot.metadata?.pivoted_label || pivot.label || pivotKey;
+        
+            const th = document.createElement("th");
+            th.colSpan = measures.length; // uma célula por medida
+            th.textContent = pivotLabel;
+            headerRowPivot.appendChild(th);
+        
+            // Agora adicionamos uma célula por medida (segunda linha do cabeçalho)
+            measures.forEach(measure => {
+            const th = document.createElement("th");
+            th.textContent = measure.label;
+            headerRowMeasure.appendChild(th);
             });
         });
+        
+        thead.appendChild(headerRowPivot);
+        thead.appendChild(headerRowMeasure);
         } else {
-        // Cabeçalhos das medidas simples
+        // Tabela sem pivôs: cabeçalho simples
         measures.forEach(measure => {
             const th = document.createElement("th");
             th.textContent = measure.label;
-            headerRow.appendChild(th);
+            headerRowPivot.appendChild(th);
         });
+        
+        thead.appendChild(headerRowPivot);
         }
 
         thead.appendChild(headerRow);
