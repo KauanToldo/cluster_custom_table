@@ -19,17 +19,32 @@ looker.plugins.visualizations.add({
       // Insert a <style> tag with some styles we'll use later.
       element.innerHTML = `
         <style>
-            .smart-table {
+            .grid-table {
+            display: grid;
             width: 100%;
-            border-collapse: collapse;
-            }
-            .smart-table th, .smart-table td {
             border: 1px solid #ccc;
-            padding: 8px;
-            text-align: left;
+            border-radius: 8px;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
             }
-            .smart-table th {
+            .grid-header,
+            .grid-row {
+            display: contents; /* preserves grid layout across nested divs */
+            }
+            .grid-cell {
+            border: 1px solid #ddd;
+            padding: 8px;
+            background: white;
+            }
+            .grid-header-cell {
+            font-weight: bold;
             background-color: #f2f2f2;
+            }
+            .grid-header-cell:first-child {
+            border-top-left-radius: 8px;
+            }
+            .grid-header-cell:last-child {
+            border-top-right-radius: 8px;
             }
         </style>
       `;
@@ -40,7 +55,6 @@ looker.plugins.visualizations.add({
     // Render in response to the data or settings changing
     updateAsync: function(data, element, config, queryResponse, details, done) {
         this.clearErrors();
-
         this._tableContainer.innerHTML = "";
 
         const pivots = queryResponse.pivots || [];
@@ -49,92 +63,86 @@ looker.plugins.visualizations.add({
         const dimensions = queryResponse.fields.dimensions;
         const measures = queryResponse.fields.measures;
 
-        const table = document.createElement("table");
-        table.className = "smart-table";
-        const thead = document.createElement("thead");
-        const tbody = document.createElement("tbody");
+        // Calculate total columns
+        const dimensionCount = dimensions.length;
+        const measureCount = measures.length;
+        const pivotCount = hasPivot ? pivots.length : 1;
+        const totalCols = dimensionCount + (pivotCount * measureCount);
 
-        // CABEÇALHO
-        const headerRowPivot = document.createElement("tr");
-        const headerRowMeasure = document.createElement("tr");
+        // Create wrapper
+        const tableGrid = document.createElement("div");
+        tableGrid.className = "grid-table";
+        tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, 1fr)`;
 
-        // Adiciona cabeçalhos das dimensões
+        // HEADER ROW 1
         dimensions.forEach(dim => {
-            const th = document.createElement("th");
-            th.textContent = dim.label;
-            th.rowSpan = 2; // ocupa duas linhas do cabeçalho
-            headerRowPivot.appendChild(th);
-          });
+        const div = document.createElement("div");
+        div.className = "grid-cell grid-header-cell";
+        div.style.gridRow = "1 / span 2";
+        div.textContent = dim.label;
+        tableGrid.appendChild(div);
+        });
 
         if (hasPivot) {
-        // Agrupar por valores pivotados (ex: países)
         pivots.forEach(pivot => {
-            const pivotKey = pivot.key;
-            const pivotLabel = pivot.metadata?.pivoted_label || pivot.label || pivotKey;
-        
-            const th = document.createElement("th");
-            th.colSpan = measures.length; // uma célula por medida
-            th.textContent = pivotLabel;
-            headerRowPivot.appendChild(th);
-        
-            // Agora adicionamos uma célula por medida (segunda linha do cabeçalho)
+            const pivotLabel = pivot.metadata?.pivoted_label || pivot.label || pivot.key;
+            const div = document.createElement("div");
+            div.className = "grid-cell grid-header-cell";
+            div.style.gridColumn = `span ${measureCount}`;
+            div.textContent = pivotLabel;
+            tableGrid.appendChild(div);
+        });
+
+        // HEADER ROW 2 (measures under pivots)
+        pivots.forEach(() => {
             measures.forEach(measure => {
-            const th = document.createElement("th");
-            th.textContent = measure.label;
-            headerRowMeasure.appendChild(th);
+            const div = document.createElement("div");
+            div.className = "grid-cell grid-header-cell";
+            div.textContent = measure.label;
+            tableGrid.appendChild(div);
             });
         });
-        
-        thead.appendChild(headerRowPivot);
-        thead.appendChild(headerRowMeasure);
         } else {
-        // Tabela sem pivôs: cabeçalho simples
+        // Sem pivôs: uma única linha de cabeçalho para medidas
         measures.forEach(measure => {
-            const th = document.createElement("th");
-            th.textContent = measure.label;
-            headerRowPivot.appendChild(th);
+            const div = document.createElement("div");
+            div.className = "grid-cell grid-header-cell";
+            div.textContent = measure.label;
+            tableGrid.appendChild(div);
         });
-        
-        thead.appendChild(headerRowPivot);
         }
 
-        // CORPO DA TABELA
+        // BODY ROWS
         data.forEach(row => {
-        const tr = document.createElement("tr");
-
         // Dimensões
         dimensions.forEach(dim => {
-            const td = document.createElement("td");
-            td.innerHTML = LookerCharts.Utils.htmlForCell(row[dim.name]);
-            tr.appendChild(td);
+            const div = document.createElement("div");
+            div.className = "grid-cell";
+            div.innerHTML = LookerCharts.Utils.htmlForCell(row[dim.name]);
+            tableGrid.appendChild(div);
         });
 
         if (hasPivot) {
-            // Medidas por pivô
             pivots.forEach(pivot => {
             measures.forEach(measure => {
-                const td = document.createElement("td");
                 const cellData = row[measure.name][pivot.key];
-                td.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
-                tr.appendChild(td);
+                const div = document.createElement("div");
+                div.className = "grid-cell";
+                div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
+                tableGrid.appendChild(div);
             });
             });
         } else {
-            // Medidas normais
             measures.forEach(measure => {
-            const td = document.createElement("td");
-            td.innerHTML = LookerCharts.Utils.htmlForCell(row[measure.name]);
-            tr.appendChild(td);
+            const div = document.createElement("div");
+            div.className = "grid-cell";
+            div.innerHTML = LookerCharts.Utils.htmlForCell(row[measure.name]);
+            tableGrid.appendChild(div);
             });
         }
-
-        tbody.appendChild(tr);
         });
 
-        table.appendChild(thead);
-        table.appendChild(tbody);
-        this._tableContainer.appendChild(table);
-
+        this._tableContainer.appendChild(tableGrid);
         done();
 
     }
