@@ -20,31 +20,37 @@ looker.plugins.visualizations.add({
       element.innerHTML = `
         <style>
             .grid-table {
-            display: grid;
-            width: 100%;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            overflow: hidden;
-            font-family: Arial, sans-serif;
+                display: grid;
+                width: 100%;
+                border: 1px solid #000000;
+                border-radius: 8px;
+                overflow: hidden;
+                font-family: Arial, sans-serif;
+                grid-auto-columns: minmax(min-content, max-content)
             }
             .grid-header,
             .grid-row {
-            display: contents; /* preserves grid layout across nested divs */
+                display: contents;
             }
             .grid-cell {
-            border: 1px solid #ddd;
-            padding: 8px;
-            background: white;
+                border: 1px solid #ddd;
+                padding: 10px;
+                background: white;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                font-size: 12px;
             }
             .grid-header-cell {
-            font-weight: bold;
-            background-color: #f2f2f2;
+                font-weight: bold;
+                background-color: #f2f2f2;
+                font-size: 14px;
             }
             .grid-header-cell:first-child {
-            border-top-left-radius: 8px;
+                border-top-left-radius: 8px;
             }
             .grid-header-cell:last-child {
-            border-top-right-radius: 8px;
+                border-top-right-radius: 8px;
             }
         </style>
       `;
@@ -73,6 +79,8 @@ looker.plugins.visualizations.add({
         const tableGrid = document.createElement("div");
         tableGrid.className = "grid-table";
         tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, 1fr)`;
+        tableGrid.style.gridAutoFlow = "row";
+        tableGrid.style.gridAutoColumns = "minmax(min-content, max-content)";
 
         // HEADER ROW 1
         dimensions.forEach(dim => {
@@ -98,7 +106,8 @@ looker.plugins.visualizations.add({
             measures.forEach(measure => {
             const div = document.createElement("div");
             div.className = "grid-cell grid-header-cell";
-            div.textContent = measure.label;
+            label = measure.label.split('.').pop();
+            div.textContent = label;
             tableGrid.appendChild(div);
             });
         });
@@ -107,7 +116,8 @@ looker.plugins.visualizations.add({
         measures.forEach(measure => {
             const div = document.createElement("div");
             div.className = "grid-cell grid-header-cell";
-            div.textContent = measure.label;
+            label = measure.label.split('.').pop();
+            div.textContent = label;
             tableGrid.appendChild(div);
         });
         }
