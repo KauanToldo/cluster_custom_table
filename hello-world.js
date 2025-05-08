@@ -49,12 +49,14 @@ looker.plugins.visualizations.add({
                 align-items: center;
             }
 
-            .pivot-dimension {
+            .pivot-dimension, .dimension {
                 background-color: #012C75 !important;
+                color: white !important;
             }
 
             .measure {
                 background-color: #007BFF !important;
+                color: white !important;
             }
 
             .grid-header-cell:first-child {
@@ -102,7 +104,7 @@ looker.plugins.visualizations.add({
         // HEADER ROW 1
         dimensions.forEach(dim => {
         const div = document.createElement("div");
-        div.className = "grid-cell grid-header-cell";
+        div.className = "grid-cell grid-header-cell dimension";
         div.style.gridRow = "1 / span 2";
         div.textContent = dim.label;
         tableGrid.appendChild(div);
