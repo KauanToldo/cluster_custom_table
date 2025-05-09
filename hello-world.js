@@ -151,7 +151,7 @@ looker.plugins.visualizations.add({
             const pivotLabel = pivot.key || pivot.label;
             const pivotDiv = document.createElement("div");
             pivotDiv.className = "grid-cell grid-header-cell header-row-1 pivot-dimension";
-            pivotDiv.style.gridColumn = `span ${measureCount}`;
+            pivotDiv.style.gridColumn = `span ${measureCount + tableCalcs.length}`;
             pivotDiv.textContent = pivotLabel;
             tableGrid.appendChild(pivotDiv);
           });
