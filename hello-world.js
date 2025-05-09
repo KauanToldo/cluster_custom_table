@@ -218,10 +218,12 @@ looker.plugins.visualizations.add({
                   const cellData = row[measure.name][pivot.key];
                   const div = document.createElement("div");
 
-                  const numericValue = parseFloat(cellData?.value?.replace(/[^\d.-]/g, ""));
-                  if (!isNaN(numericValue) && numericValue < 0) {
-                    div.classList.add("negative-value");
-                  }  
+                    const rawValue = cellData?.value;
+                    const numericValue = parseFloat(String(rawValue)?.replace(/[^\d.-]/g, ''));
+
+                    if (!isNaN(numericValue) && numericValue < 0) {
+                    div.style.color = "red";
+                    }  
 
                   const isLastMeasure = mIndex === measures.length - 1;
                   div.className = `grid-cell numeric ${rowClass} ${!isLastMeasure ? 'no-right-border' : ''}`;
