@@ -31,7 +31,8 @@ looker.plugins.visualizations.add({
                 display: contents;
             }
             .grid-cell {
-                border: 1px solid #ddd;
+                border-right: 1px solid #ddd;
+                border-top: 1px solid #ddd;
                 padding: 10px;
                 background: white;
                 white-space: nowrap;
@@ -82,8 +83,8 @@ looker.plugins.visualizations.add({
                 background-color: #f5f5f5;
             }
 
-            .grid-cell.no-right-border {
-                border-right: none !important;
+            .grid-cell .no-right-border {
+                border-right:rgb(248, 248, 248);
             }
         </style>
       `;
