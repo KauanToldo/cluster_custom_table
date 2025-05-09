@@ -24,12 +24,27 @@ looker.plugins.visualizations.add({
                 width: 100%;
                 border: 1px solid #000000;
                 border-radius: 8px;
+                overflow-y: auto;
                 font-family: Arial, sans-serif;
             }
             .grid-header,
             .grid-row {
                 display: contents;
             }
+
+            .header-row-1 {
+              position: sticky;
+              top: 0;
+              z-index: 2;
+              background-color: #fff;
+            }
+
+            .header-row-2 {
+              position: sticky;
+              z-index: 1;
+              background-color: #fff;
+            }
+
             .grid-cell {
                 border-right: 1px solid #ddd;
                 border-top: 1px solid #ddd;
@@ -50,10 +65,6 @@ looker.plugins.visualizations.add({
                 align-items: center;
                 // position: sticky;
             }
-
-            // .header-row-1 {
-            //     top:0;
-            // }
 
             .pivot-dimension, .dimension {
                 background-color: #012C75 !important;
@@ -318,7 +329,17 @@ looker.plugins.visualizations.add({
               });
           });
 
+        
         this._tableContainer.appendChild(tableGrid);
+
+        window.addEventListener("load", () => {
+          const firstRowHeight = document.querySelector(".header-row-1").offsetHeight;
+          const secondRowHeader = document.querySelector(".header-row-2");
+          
+          if (secondRowHeader) {
+            secondRowHeader.style.top = `${firstRowHeight}px`;
+          }
+        });
 
         done();
 
