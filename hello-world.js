@@ -81,6 +81,10 @@ looker.plugins.visualizations.add({
             .grid-row-odd {
                 background-color: #f5f5f5;
             }
+
+            .grid-cell.no-right-border {
+                border-right: none !important;
+            }
         </style>
       `;
   
@@ -170,13 +174,14 @@ looker.plugins.visualizations.add({
           
             if (hasPivot) {
               pivots.forEach(pivot => {
-                measures.forEach(measure => {
-                  const cellData = row[measure.name][pivot.key];
-                  const div = document.createElement("div");
-                  div.className = `grid-cell numeric ${rowClass}`;
-                  div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
-                  tableGrid.appendChild(div);
-                });
+                measures.forEach((measure, mIndex) => {
+                    const cellData = row[measure.name][pivot.key];
+                    const div = document.createElement("div");
+                    const isLastMeasure = mIndex === measures.length - 1;
+                    div.className = `grid-cell numeric ${rowClass} ${!isLastMeasure ? 'no-right-border' : ''}`;
+                    div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
+                    bodyWrapper.appendChild(div);
+                  });
               });
             } else {
               measures.forEach(measure => {
