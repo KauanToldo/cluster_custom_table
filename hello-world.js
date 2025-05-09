@@ -21,9 +21,7 @@ looker.plugins.visualizations.add({
         <style>
             .table-wrapper {
               width: 100%;
-              max-height: 600px; /* ou auto, conforme o caso */
-              overflow: auto;    /* ativa scroll vertical + horizontal */
-              position: relative; /* importante para sticky funcionar */
+              position: relative;
             }
 
             .grid-table {
