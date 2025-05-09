@@ -44,6 +44,14 @@ looker.plugins.visualizations.add({
               background-color: #fff;
             }
 
+
+            .sticky-dimension {
+              position: sticky;
+              left: 0;
+              background-color: #fff;
+              z-index: 3;
+            }
+
             .grid-cell {
                 border-right: 1px solid #ddd;
                 border-top: 1px solid #ddd;
@@ -331,19 +339,6 @@ looker.plugins.visualizations.add({
         
         this._tableContainer.appendChild(tableGrid);
 
-        // requestAnimationFrame(() => {
-        //   const firstRowCells = tableGrid.querySelectorAll(".header-row-1");
-        //   if (firstRowCells.length > 0) {
-        //     // Pega a maior altura da primeira linha (caso haja múltiplas células com quebras de linha)
-        //     const firstRowHeight = Math.max(...Array.from(firstRowCells).map(el => el.offsetHeight));
-        
-        //     const secondRowCells = tableGrid.querySelectorAll(".header-row-2");
-        //     secondRowCells.forEach(cell => {
-        //       cell.style.top = `${firstRowHeight}px`;
-        //     });
-        //   }
-        // });
-
         done();
 
         requestAnimationFrame(() => {
@@ -357,6 +352,31 @@ looker.plugins.visualizations.add({
               cell.style.top = `${firstRowHeight}px`;
             });
           }
+        });
+
+        requestAnimationFrame(() => {
+          const dimensionCount = dimensions.length;
+        
+          const columnLeftOffsets = [];
+          let accumulatedLeft = 0;
+        
+          for (let i = 0; i < dimensionCount; i++) {
+            const selector = `.grid-cell[data-col="${i}"]`;
+            const cell = tableGrid.querySelector(selector);
+            if (cell) {
+              columnLeftOffsets.push(accumulatedLeft);
+              accumulatedLeft += cell.offsetWidth;
+            }
+          }
+        
+          columnLeftOffsets.forEach((left, i) => {
+            const selector = `.grid-cell[data-col="${i}"]`;
+            const cells = tableGrid.querySelectorAll(selector);
+            cells.forEach(cell => {
+              cell.classList.add("sticky-dimension");
+              cell.style.left = `${left}px`;
+            });
+          });
         });
 
     }
