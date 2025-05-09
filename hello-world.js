@@ -48,6 +48,11 @@ looker.plugins.visualizations.add({
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                position: sticky;
+            }
+
+            .header-row1 {
+                top:0;
             }
 
             .pivot-dimension, .dimension {
@@ -130,6 +135,7 @@ looker.plugins.visualizations.add({
         const tableGrid = document.createElement("div");
         tableGrid.className = "grid-table";
         tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, 1fr)`;
+        
 
         // HEADER ROW 1
         dimensions.forEach(dim => {
