@@ -52,6 +52,15 @@ looker.plugins.visualizations.add({
                 z-index: 10;
             }
 
+            .grid-header-cell.header-row-1 {
+                position: sticky;
+                top: 0;
+            }
+
+            .grid-header-cell.header-row-2 {
+                position: sticky;
+            }
+
             .pivot-dimension, .dimension {
                 background-color: #012C75 !important;
                 color: white !important;
@@ -115,7 +124,7 @@ looker.plugins.visualizations.add({
         // HEADER ROW 1
         dimensions.forEach(dim => {
         const div = document.createElement("div");
-        div.className = "grid-cell grid-header-cell dimension";
+        div.className = "grid-cell grid-header-cell header-row-1 dimension";
         div.style.gridRow = "1 / span 2";
         div.textContent = dim.label;
         tableGrid.appendChild(div);
@@ -125,7 +134,7 @@ looker.plugins.visualizations.add({
         pivots.forEach(pivot => {
             const pivotLabel = pivot.metadata?.pivoted_label || pivot.label || pivot.key;
             const div = document.createElement("div");
-            div.className = "grid-cell grid-header-cell pivot-dimension";
+            div.className = "grid-cell grid-header-cell header-row-1 pivot-dimension";
             div.style.gridColumn = `span ${measureCount}`;
             div.textContent = pivotLabel;
             tableGrid.appendChild(div);
@@ -135,7 +144,7 @@ looker.plugins.visualizations.add({
         pivots.forEach(() => {
             measures.forEach(measure => {
             const div = document.createElement("div");
-            div.className = "grid-cell grid-header-cell measure";
+            div.className = "grid-cell grid-header-cell header-row-2 measure";
             viewLabel = measure.view_label || ""; 
             rawLabel = measure.label;
             cleanLabel = rawLabel.replace(viewLabel + " ", "");
@@ -192,6 +201,19 @@ looker.plugins.visualizations.add({
           });
 
         this._tableContainer.appendChild(tableGrid);
+
+        requestAnimationFrame(() => {
+            // Pega qualquer célula da primeira linha do header
+            const firstHeader = this._tableContainer.querySelector(".header-row-1");
+            const headerHeight = firstHeader ? firstHeader.offsetHeight : 32;
+          
+            // Define a altura como top para a segunda linha
+            const secondRowHeaders = this._tableContainer.querySelectorAll(".header-row-2");
+            secondRowHeaders.forEach(cell => {
+              cell.style.top = `${headerHeight}px`;
+            });
+          });
+
         done();
 
     }
