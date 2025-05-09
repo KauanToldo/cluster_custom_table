@@ -48,12 +48,12 @@ looker.plugins.visualizations.add({
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                position: sticky;
+                // position: sticky;
             }
 
-            .header-row-1 {
-                top:0;
-            }
+            // .header-row-1 {
+            //     top:0;
+            // }
 
             .pivot-dimension, .dimension {
                 background-color: #012C75 !important;
