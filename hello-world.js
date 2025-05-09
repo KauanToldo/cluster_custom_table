@@ -64,6 +64,10 @@ looker.plugins.visualizations.add({
                 border-right: none !important;
             }
 
+            .grid-cell.dim-separator {
+                border-right: 2px solid #ddd;
+            }
+
             .grid-header-cell:first-child {
                 border-top-left-radius: 8px;
             }
@@ -85,6 +89,10 @@ looker.plugins.visualizations.add({
 
             .grid-row-odd {
                 background-color: #f5f5f5;
+            }
+
+            .grid-cell.hovered {
+                background-color: #cce5ff !important; /* azul claro */
             }
 
         </style>
@@ -163,36 +171,67 @@ looker.plugins.visualizations.add({
         const headerCellCount = tableGrid.childElementCount;
 
         // BODY ROWS
+        let colIndex = 0;
+
         data.forEach((row, rowIndex) => {
-            const rowClass = rowIndex % 2 === 0 ? "grid-row-even" : "grid-row-odd";
-          
-            // Dimensões
-            dimensions.forEach(dim => {
-              const div = document.createElement("div");
-              div.className = `grid-cell ${rowClass}`;
-              div.innerHTML = LookerCharts.Utils.htmlForCell(row[dim.name]);
-              tableGrid.appendChild(div);
-            });
-          
-            if (hasPivot) {
-              pivots.forEach(pivot => {
-                measures.forEach((measure, mIndex) => {
-                    const cellData = row[measure.name][pivot.key];
-                    const div = document.createElement("div");
-                    const isLastMeasure = mIndex === measures.length - 1;
-                    div.className = `grid-cell numeric ${rowClass} ${!isLastMeasure ? 'no-right-border' : ''}`;
-                    div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
-                    tableGrid.appendChild(div);
-                  });
-              });
-            } else {
-              measures.forEach(measure => {
+        const rowClass = rowIndex % 2 === 0 ? "grid-row-even" : "grid-row-odd";
+
+        // Dimensões
+        dimensions.forEach((dim, dIndex) => {
+            const div = document.createElement("div");
+            const isLastDimension = dIndex === dimensions.length - 1;
+            div.className = `grid-cell ${rowClass} ${isLastDimension ? 'dim-separator' : ''}`;
+            div.dataset.row = rowIndex;
+            div.dataset.col = colIndex++;
+            div.innerHTML = LookerCharts.Utils.htmlForCell(row[dim.name]);
+            tableGrid.appendChild(div);
+        });
+
+        if (hasPivot) {
+            pivots.forEach(pivot => {
+            measures.forEach((measure, mIndex) => {
+                const cellData = row[measure.name][pivot.key];
                 const div = document.createElement("div");
-                div.className = `grid-cell ${rowClass}`;
-                div.innerHTML = LookerCharts.Utils.htmlForCell(row[measure.name]);
+                const isLastMeasure = mIndex === measures.length - 1;
+                div.className = `grid-cell numeric ${rowClass} ${!isLastMeasure ? 'no-right-border' : ''}`;
+                div.dataset.row = rowIndex;
+                div.dataset.col = colIndex++;
+                div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
                 tableGrid.appendChild(div);
-              });
-            }
+            });
+            });
+        } else {
+            measures.forEach(measure => {
+            const div = document.createElement("div");
+            div.className = `grid-cell ${rowClass}`;
+            div.dataset.row = rowIndex;
+            div.dataset.col = colIndex++;
+            div.innerHTML = LookerCharts.Utils.htmlForCell(row[measure.name]);
+            tableGrid.appendChild(div);
+            });
+        }
+        });
+
+        tableGrid.addEventListener("mouseover", (e) => {
+            if (!e.target.classList.contains("grid-cell")) return;
+          
+            const row = e.target.dataset.row;
+            const col = e.target.dataset.col;
+            const allCells = tableGrid.querySelectorAll(".grid-cell");
+          
+            allCells.forEach(cell => {
+              const isSameRow = cell.dataset.row === row;
+              const isSameCol = cell.dataset.col === col;
+              const isSameCell = cell === e.target;
+              if (isSameRow || isSameCol || isSameCell) {
+                cell.classList.add("hovered");
+              }
+            });
+          });
+          
+          tableGrid.addEventListener("mouseout", () => {
+            const allCells = tableGrid.querySelectorAll(".grid-cell.hovered");
+            allCells.forEach(cell => cell.classList.remove("hovered"));
           });
 
         this._tableContainer.appendChild(tableGrid);
