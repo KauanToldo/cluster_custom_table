@@ -51,7 +51,7 @@ looker.plugins.visualizations.add({
                 position: sticky;
             }
 
-            .header-row1 {
+            .header-row-1 {
                 top:0;
             }
 
