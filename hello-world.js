@@ -25,6 +25,8 @@ looker.plugins.visualizations.add({
                 border: 1px solid #000000;
                 border-radius: 8px;
                 font-family: Arial, sans-serif;
+                overflow-x: auto;
+                position: relative;
             }
             .grid-header,
             .grid-row {
