@@ -378,9 +378,8 @@ looker.plugins.visualizations.add({
             });
         
             // Também fixa o cabeçalho da header-row-2 (dimensões)
-            const headerCell = tableGrid.querySelector(
-              `.grid-cell.header-row-2.dimension:nth-of-type(${i + 1})`
-            );
+            const headerCells = tableGrid.querySelectorAll(".grid-cell.header-row-2.dimension");
+            const headerCell = headerCells[i];
             if (headerCell) {
               headerCell.classList.add("sticky-dimension");
               headerCell.style.left = `${left}px`;
@@ -394,7 +393,7 @@ looker.plugins.visualizations.add({
           if (pivotHeaderCell) {
             pivotHeaderCell.classList.add("sticky-dimension");
             pivotHeaderCell.style.left = "0px";
-            pivotHeaderCell.style.zIndex = "4"; // acima dos demais
+            pivotHeaderCell.style.zIndex = "5"; // acima dos demais
           }
         });
 
