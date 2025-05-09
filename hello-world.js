@@ -246,11 +246,11 @@ looker.plugins.visualizations.add({
 
                   // const isLastMeasure = mIndex === measures.length - 1;
                   // div.className = `grid-cell numeric ${rowClass} ${!isLastMeasure ? 'no-right-border' : ''}`;
-                  // div.dataset.row = rowIndex;
-                  // div.dataset.col = colIndex;
-                  // div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
-                  // tableGrid.appendChild(div);
-                  // colIndex++;
+                  div.dataset.row = rowIndex;
+                  div.dataset.col = colIndex;
+                  div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
+                  tableGrid.appendChild(div);
+                  colIndex++;
                 });
 
                 tableCalcs.forEach(calc => {
