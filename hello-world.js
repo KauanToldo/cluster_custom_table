@@ -244,21 +244,22 @@ looker.plugins.visualizations.add({
                     }
 
 
-                  const isLastMeasure = mIndex === measures.length - 1;
-                  div.className = `grid-cell numeric ${rowClass} ${!isLastMeasure ? 'no-right-border' : ''}`;
-                  div.dataset.row = rowIndex;
-                  div.dataset.col = colIndex;
-                  div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
-                  tableGrid.appendChild(div);
-                  colIndex++;
+                  // const isLastMeasure = mIndex === measures.length - 1;
+                  // div.className = `grid-cell numeric ${rowClass} ${!isLastMeasure ? 'no-right-border' : ''}`;
+                  // div.dataset.row = rowIndex;
+                  // div.dataset.col = colIndex;
+                  // div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
+                  // tableGrid.appendChild(div);
+                  // colIndex++;
                 });
 
                 tableCalcs.forEach(calc => {
                   const div = document.createElement("div");
+                  const cellData = row[calc.name]?.[pivot.key];  // <- corrigido aqui
                   div.className = `grid-cell ${rowClass}`;
                   div.dataset.row = rowIndex;
                   div.dataset.col = colIndex;
-                  div.innerHTML = LookerCharts.Utils.htmlForCell(row[calc.name]);
+                  div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
                   tableGrid.appendChild(div);
                   colIndex++;
                 });
@@ -276,10 +277,11 @@ looker.plugins.visualizations.add({
 
               tableCalcs.forEach(calc => {
                 const div = document.createElement("div");
+                const cellData = row[calc.name];  // <- direto, sem pivot
                 div.className = `grid-cell ${rowClass}`;
                 div.dataset.row = rowIndex;
                 div.dataset.col = colIndex;
-                div.innerHTML = LookerCharts.Utils.htmlForCell(row[calc.name]);
+                div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
                 tableGrid.appendChild(div);
                 colIndex++;
               });
