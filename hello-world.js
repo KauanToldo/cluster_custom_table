@@ -48,17 +48,11 @@ looker.plugins.visualizations.add({
                 justify-content: center;
                 align-items: center;
                 position: sticky;
-                top: 0;
                 z-index: 10;
             }
 
             .grid-header-cell.header-row-1 {
-                position: sticky;
                 top: 0;
-            }
-
-            .grid-header-cell.header-row-2 {
-                position: sticky;
             }
 
             .pivot-dimension, .dimension {
