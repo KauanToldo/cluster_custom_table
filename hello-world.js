@@ -92,7 +92,11 @@ looker.plugins.visualizations.add({
             }
 
             .grid-cell.hovered {
-                background-color: #cce5ff !important; /* azul claro */
+                background-color: #cce5ff !important; /* azul claro para linha/coluna */
+            }
+
+            .grid-cell.hovered-cell {
+                background-color: #66b3ff !important; /* azul mais escuro para a célula */
             }
 
         </style>
@@ -223,16 +227,19 @@ looker.plugins.visualizations.add({
             const col = cell.dataset.col;
           
             tableGrid.querySelectorAll(".grid-cell").forEach(c => {
-              if (c.dataset.row === row || c.dataset.col === col) {
-                c.classList.add("hovered");
-              }
+                if (c.dataset.row === row || c.dataset.col === col) {
+                    c.classList.add("hovered");
+                  }
+                  if (c === cell) {
+                    c.classList.add("hovered-cell");
+                  }
             });
           });
           
           tableGrid.addEventListener("mouseout", () => {
-            tableGrid.querySelectorAll(".grid-cell.hovered").forEach(c => {
-              c.classList.remove("hovered");
-            });
+            tableGrid.querySelectorAll(".grid-cell.hovered, .grid-cell.hovered-cell").forEach(c => {
+                c.classList.remove("hovered", "hovered-cell");
+              });
           });
 
         this._tableContainer.appendChild(tableGrid);
