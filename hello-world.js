@@ -171,67 +171,69 @@ looker.plugins.visualizations.add({
         const headerCellCount = tableGrid.childElementCount;
 
         // BODY ROWS
-        let colIndex = 0;
+        totalCols = dimensionCount + (pivotCount * measureCount);
 
         data.forEach((row, rowIndex) => {
-        const rowClass = rowIndex % 2 === 0 ? "grid-row-even" : "grid-row-odd";
-
-        // Dimensões
-        dimensions.forEach((dim, dIndex) => {
-            const div = document.createElement("div");
-            const isLastDimension = dIndex === dimensions.length - 1;
-            div.className = `grid-cell ${rowClass} ${isLastDimension ? 'dim-separator' : ''}`;
-            div.dataset.row = rowIndex;
-            div.dataset.col = colIndex++;
-            div.innerHTML = LookerCharts.Utils.htmlForCell(row[dim.name]);
-            tableGrid.appendChild(div);
-        });
-
-        if (hasPivot) {
-            pivots.forEach(pivot => {
-            measures.forEach((measure, mIndex) => {
-                const cellData = row[measure.name][pivot.key];
+            const rowClass = rowIndex % 2 === 0 ? "grid-row-even" : "grid-row-odd";
+            let colIndex = 0; // reinicia para cada linha
+          
+            // Dimensões
+            dimensions.forEach((dim, dIndex) => {
+              const div = document.createElement("div");
+              const isLastDimension = dIndex === dimensions.length - 1;
+              div.className = `grid-cell ${rowClass} ${isLastDimension ? 'dim-separator' : ''}`;
+              div.dataset.row = rowIndex;
+              div.dataset.col = colIndex;
+              div.innerHTML = LookerCharts.Utils.htmlForCell(row[dim.name]);
+              tableGrid.appendChild(div);
+              colIndex++;
+            });
+          
+            if (hasPivot) {
+              pivots.forEach(pivot => {
+                measures.forEach((measure, mIndex) => {
+                  const cellData = row[measure.name][pivot.key];
+                  const div = document.createElement("div");
+                  const isLastMeasure = mIndex === measures.length - 1;
+                  div.className = `grid-cell numeric ${rowClass} ${!isLastMeasure ? 'no-right-border' : ''}`;
+                  div.dataset.row = rowIndex;
+                  div.dataset.col = colIndex;
+                  div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
+                  tableGrid.appendChild(div);
+                  colIndex++;
+                });
+              });
+            } else {
+              measures.forEach(measure => {
                 const div = document.createElement("div");
-                const isLastMeasure = mIndex === measures.length - 1;
-                div.className = `grid-cell numeric ${rowClass} ${!isLastMeasure ? 'no-right-border' : ''}`;
+                div.className = `grid-cell ${rowClass}`;
                 div.dataset.row = rowIndex;
-                div.dataset.col = colIndex++;
-                div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
+                div.dataset.col = colIndex;
+                div.innerHTML = LookerCharts.Utils.htmlForCell(row[measure.name]);
                 tableGrid.appendChild(div);
-            });
-            });
-        } else {
-            measures.forEach(measure => {
-            const div = document.createElement("div");
-            div.className = `grid-cell ${rowClass}`;
-            div.dataset.row = rowIndex;
-            div.dataset.col = colIndex++;
-            div.innerHTML = LookerCharts.Utils.htmlForCell(row[measure.name]);
-            tableGrid.appendChild(div);
-            });
-        }
-        });
+                colIndex++;
+              });
+            }
+          });
 
-        tableGrid.addEventListener("mouseover", (e) => {
-            if (!e.target.classList.contains("grid-cell")) return;
+          tableGrid.addEventListener("mouseover", (e) => {
+            const cell = e.target.closest(".grid-cell");
+            if (!cell) return;
           
-            const row = e.target.dataset.row;
-            const col = e.target.dataset.col;
-            const allCells = tableGrid.querySelectorAll(".grid-cell");
+            const row = cell.dataset.row;
+            const col = cell.dataset.col;
           
-            allCells.forEach(cell => {
-              const isSameRow = cell.dataset.row === row;
-              const isSameCol = cell.dataset.col === col;
-              const isSameCell = cell === e.target;
-              if (isSameRow || isSameCol || isSameCell) {
-                cell.classList.add("hovered");
+            tableGrid.querySelectorAll(".grid-cell").forEach(c => {
+              if (c.dataset.row === row || c.dataset.col === col) {
+                c.classList.add("hovered");
               }
             });
           });
           
           tableGrid.addEventListener("mouseout", () => {
-            const allCells = tableGrid.querySelectorAll(".grid-cell.hovered");
-            allCells.forEach(cell => cell.classList.remove("hovered"));
+            tableGrid.querySelectorAll(".grid-cell.hovered").forEach(c => {
+              c.classList.remove("hovered");
+            });
           });
 
         this._tableContainer.appendChild(tableGrid);
