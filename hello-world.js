@@ -34,13 +34,13 @@ looker.plugins.visualizations.add({
             .header-row-1 {
               position: sticky;
               top: 0;
-              z-index: 2;
+              z-index: 4;
               background-color: #fff;
             }
 
             .header-row-2 {
               position: sticky;
-              z-index: 1;
+              z-index: 4;
               background-color: #fff;
             }
 
@@ -376,7 +376,26 @@ looker.plugins.visualizations.add({
               cell.classList.add("sticky-dimension");
               cell.style.left = `${left}px`;
             });
+        
+            // Também fixa o cabeçalho da header-row-2 (dimensões)
+            const headerCell = tableGrid.querySelector(
+              `.grid-cell.header-row-2.dimension:nth-of-type(${i + 1})`
+            );
+            if (headerCell) {
+              headerCell.classList.add("sticky-dimension");
+              headerCell.style.left = `${left}px`;
+            }
           });
+        
+          // Fixa a célula da header-row-1 que representa o campo pivotado
+          const pivotHeaderCell = tableGrid.querySelector(
+            `.grid-cell.header-row-1.pivot-dimension`
+          );
+          if (pivotHeaderCell) {
+            pivotHeaderCell.classList.add("sticky-dimension");
+            pivotHeaderCell.style.left = "0px";
+            pivotHeaderCell.style.zIndex = "4"; // acima dos demais
+          }
         });
 
     }
