@@ -332,16 +332,33 @@ looker.plugins.visualizations.add({
         
         this._tableContainer.appendChild(tableGrid);
 
-        window.addEventListener("load", () => {
-          const firstRowHeight = document.querySelector(".header-row-1").offsetHeight;
-          const secondRowHeader = document.querySelector(".header-row-2");
-          
-          if (secondRowHeader) {
-            secondRowHeader.style.top = `${firstRowHeight}px`;
+        requestAnimationFrame(() => {
+          const firstRowCells = tableGrid.querySelectorAll(".header-row-1");
+          if (firstRowCells.length > 0) {
+            // Pega a maior altura da primeira linha (caso haja múltiplas células com quebras de linha)
+            const firstRowHeight = Math.max(...Array.from(firstRowCells).map(el => el.offsetHeight));
+        
+            const secondRowCells = tableGrid.querySelectorAll(".header-row-2");
+            secondRowCells.forEach(cell => {
+              cell.style.top = `${firstRowHeight}px`;
+            });
           }
         });
 
         done();
+
+        requestAnimationFrame(() => {
+          const firstRowCells = tableGrid.querySelectorAll(".header-row-1");
+          if (firstRowCells.length > 0) {
+            // Pega a maior altura da primeira linha (caso haja múltiplas células com quebras de linha)
+            const firstRowHeight = Math.max(...Array.from(firstRowCells).map(el => el.offsetHeight));
+        
+            const secondRowCells = tableGrid.querySelectorAll(".header-row-2");
+            secondRowCells.forEach(cell => {
+              cell.style.top = `${firstRowHeight}px`;
+            });
+          }
+        });
 
     }
   });
