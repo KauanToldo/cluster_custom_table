@@ -47,12 +47,18 @@ looker.plugins.visualizations.add({
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                position: sticky;
-                z-index: 10;
             }
 
-            .grid-header-cell.header-row-1 {
+            .grid-header {
+                position: sticky;
                 top: 0;
+                z-index: 2;
+                background: white;
+                }
+
+            .grid-scroll-container {
+                max-height: 500px; /* ou '100%' dependendo do layout */
+                overflow: auto;
             }
 
             .pivot-dimension, .dimension {
@@ -98,22 +104,28 @@ looker.plugins.visualizations.add({
         this.clearErrors();
         this._tableContainer.innerHTML = "";
 
+        // Pega os dados
         const pivots = queryResponse.pivots || [];
         const hasPivot = pivots.length > 0;
 
         const dimensions = queryResponse.fields.dimensions;
         const measures = queryResponse.fields.measures;
 
-        // Calculate total columns
         const dimensionCount = dimensions.length;
         const measureCount = measures.length;
         const pivotCount = hasPivot ? pivots.length : 1;
         const totalCols = dimensionCount + (pivotCount * measureCount);
 
-        // Create wrapper
-        const tableGrid = document.createElement("div");
-        tableGrid.className = "grid-table";
-        tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, 1fr)`;
+        // Containers
+        const headerWrapper = document.createElement("div");
+        headerWrapper.className = "grid-header";
+        headerWrapper.style.display = "grid";
+        headerWrapper.style.gridTemplateColumns = `repeat(${totalCols}, 1fr)`;
+
+        const bodyWrapper = document.createElement("div");
+        bodyWrapper.className = "grid-body";
+        bodyWrapper.style.display = "grid";
+        bodyWrapper.style.gridTemplateColumns = `repeat(${totalCols}, 1fr)`;
 
         // HEADER ROW 1
         dimensions.forEach(dim => {
@@ -121,7 +133,7 @@ looker.plugins.visualizations.add({
         div.className = "grid-cell grid-header-cell header-row-1 dimension";
         div.style.gridRow = "1 / span 2";
         div.textContent = dim.label;
-        tableGrid.appendChild(div);
+        headerWrapper.appendChild(div);
         });
 
         if (hasPivot) {
@@ -131,82 +143,75 @@ looker.plugins.visualizations.add({
             div.className = "grid-cell grid-header-cell header-row-1 pivot-dimension";
             div.style.gridColumn = `span ${measureCount}`;
             div.textContent = pivotLabel;
-            tableGrid.appendChild(div);
+            headerWrapper.appendChild(div);
         });
 
-        // HEADER ROW 2 (measures under pivots)
+        // HEADER ROW 2 (measures)
         pivots.forEach(() => {
             measures.forEach(measure => {
             const div = document.createElement("div");
             div.className = "grid-cell grid-header-cell header-row-2 measure";
-            viewLabel = measure.view_label || ""; 
-            rawLabel = measure.label;
-            cleanLabel = rawLabel.replace(viewLabel + " ", "");
+            const viewLabel = measure.view_label || ""; 
+            const rawLabel = measure.label;
+            const cleanLabel = rawLabel.replace(viewLabel + " ", "");
             div.textContent = cleanLabel;
-            tableGrid.appendChild(div);
+            headerWrapper.appendChild(div);
             });
         });
         } else {
-        // Sem pivôs: uma única linha de cabeçalho para medidas
+        // Sem pivôs: cabeçalho direto de medidas
         measures.forEach(measure => {
             const div = document.createElement("div");
             div.className = "grid-cell grid-header-cell";
-            viewLabel = measure.view_label || ""; 
-            rawLabel = measure.label;
-            cleanLabel = rawLabel.replace(viewLabel + " ", "");
+            const viewLabel = measure.view_label || ""; 
+            const rawLabel = measure.label;
+            const cleanLabel = rawLabel.replace(viewLabel + " ", "");
             div.textContent = cleanLabel;
-            tableGrid.appendChild(div);
+            headerWrapper.appendChild(div);
         });
         }
 
-        // Salva a quantidade de células de cabeçalho
-        const headerCellCount = tableGrid.childElementCount;
-
-        // BODY ROWS
+        // BODY
         data.forEach((row, rowIndex) => {
-            const rowClass = rowIndex % 2 === 0 ? "grid-row-even" : "grid-row-odd";
-          
-            // Dimensões
-            dimensions.forEach(dim => {
-              const div = document.createElement("div");
-              div.className = `grid-cell ${rowClass}`;
-              div.innerHTML = LookerCharts.Utils.htmlForCell(row[dim.name]);
-              tableGrid.appendChild(div);
-            });
-          
-            if (hasPivot) {
-              pivots.forEach(pivot => {
-                measures.forEach(measure => {
-                  const cellData = row[measure.name][pivot.key];
-                  const div = document.createElement("div");
-                  div.className = `grid-cell numeric ${rowClass}`;
-                  div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
-                  tableGrid.appendChild(div);
-                });
-              });
-            } else {
-              measures.forEach(measure => {
+        const rowClass = rowIndex % 2 === 0 ? "grid-row-even" : "grid-row-odd";
+
+        // Dimensões
+        dimensions.forEach(dim => {
+            const div = document.createElement("div");
+            div.className = `grid-cell ${rowClass}`;
+            div.innerHTML = LookerCharts.Utils.htmlForCell(row[dim.name]);
+            bodyWrapper.appendChild(div);
+        });
+
+        if (hasPivot) {
+            pivots.forEach(pivot => {
+            measures.forEach(measure => {
+                const cellData = row[measure.name][pivot.key];
                 const div = document.createElement("div");
-                div.className = `grid-cell ${rowClass}`;
-                div.innerHTML = LookerCharts.Utils.htmlForCell(row[measure.name]);
-                tableGrid.appendChild(div);
-              });
-            }
-          });
-
-        this._tableContainer.appendChild(tableGrid);
-
-        requestAnimationFrame(() => {
-            // Pega qualquer célula da primeira linha do header
-            const firstHeader = this._tableContainer.querySelector(".header-row-1");
-            const headerHeight = firstHeader ? firstHeader.offsetHeight : 32;
-          
-            // Define a altura como top para a segunda linha
-            const secondRowHeaders = this._tableContainer.querySelectorAll(".header-row-2");
-            secondRowHeaders.forEach(cell => {
-              cell.style.top = `${headerHeight}px`;
+                div.className = `grid-cell numeric ${rowClass}`;
+                div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
+                bodyWrapper.appendChild(div);
             });
-          });
+            });
+        } else {
+            measures.forEach(measure => {
+            const div = document.createElement("div");
+            div.className = `grid-cell ${rowClass}`;
+            div.innerHTML = LookerCharts.Utils.htmlForCell(row[measure.name]);
+            bodyWrapper.appendChild(div);
+            });
+        }
+        });
+
+        // SCROLL CONTAINER
+        const scrollContainer = document.createElement("div");
+        scrollContainer.className = "grid-scroll-container";
+        scrollContainer.style.overflow = "auto";
+        scrollContainer.appendChild(bodyWrapper);
+
+        // Append to visualization
+        this._tableContainer.appendChild(headerWrapper);
+        this._tableContainer.appendChild(scrollContainer);
 
         done();
 
