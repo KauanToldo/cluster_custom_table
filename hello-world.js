@@ -1,22 +1,19 @@
 looker.plugins.visualizations.add({
     id: "hello_world",
     label: "Hello World",
-    // options: {
-    //   font_size: {
-    //     type: "string",
-    //     label: "Font Size",
-    //     values: [
-    //       {"Large": "large"},
-    //       {"Small": "small"}
-    //     ],
-    //     display: "radio",
-    //     default: "large"
-    //   }
-    // },
-    // Set up the initial state of the visualization
+    options: {
+      
+      dimension_label_0: {
+        type: "string",
+        label: "Label para Dimensão 1",
+        section: "Series",
+        display: "text",
+        default: ""
+      },
+
+    },
     create: function(element, config) {
-  
-      // Insert a <style> tag with some styles we'll use later.
+
       element.innerHTML = `
         <style>
             .table-wrapper {
@@ -108,7 +105,7 @@ looker.plugins.visualizations.add({
             }
 
             .grid-cell.dim-separator {
-                border-right: 2px solid #ddd;
+                border-right: 2px solid #012C75;
             }
 
             .grid-header-cell:first-child {
@@ -174,6 +171,8 @@ looker.plugins.visualizations.add({
         tableGrid.className = "grid-table";
         tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, 1fr)`;
 
+        const dimensionLabel = config.dimension_label;
+
         // HEADER ROW 1
         if (hasPivot) {
           // Nome do campo pivotado sobre as dimensões
@@ -196,9 +195,10 @@ looker.plugins.visualizations.add({
 
           // HEADER ROW 2 (dimensões + medidas)
           dimensions.forEach(dim => {
+            const labelToShow = i === 0 && dimensionLabel ? dimensionLabel : dim.label;
             const dimDiv = document.createElement("div");
             dimDiv.className = "grid-cell grid-header-cell header-row-2 dimension";
-            dimDiv.textContent = dim.label;
+            dimDiv.textContent = labelToShow;
             tableGrid.appendChild(dimDiv);
           });
 
@@ -222,9 +222,10 @@ looker.plugins.visualizations.add({
         } else {
           // Sem pivôs: cabeçalho simples (dimensões + medidas)
           dimensions.forEach(dim => {
+            const labelToShow = i === 0 && dimensionLabel ? dimensionLabel : dim.label;
             const div = document.createElement("div");
             div.className = "grid-cell grid-header-cell";
-            div.textContent = dim.label;
+            div.textContent = labelToShow;
             tableGrid.appendChild(div);
           });
 
