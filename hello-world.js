@@ -171,7 +171,6 @@ looker.plugins.visualizations.add({
         const headerCellCount = tableGrid.childElementCount;
 
         // BODY ROWS
-        totalCols = dimensionCount + (pivotCount * measureCount);
 
         data.forEach((row, rowIndex) => {
             const rowClass = rowIndex % 2 === 0 ? "grid-row-even" : "grid-row-odd";
