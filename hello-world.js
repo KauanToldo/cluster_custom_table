@@ -60,6 +60,10 @@ looker.plugins.visualizations.add({
                 color: white !important;
             }
 
+            .grid-cell.numeric.no-right-border {
+                border-right: none !important;
+            }
+
             .grid-header-cell:first-child {
                 border-top-left-radius: 8px;
             }
@@ -83,9 +87,6 @@ looker.plugins.visualizations.add({
                 background-color: #f5f5f5;
             }
 
-            .grid-cell .no-right-border {
-                border-right: none !important;
-            }
         </style>
       `;
   
