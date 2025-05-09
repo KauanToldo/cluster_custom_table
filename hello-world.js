@@ -244,8 +244,8 @@ looker.plugins.visualizations.add({
                     }
 
 
-                  // const isLastMeasure = mIndex === measures.length - 1;
-                  // div.className = `grid-cell numeric ${rowClass} ${!isLastMeasure ? 'no-right-border' : ''}`;
+                  const isLastMeasure = mIndex === measures.length - 1;
+                  div.className = `grid-cell numeric ${rowClass} ${!isLastMeasure ? 'no-right-border' : ''}`;
                   div.dataset.row = rowIndex;
                   div.dataset.col = colIndex;
                   div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
