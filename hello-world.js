@@ -124,11 +124,12 @@ looker.plugins.visualizations.add({
 
         const dimensions = queryResponse.fields.dimensions;
         const measures = queryResponse.fields.measures;
+        const tableCalcs = queryResponse.fields.table_calculations || [];
 
         const dimensionCount = dimensions.length;
         const measureCount = measures.length;
         const pivotCount = hasPivot ? pivots.length : 1;
-        const totalCols = dimensionCount + (pivotCount * measureCount);
+        const totalCols = dimensionCount + (pivotCount * (measureCount + tableCalcs.length));
 
         // Cria o grid
         const tableGrid = document.createElement("div");
@@ -138,7 +139,7 @@ looker.plugins.visualizations.add({
         // HEADER ROW 1
         if (hasPivot) {
           // Nome do campo pivotado sobre as dimensões
-          const pivotedFieldName = pivots[0]?.metadata?.pivoted_label || pivots[0]?.label || "Pivot";
+          const pivotedFieldName = pivots[0]?.metadata?.pivoted_label || pivots[0]?.label || "Pivot"; //não esta pegando o nome do campo pivotado dessa forma
           const pivotedFieldDiv = document.createElement("div");
           pivotedFieldDiv.className = "grid-cell grid-header-cell header-row-1 pivot-dimension";
           pivotedFieldDiv.style.gridColumn = `span ${dimensionCount}`;
@@ -173,6 +174,12 @@ looker.plugins.visualizations.add({
               measureDiv.textContent = cleanLabel;
               tableGrid.appendChild(measureDiv);
             });
+            tableCalcs.forEach(calc => {
+              const div = document.createElement("div");
+              div.className = "grid-cell grid-header-cell header-row-2 table-calc";
+              div.textContent = calc.label;
+              tableGrid.appendChild(div);
+            });
           });
         } else {
           // Sem pivôs: cabeçalho simples (dimensões + medidas)
@@ -190,6 +197,13 @@ looker.plugins.visualizations.add({
             const rawLabel = measure.label;
             const cleanLabel = rawLabel.replace(viewLabel + " ", "");
             div.textContent = cleanLabel;
+            tableGrid.appendChild(div);
+          });
+
+          tableCalcs.forEach(calc => {
+            const div = document.createElement("div");
+            div.className = "grid-cell grid-header-cell";
+            div.textContent = calc.label;
             tableGrid.appendChild(div);
           });
         }
@@ -237,6 +251,16 @@ looker.plugins.visualizations.add({
                   div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
                   tableGrid.appendChild(div);
                   colIndex++;
+
+                  tableCalcs.forEach(calc => {
+                    const div = document.createElement("div");
+                    div.className = `grid-cell ${rowClass}`;
+                    div.dataset.row = rowIndex;
+                    div.dataset.col = colIndex;
+                    div.innerHTML = LookerCharts.Utils.htmlForCell(row[calc.name]);
+                    tableGrid.appendChild(div);
+                    colIndex++;
+                  });
                 });
               });
             } else {
@@ -246,6 +270,16 @@ looker.plugins.visualizations.add({
                 div.dataset.row = rowIndex;
                 div.dataset.col = colIndex;
                 div.innerHTML = LookerCharts.Utils.htmlForCell(row[measure.name]);
+                tableGrid.appendChild(div);
+                colIndex++;
+              });
+
+              tableCalcs.forEach(calc => {
+                const div = document.createElement("div");
+                div.className = `grid-cell ${rowClass}`;
+                div.dataset.row = rowIndex;
+                div.dataset.col = colIndex;
+                div.innerHTML = LookerCharts.Utils.htmlForCell(row[calc.name]);
                 tableGrid.appendChild(div);
                 colIndex++;
               });
