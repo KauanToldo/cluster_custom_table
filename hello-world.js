@@ -194,7 +194,7 @@ looker.plugins.visualizations.add({
           });
 
           // HEADER ROW 2 (dimensões + medidas)
-          dimensions.forEach(dim => {
+          dimensions.forEach(dim, i => {
             const labelToShow = i === 0 && dimensionLabel ? dimensionLabel : dim.label;
             const dimDiv = document.createElement("div");
             dimDiv.className = "grid-cell grid-header-cell header-row-2 dimension";
@@ -221,7 +221,7 @@ looker.plugins.visualizations.add({
           });
         } else {
           // Sem pivôs: cabeçalho simples (dimensões + medidas)
-          dimensions.forEach(dim => {
+          dimensions.forEach(dim, i => {
             const labelToShow = i === 0 && dimensionLabel ? dimensionLabel : dim.label;
             const div = document.createElement("div");
             div.className = "grid-cell grid-header-cell";
