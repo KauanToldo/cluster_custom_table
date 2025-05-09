@@ -1,18 +1,18 @@
 looker.plugins.visualizations.add({
     id: "hello_world",
     label: "Hello World",
-    options: {
-      font_size: {
-        type: "string",
-        label: "Font Size",
-        values: [
-          {"Large": "large"},
-          {"Small": "small"}
-        ],
-        display: "radio",
-        default: "large"
-      }
-    },
+    // options: {
+    //   font_size: {
+    //     type: "string",
+    //     label: "Font Size",
+    //     values: [
+    //       {"Large": "large"},
+    //       {"Small": "small"}
+    //     ],
+    //     display: "radio",
+    //     default: "large"
+    //   }
+    // },
     // Set up the initial state of the visualization
     create: function(element, config) {
   
@@ -125,60 +125,73 @@ looker.plugins.visualizations.add({
         const dimensions = queryResponse.fields.dimensions;
         const measures = queryResponse.fields.measures;
 
-        // Calculate total columns
         const dimensionCount = dimensions.length;
         const measureCount = measures.length;
         const pivotCount = hasPivot ? pivots.length : 1;
         const totalCols = dimensionCount + (pivotCount * measureCount);
 
-        // Create wrapper
+        // Cria o grid
         const tableGrid = document.createElement("div");
         tableGrid.className = "grid-table";
         tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, 1fr)`;
-        
 
         // HEADER ROW 1
-        dimensions.forEach(dim => {
-        const div = document.createElement("div");
-        div.className = "grid-cell grid-header-cell header-row-1 dimension";
-        div.style.gridRow = "1 / span 2";
-        div.textContent = dim.label;
-        tableGrid.appendChild(div);
-        });
-
         if (hasPivot) {
-        pivots.forEach(pivot => {
-            const pivotLabel = pivot.metadata?.pivoted_label || pivot.label || pivot.key;
-            const div = document.createElement("div");
-            div.className = "grid-cell grid-header-cell header-row-1 pivot-dimension";
-            div.style.gridColumn = `span ${measureCount}`;
-            div.textContent = pivotLabel;
-            tableGrid.appendChild(div);
-        });
+          // Nome do campo pivotado sobre as dimensões
+          const pivotedFieldName = pivots[0]?.metadata?.pivoted_label || pivots[0]?.label || "Pivot";
+          const pivotedFieldDiv = document.createElement("div");
+          pivotedFieldDiv.className = "grid-cell grid-header-cell header-row-1 pivot-dimension";
+          pivotedFieldDiv.style.gridColumn = `span ${dimensionCount}`;
+          pivotedFieldDiv.textContent = pivotedFieldName;
+          tableGrid.appendChild(pivotedFieldDiv);
 
-        // HEADER ROW 2 (measures under pivots)
-        pivots.forEach(() => {
+          // Cada pivot ocupa o espaço de suas medidas
+          pivots.forEach(pivot => {
+            const pivotLabel = pivot.key || pivot.label;
+            const pivotDiv = document.createElement("div");
+            pivotDiv.className = "grid-cell grid-header-cell header-row-1 pivot-dimension";
+            pivotDiv.style.gridColumn = `span ${measureCount}`;
+            pivotDiv.textContent = pivotLabel;
+            tableGrid.appendChild(pivotDiv);
+          });
+
+          // HEADER ROW 2 (dimensões + medidas)
+          dimensions.forEach(dim => {
+            const dimDiv = document.createElement("div");
+            dimDiv.className = "grid-cell grid-header-cell header-row-2 dimension";
+            dimDiv.textContent = dim.label;
+            tableGrid.appendChild(dimDiv);
+          });
+
+          pivots.forEach(() => {
             measures.forEach(measure => {
-            const div = document.createElement("div");
-            div.className = "grid-cell grid-header-cell header-row-2 measure";
-            viewLabel = measure.view_label || ""; 
-            rawLabel = measure.label;
-            cleanLabel = rawLabel.replace(viewLabel + " ", "");
-            div.textContent = cleanLabel;
-            tableGrid.appendChild(div);
+              const measureDiv = document.createElement("div");
+              measureDiv.className = "grid-cell grid-header-cell header-row-2 measure";
+              const viewLabel = measure.view_label || "";
+              const rawLabel = measure.label;
+              const cleanLabel = rawLabel.replace(viewLabel + " ", "");
+              measureDiv.textContent = cleanLabel;
+              tableGrid.appendChild(measureDiv);
             });
-        });
+          });
         } else {
-        // Sem pivôs: uma única linha de cabeçalho para medidas
-        measures.forEach(measure => {
+          // Sem pivôs: cabeçalho simples (dimensões + medidas)
+          dimensions.forEach(dim => {
             const div = document.createElement("div");
             div.className = "grid-cell grid-header-cell";
-            viewLabel = measure.view_label || ""; 
-            rawLabel = measure.label;
-            cleanLabel = rawLabel.replace(viewLabel + " ", "");
+            div.textContent = dim.label;
+            tableGrid.appendChild(div);
+          });
+
+          measures.forEach(measure => {
+            const div = document.createElement("div");
+            div.className = "grid-cell grid-header-cell";
+            const viewLabel = measure.view_label || "";
+            const rawLabel = measure.label;
+            const cleanLabel = rawLabel.replace(viewLabel + " ", "");
             div.textContent = cleanLabel;
             tableGrid.appendChild(div);
-        });
+          });
         }
 
         // Salva a quantidade de células de cabeçalho
