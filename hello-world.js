@@ -47,6 +47,9 @@ looker.plugins.visualizations.add({
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                position: sticky;
+                top: 0;
+                z-index: 10;
             }
 
             .pivot-dimension, .dimension {
