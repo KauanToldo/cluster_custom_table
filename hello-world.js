@@ -180,7 +180,7 @@ looker.plugins.visualizations.add({
                     const isLastMeasure = mIndex === measures.length - 1;
                     div.className = `grid-cell numeric ${rowClass} ${!isLastMeasure ? 'no-right-border' : ''}`;
                     div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
-                    bodyWrapper.appendChild(div);
+                    tableGrid.appendChild(div);
                   });
               });
             } else {
