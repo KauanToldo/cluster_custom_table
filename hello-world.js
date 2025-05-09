@@ -31,7 +31,7 @@ looker.plugins.visualizations.add({
                 display: contents;
             }
             .grid-cell {
-                border: 1px solid #ddd;
+                border: 1px solid #000000;
                 padding: 10px;
                 background: white;
                 white-space: nowrap;
