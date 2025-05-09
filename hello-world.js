@@ -84,7 +84,7 @@ looker.plugins.visualizations.add({
             }
 
             .grid-cell .no-right-border {
-                border-right:rgb(248, 248, 248);
+                border-right: none !important;
             }
         </style>
       `;
