@@ -251,16 +251,16 @@ looker.plugins.visualizations.add({
                   div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
                   tableGrid.appendChild(div);
                   colIndex++;
+                });
 
-                  tableCalcs.forEach(calc => {
-                    const div = document.createElement("div");
-                    div.className = `grid-cell ${rowClass}`;
-                    div.dataset.row = rowIndex;
-                    div.dataset.col = colIndex;
-                    div.innerHTML = LookerCharts.Utils.htmlForCell(row[calc.name]);
-                    tableGrid.appendChild(div);
-                    colIndex++;
-                  });
+                tableCalcs.forEach(calc => {
+                  const div = document.createElement("div");
+                  div.className = `grid-cell ${rowClass}`;
+                  div.dataset.row = rowIndex;
+                  div.dataset.col = colIndex;
+                  div.innerHTML = LookerCharts.Utils.htmlForCell(row[calc.name]);
+                  tableGrid.appendChild(div);
+                  colIndex++;
                 });
               });
             } else {
