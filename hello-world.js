@@ -19,14 +19,20 @@ looker.plugins.visualizations.add({
       // Insert a <style> tag with some styles we'll use later.
       element.innerHTML = `
         <style>
+            .table-wrapper {
+              width: 100%;
+              max-height: 600px; /* ou auto, conforme o caso */
+              overflow: auto;    /* ativa scroll vertical + horizontal */
+              position: relative; /* importante para sticky funcionar */
+            }
+
             .grid-table {
                 display: grid;
-                width: 100%;
                 border: 1px solid #000000;
                 border-radius: 8px;
                 font-family: Arial, sans-serif;
-                overflow-x: auto;
-                position: relative;
+                width: max-content;
+                min-width: 100%;
             }
             .grid-header,
             .grid-row {
@@ -145,8 +151,8 @@ looker.plugins.visualizations.add({
         </style>
       `;
   
-      // Create a container element to let us center the text.
       this._tableContainer = element.appendChild(document.createElement("div"));
+      this._tableContainer.classList = "table-wrapper"
     },
     // Render in response to the data or settings changing
     updateAsync: function(data, element, config, queryResponse, details, done) {
