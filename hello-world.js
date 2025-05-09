@@ -66,7 +66,7 @@ looker.plugins.visualizations.add({
             }
 
             .table-calc {
-              background-color:rgb(0, 255, 136) !important;
+              background-color:rgb(0, 122, 65) !important;
               color: white !important;
             }
 
@@ -249,8 +249,8 @@ looker.plugins.visualizations.add({
                     }
 
 
-                  const isLastMeasure = mIndex === measures.length - 1;
-                  div.className = `grid-cell numeric ${rowClass} ${!isLastMeasure ? 'no-right-border' : ''}`;
+                  const isLastInPivotBlock = mIndex === measures.length - 1 && tableCalcs.length === 0;
+                  div.className = `grid-cell numeric ${rowClass} ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
                   div.dataset.row = rowIndex;
                   div.dataset.col = colIndex;
                   div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
@@ -258,10 +258,11 @@ looker.plugins.visualizations.add({
                   colIndex++;
                 });
 
-                tableCalcs.forEach(calc => {
+                tableCalcs.forEach((calc, calcIndex) => {
+                  const isLastInPivotBlock = calcIndex === tableCalcs.length - 1;
                   const div = document.createElement("div");
-                  const cellData = row[calc.name]?.[pivot.key];  // <- corrigido aqui
-                  div.className = `grid-cell numeric ${rowClass}`;
+                  const cellData = row[calc.name]?.[pivot.key];
+                  div.className = `grid-cell numeric ${rowClass} ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
                   div.dataset.row = rowIndex;
                   div.dataset.col = colIndex;
                   div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
