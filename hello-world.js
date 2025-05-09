@@ -34,13 +34,13 @@ looker.plugins.visualizations.add({
             .header-row-1 {
               position: sticky;
               top: 0;
-              z-index: 4;
+              z-index: 1;
               background-color: #fff;
             }
 
             .header-row-2 {
               position: sticky;
-              z-index: 4;
+              z-index: 1;
               background-color: #fff;
             }
 
@@ -49,7 +49,16 @@ looker.plugins.visualizations.add({
               position: sticky;
               left: 0;
               background-color: #fff;
+              z-index: 2;
+            }
+            
+            .header-row-2.dimension.sticky-dimension {
               z-index: 3;
+            }
+
+            /* Célula do topo da primeira coluna (campo pivotado) */
+            .header-row-1.pivot-dimension.sticky-dimension {
+              z-index: 4;
             }
 
             .grid-cell {
