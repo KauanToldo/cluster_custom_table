@@ -99,6 +99,17 @@ looker.plugins.visualizations.add({
                 background-color: #66b3ff !important; /* azul mais escuro para a célula */
             }
 
+            .negative-value {
+                color: red;
+            }
+
+            .header-container {
+                position: sticky;
+                top: 0;
+                z-index: 10;
+                background: white;
+            }
+
         </style>
       `;
   
@@ -127,13 +138,19 @@ looker.plugins.visualizations.add({
         tableGrid.className = "grid-table";
         tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, 1fr)`;
 
+        // Cria o container do cabeçalho
+        const headerContainer = document.createElement("div");
+        headerContainer.className = "header-container";
+        headerContainer.style.display = "grid";
+        headerContainer.style.gridTemplateColumns = `repeat(${totalCols}, 1fr)`;
+
         // HEADER ROW 1
         dimensions.forEach(dim => {
-        const div = document.createElement("div");
-        div.className = "grid-cell grid-header-cell header-row-1 dimension";
-        div.style.gridRow = "1 / span 2";
-        div.textContent = dim.label;
-        tableGrid.appendChild(div);
+            const div = document.createElement("div");
+            div.className = "grid-cell grid-header-cell header-row-1 dimension";
+            div.style.gridRow = "1 / span 2";
+            div.textContent = dim.label;
+            headerContainer.appendChild(div);
         });
 
         if (hasPivot) {
@@ -143,7 +160,7 @@ looker.plugins.visualizations.add({
             div.className = "grid-cell grid-header-cell header-row-1 pivot-dimension";
             div.style.gridColumn = `span ${measureCount}`;
             div.textContent = pivotLabel;
-            tableGrid.appendChild(div);
+            headerContainer.appendChild(div);
         });
 
         // HEADER ROW 2 (measures under pivots)
@@ -151,11 +168,11 @@ looker.plugins.visualizations.add({
             measures.forEach(measure => {
             const div = document.createElement("div");
             div.className = "grid-cell grid-header-cell header-row-2 measure";
-            viewLabel = measure.view_label || ""; 
-            rawLabel = measure.label;
-            cleanLabel = rawLabel.replace(viewLabel + " ", "");
+            const viewLabel = measure.view_label || ""; 
+            const rawLabel = measure.label;
+            const cleanLabel = rawLabel.replace(viewLabel + " ", "");
             div.textContent = cleanLabel;
-            tableGrid.appendChild(div);
+            headerContainer.appendChild(div);
             });
         });
         } else {
@@ -163,13 +180,16 @@ looker.plugins.visualizations.add({
         measures.forEach(measure => {
             const div = document.createElement("div");
             div.className = "grid-cell grid-header-cell";
-            viewLabel = measure.view_label || ""; 
-            rawLabel = measure.label;
-            cleanLabel = rawLabel.replace(viewLabel + " ", "");
+            const viewLabel = measure.view_label || ""; 
+            const rawLabel = measure.label;
+            const cleanLabel = rawLabel.replace(viewLabel + " ", "");
             div.textContent = cleanLabel;
-            tableGrid.appendChild(div);
+            headerContainer.appendChild(div);
         });
         }
+
+        // Adiciona o cabeçalho ao grid principal
+        tableGrid.appendChild(headerContainer);
 
         // Salva a quantidade de células de cabeçalho
         const headerCellCount = tableGrid.childElementCount;
@@ -197,6 +217,12 @@ looker.plugins.visualizations.add({
                 measures.forEach((measure, mIndex) => {
                   const cellData = row[measure.name][pivot.key];
                   const div = document.createElement("div");
+
+                  const numericValue = parseFloat(cellData?.value?.replace(/[^\d.-]/g, ""));
+                  if (!isNaN(numericValue) && numericValue < 0) {
+                    div.classList.add("negative-value");
+                  }  
+
                   const isLastMeasure = mIndex === measures.length - 1;
                   div.className = `grid-cell numeric ${rowClass} ${!isLastMeasure ? 'no-right-border' : ''}`;
                   div.dataset.row = rowIndex;
