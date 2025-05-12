@@ -19,6 +19,7 @@ looker.plugins.visualizations.add({
             .table-wrapper {
               width: 100%;
               position: relative;
+
             }
 
             .grid-table {
@@ -151,6 +152,8 @@ looker.plugins.visualizations.add({
         </style>
       `;
   
+      this._tableContainer = element.appendChild(document.createElement("div"));
+      this._tableContainer.classList = "table-wrapper"
     },
     // Render in response to the data or settings changing
     updateAsync: function(data, element, config, queryResponse, details, done) {
