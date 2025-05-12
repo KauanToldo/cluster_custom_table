@@ -301,6 +301,7 @@ looker.plugins.visualizations.add({
           }
         });
 
+        const renderedSpanMap = new Map(); 
 
         data.forEach((row, rowIndex) => {
           const rowClass = rowIndex % 2 === 0 ? "grid-row-even" : "grid-row-odd";
