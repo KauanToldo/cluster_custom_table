@@ -347,7 +347,6 @@ looker.plugins.visualizations.add({
 
           const isLastRowOfGroup = currentDimValue !== nextDimValue;
           if (isLastRowOfGroup && subtotalMap.has(currentDimValue)) {
-            console.log("entrou")
             const subtotalRow = subtotalMap.get(currentDimValue);
             let subtotalColIndex = 0;
             const subtotalClass = "grid-subtotal-row";
@@ -356,7 +355,7 @@ looker.plugins.visualizations.add({
               const div = document.createElement("div");
               const isLastDimension = dIndex === dimensions.length - 1;
               div.className = `grid-cell ${subtotalClass} ${isLastDimension ? 'dim-separator' : ''}`;
-              div.textContent = dIndex === 0 ? `Subtotal: ${subtotalRow[dim.name]?.display}` : "";
+              div.textContent = dIndex === 0 ? `Subtotal: ${subtotalRow[dim.name]?.value}` : "";
               tableGrid.appendChild(div);
               subtotalColIndex++;
             });
