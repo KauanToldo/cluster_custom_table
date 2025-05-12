@@ -185,7 +185,8 @@ looker.plugins.visualizations.add({
             label: `Label para ${field.label}`,
             type: "string",
             display: "text",
-            default: field.label
+            default: field.label,
+            placeholder: field.label_short
           };
         });
 
@@ -196,7 +197,8 @@ looker.plugins.visualizations.add({
               label: `Label para pivô ${pivotField.label}`,
               type: "string",
               display: "text",
-              default: pivotField.label
+              default: pivotField.label,
+              placeholder: pivotField.label_short
             };
           });
         }
