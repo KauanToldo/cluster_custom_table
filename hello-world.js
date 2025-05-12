@@ -241,6 +241,7 @@ looker.plugins.visualizations.add({
             dimDiv.className = "grid-cell grid-header-cell header-row-2 dimension";
             const customLabel = config[`label_dimension_${dim.name}`];
             dimDiv.textContent = customLabel
+            console.log(customLabel)
             tableGrid.appendChild(dimDiv);
           });
 
@@ -250,6 +251,7 @@ looker.plugins.visualizations.add({
               measureDiv.className = "grid-cell grid-header-cell header-row-2 measure";
               const measure_label = measure.label_short
               const customLabel = config[`label_measure_${measure.name}`];
+              console.log(customLabel)
               measureDiv.textContent = customLabel
               tableGrid.appendChild(measureDiv);
             });
