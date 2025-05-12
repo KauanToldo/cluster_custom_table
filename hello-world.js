@@ -54,16 +54,6 @@ looker.plugins.visualizations.add({
               background-color: #fff;
               z-index: 2;
             }
-
-            .sticky-dimension::after {
-              content: '';
-              position: absolute;
-              left: 0;
-              right: 0;
-              bottom: 0;
-              height: 1px; 
-              background-color: #ccc;
-            }
             
             .header-row-2.dimension.sticky-dimension {
               z-index: 3;
@@ -174,7 +164,6 @@ looker.plugins.visualizations.add({
         console.log(queryResponse)
 
         const pivots = queryResponse.pivots || [];
-        // const pivot_label = queryResponse.fields.pivots?.[0]?.label_short || 'Label não encontrado';
         const hasPivot = pivots.length > 0;
 
         const dimensions = queryResponse.fields.dimensions;
@@ -251,7 +240,6 @@ looker.plugins.visualizations.add({
             dimDiv.className = "grid-cell grid-header-cell header-row-2 dimension";
             const customLabel = config[`label_${dim.name}`];
             dimDiv.textContent = customLabel
-            console.log(customLabel)
             tableGrid.appendChild(dimDiv);
           });
 
@@ -259,9 +247,7 @@ looker.plugins.visualizations.add({
             measures.forEach(measure => {
               const measureDiv = document.createElement("div");
               measureDiv.className = "grid-cell grid-header-cell header-row-2 measure";
-              const measure_label = measure.label_short
               const customLabel = config[`label_${measure.name}`];
-              console.log(customLabel)
               measureDiv.textContent = customLabel
               tableGrid.appendChild(measureDiv);
             });
