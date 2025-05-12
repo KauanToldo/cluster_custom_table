@@ -17,8 +17,8 @@ looker.plugins.visualizations.add({
       element.innerHTML = `
         <style>
             .table-wrapper {
+              width: 100%;
               position: relative;
-              overflow: auto;
             }
 
             .grid-table {
@@ -26,7 +26,8 @@ looker.plugins.visualizations.add({
                 border: 1px solid #000000;
                 border-radius: 8px;
                 font-family: Arial, sans-serif;
-                width: 100%;
+                width: max-content;
+                min-width: 100%;
             }
             .grid-header,
             .grid-row {
@@ -71,6 +72,10 @@ looker.plugins.visualizations.add({
                 font-size: 12px;
                 text-decoration: none;
                 color: #000000;
+                max-width: 200px;
+                min-width: 100px;
+                word-break: break-word; /* quebra palavra */
+                white-space: normal;     /* permite múltiplas linhas */
             }
             .grid-header-cell {
                 font-weight: bold;
