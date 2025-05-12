@@ -351,12 +351,13 @@ looker.plugins.visualizations.add({
             const subtotalClass = "grid-subtotal-row";
 
             dimensions.forEach((dim, dIndex) => {
-              const div = document.createElement("div");
-              const isLastDimension = dIndex === dimensions.length - 1;
-              div.className = `grid-cell sticky-dimension ${subtotalClass} ${isLastDimension ? 'dim-separator' : ''}`;
-              div.textContent = dIndex === 0 ? `Subtotal: ${subtotalRow[dim.name]?.value}` : "";
-              tableGrid.appendChild(div);
-              subtotalColIndex++;
+                const div = document.createElement("div");
+                const isLastDimension = dIndex === dimensions.length - 1;
+                div.className = `grid-cell sticky-dimension grid-subtotal-row ${isLastDimension ? 'dim-separator' : ''}`;
+                div.textContent = dIndex === 0 ? `Subtotal: ${subtotalRow[dim.name]?.value}` : "";
+                div.dataset.col = subtotalColIndex;
+                tableGrid.appendChild(div);
+                subtotalColIndex++;
             });
 
             if (hasPivot) {
@@ -364,7 +365,8 @@ looker.plugins.visualizations.add({
                 measures.forEach(measure => {
                   const cellData = subtotalRow[measure.name]?.[pivot.key];
                   const div = document.createElement("div");
-                  div.className = `grid-cell numeric ${subtotalClass}`;
+                  div.className = `grid-cell numeric grid-subtotal-row`;
+                  div.dataset.col = subtotalColIndex;
                   div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
                   tableGrid.appendChild(div);
                   subtotalColIndex++;
@@ -373,7 +375,8 @@ looker.plugins.visualizations.add({
                 tableCalcs.forEach(calc => {
                   const cellData = subtotalRow[calc.name]?.[pivot.key];
                   const div = document.createElement("div");
-                  div.className = `grid-cell numeric ${subtotalClass}`;
+                  div.className = `grid-cell numeric grid-subtotal-row`;
+                  div.dataset.col = subtotalColIndex;
                   div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
                   tableGrid.appendChild(div);
                   subtotalColIndex++;
