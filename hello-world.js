@@ -161,8 +161,6 @@ looker.plugins.visualizations.add({
         this.clearErrors();
         this._tableContainer.innerHTML = "";
 
-        
-
         console.log(queryResponse)
 
         const pivots = queryResponse.pivots || [];
@@ -218,11 +216,11 @@ looker.plugins.visualizations.add({
         // HEADER ROW 1
         if (hasPivot) {
           // Nome do campo pivotado sobre as dimensões
-          const pivotedFieldName = pivot_label || "Pivot";
           const pivotedFieldDiv = document.createElement("div");
           pivotedFieldDiv.className = "grid-cell grid-header-cell header-row-1 pivot-dimension";
           pivotedFieldDiv.style.gridColumn = `span ${dimensionCount}`;
-          pivotedFieldDiv.textContent = pivotedFieldName;
+          const customLabel = config[`label_pivot_${pivot_label.name}`];
+          pivotedFieldDiv.textContent = customLabel || pivot_label;
           tableGrid.appendChild(pivotedFieldDiv);
 
           // Cada pivot ocupa o espaço de suas medidas
@@ -239,7 +237,8 @@ looker.plugins.visualizations.add({
           dimensions.forEach(dim => {
             const dimDiv = document.createElement("div");
             dimDiv.className = "grid-cell grid-header-cell header-row-2 dimension";
-            dimDiv.textContent = dim.label_short;
+            const customLabel = config[`label_dimension_${dim.name}`];
+            dimDiv.textContent = customLabel || dim.label;
             tableGrid.appendChild(dimDiv);
           });
 
@@ -247,10 +246,9 @@ looker.plugins.visualizations.add({
             measures.forEach(measure => {
               const measureDiv = document.createElement("div");
               measureDiv.className = "grid-cell grid-header-cell header-row-2 measure";
-              const viewLabel = measure.view_label || "";
-              const rawLabel = measure.label;
-              const cleanLabel = rawLabel.replace(viewLabel + " ", "");
-              measureDiv.textContent = cleanLabel;
+              const measure_label = measure.label_short
+              const customLabel = config[`label_measure_${measure.name}`];
+              measureDiv.textContent = customLabel || measure_label;
               tableGrid.appendChild(measureDiv);
             });
             tableCalcs.forEach(calc => {
@@ -265,17 +263,17 @@ looker.plugins.visualizations.add({
           dimensions.forEach(dim => {
             const div = document.createElement("div");
             div.className = "grid-cell grid-header-cell";
-            div.textContent = dim.label;
+            const customLabel = config[`label_dimension_${dim.name}`];
+            dimDiv.textContent = customLabel || dim.label;
             tableGrid.appendChild(div);
           });
 
           measures.forEach(measure => {
             const div = document.createElement("div");
             div.className = "grid-cell grid-header-cell";
-            const viewLabel = measure.view_label || "";
-            const rawLabel = measure.label;
-            const cleanLabel = rawLabel.replace(viewLabel + " ", "");
-            div.textContent = cleanLabel;
+            const measure_label = measure.label_short
+            const customLabel = config[`label_measure_${measure.name}`];
+            measureDiv.textContent = customLabel || measure_label;
             tableGrid.appendChild(div);
           });
 
@@ -295,12 +293,10 @@ looker.plugins.visualizations.add({
         queryResponse.subtotals_data?.[1]?.forEach(sub => {
           const dimValue = sub[firstDimName]?.value;
           if (dimValue !== undefined) {
-            console.log(`Adicionando subtotal para ${dimValue}`);
             subtotalMap.set(dimValue, sub);
           }
         });
 
-        console.log(subtotalMap)
 
         data.forEach((row, rowIndex) => {
           const rowClass = rowIndex % 2 === 0 ? "grid-row-even" : "grid-row-odd";
