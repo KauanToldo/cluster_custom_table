@@ -158,7 +158,7 @@ looker.plugins.visualizations.add({
         console.log(data)
 
         const pivots = queryResponse.pivots || [];
-        const pivot_label = queryResponse.fields[0].label_short
+        const pivot_label = queryResponse.fields.pivots?.[0]?.label_short || 'Label não encontrado';
         const hasPivot = pivots.length > 0;
 
         const dimensions = queryResponse.fields.dimensions;
