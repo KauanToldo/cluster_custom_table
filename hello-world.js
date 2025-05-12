@@ -29,10 +29,6 @@ looker.plugins.visualizations.add({
                 width: max-content;
                 min-width: 100%;
             }
-            .grid-header,
-            .grid-row {
-                display: contents;
-            }
 
             .header-row-1 {
               position: sticky;
@@ -72,9 +68,6 @@ looker.plugins.visualizations.add({
                 font-size: 12px;
                 text-decoration: none;
                 color: #000000;
-                max-width: 200px;
-                min-width: 50px;
-                word-break: break-word; /* quebra palavra */
             }
             .grid-header-cell {
                 font-weight: bold;
