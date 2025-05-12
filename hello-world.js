@@ -17,9 +17,8 @@ looker.plugins.visualizations.add({
       element.innerHTML = `
         <style>
             .table-wrapper {
-              width: 100%;
               position: relative;
-              overflow-x: scroll;
+              overflow: auto;
             }
 
             .grid-table {
@@ -28,7 +27,6 @@ looker.plugins.visualizations.add({
                 border-radius: 8px;
                 font-family: Arial, sans-serif;
                 width: 100%;
-                min-width: 100%;
             }
             .grid-header,
             .grid-row {
