@@ -370,7 +370,7 @@ looker.plugins.visualizations.add({
                   const div = document.createElement("div");
 
                   const isLastInPivotBlock = mIndex === measures.length - 1 && tableCalcs.length === 0;
-                  div.className = `grid-cell numeric ${subtotalClass} ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
+                  div.className = `grid-cell numeric grid-subtotal-row ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
 
                   div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
                   div.dataset.row = subtotalRowIndex;
@@ -384,7 +384,7 @@ looker.plugins.visualizations.add({
                   const isLastInPivotBlock = calcIndex === tableCalcs.length - 1;
                   const div = document.createElement("div");
                   
-                  div.className = `grid-cell numeric ${subtotalClass} ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
+                  div.className = `grid-cell numeric grid-subtotal-row ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
 
                   div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
                   div.dataset.row = subtotalRowIndex;
