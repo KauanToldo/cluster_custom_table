@@ -495,7 +495,7 @@ looker.plugins.visualizations.add({
           tableGrid.addEventListener("mouseover", (e) => {
             const cell = e.target.closest(".grid-cell");
             if (cell.classList.contains("grid-header-cell")) return;
-            if (cell.classList.contains("sticky-container")) return;
+            if (cell.classList.contains("sticky-dimension")) return;
             if (!cell) return;
           
             const row = cell.dataset.row;
