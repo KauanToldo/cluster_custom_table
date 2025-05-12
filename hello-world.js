@@ -28,7 +28,6 @@ looker.plugins.visualizations.add({
               border-radius: 8px;
               font-family: Arial, sans-serif;
               min-width: 100%;
-              overflow-y: visible; /* necessário para sticky no topo funcionar */
             }
 
             .header-row-1 {
@@ -150,7 +149,7 @@ looker.plugins.visualizations.add({
       `;
   
       this._tableContainer = element.appendChild(document.createElement("div"));
-      this._tableContainer.classList = "table-wrapper"
+      this._tableContainer.classList = "grid-table"
     },
     // Render in response to the data or settings changing
     updateAsync: function(data, element, config, queryResponse, details, done) {
@@ -206,8 +205,7 @@ looker.plugins.visualizations.add({
         this.trigger("registerOptions", this.options);
 
         // Cria o grid
-        const tableGrid = document.createElement("div");
-        tableGrid.className = "grid-table";
+        const tableGrid = document.querySelector(".grid-table");
         tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, 1fr)`;
 
         // HEADER ROW 1
