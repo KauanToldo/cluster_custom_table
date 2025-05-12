@@ -191,6 +191,7 @@ looker.plugins.visualizations.add({
         dimensions.forEach((dim) => {
           const key = generateKey(dim);
           if (!existingKeys.has(key)) {
+            console.log('Entrou')
             this.options[key] = {
               type: "string",
               label: `Label para dimensão: ${dim.label_short}`,
@@ -218,6 +219,7 @@ looker.plugins.visualizations.add({
           (Array.isArray(details.changed) && details.changed.includes("query")) ||
           (typeof details.changed === "object" && "query" in details.changed)
         )) {
+          console.log("ENtrou")
           this.trigger("registerOptions", this.options);
         }
 
