@@ -158,7 +158,6 @@ looker.plugins.visualizations.add({
         console.log(data)
 
         const pivots = queryResponse.pivots || [];
-        console.log(pivots)
         const hasPivot = pivots.length > 0;
 
         const dimensions = queryResponse.fields.dimensions;
