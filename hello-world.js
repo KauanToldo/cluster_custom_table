@@ -178,42 +178,36 @@ looker.plugins.visualizations.add({
         const pivotCount = hasPivot ? pivots.length : 1;
         const totalCols = dimensionCount + (pivotCount * (measureCount + tableCalcs.length));
 
-        // CRIANDO OPTIONS PARA AS DIMENSÕES E MEDIDAS
-        this.options = this.options || {};
+        const newOptions = {};
 
-        // Helper para gerar uma chave segura
-        const generateKey = (field) => `custom_label_${field.name.replace(/\W/g, "_")}`;
-
-        // Garante que os campos sejam criados apenas uma vez
-        const existingKeys = new Set(Object.keys(this.options));
-
-        // Adiciona campos para dimensões
-        dimensions.forEach((dim) => {
-          const key = generateKey(dim);
-          if (!existingKeys.has(key)) {
-            console.log('Entrou')
-            this.options[key] = {
-              type: "string",
-              label: `Label para dimensão: ${dim.label_short}`,
-              section: "Labels Personalizadas",
-              placeholder: dim.label_short
-            };
-          }
+        // Campos diretos (dimensões e medidas)
+        const fields = [...queryResponse.fields.dimensions, ...queryResponse.fields.measures];
+        fields.forEach(field => {
+          newOptions[`label_${field.name}`] = {
+            label: `Label para ${field.label}`,
+            type: "string",
+            display: "text",
+            default: field.label
+          };
         });
 
-        // Adiciona campos para medidas
-        measures.forEach((measure) => {
-          const key = generateKey(measure);
-          if (!existingKeys.has(key)) {
-            this.options[key] = {
+        // Campos pivotados
+        if (queryResponse.pivots) {
+          queryResponse.pivots.forEach(pivot => {
+            const key = `label_pivot_${pivot.key}`;
+            newOptions[key] = {
+              label: `Label para Pivô ${pivot.key}`,
               type: "string",
-              label: `Label para medida: ${measure.label_short}`,
-              section: "Labels Personalizadas",
-              placeholder: measure.label_short
+              display: "text",
+              default: pivot.key
             };
-          }
-        });
+          });
+        }
 
+        // Atualiza as opções da visualização
+        this.options = newOptions;
+
+        // Sempre registra novamente as opções, independente de "details.changed"
         this.trigger("registerOptions", this.options);
 
         // Cria o grid
