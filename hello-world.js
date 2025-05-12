@@ -158,6 +158,7 @@ looker.plugins.visualizations.add({
         console.log(data)
 
         const pivots = queryResponse.pivots || [];
+        const pivot_label = queryResponse.fields[0].label_short
         const hasPivot = pivots.length > 0;
 
         const dimensions = queryResponse.fields.dimensions;
@@ -179,7 +180,7 @@ looker.plugins.visualizations.add({
         // HEADER ROW 1
         if (hasPivot) {
           // Nome do campo pivotado sobre as dimensões
-          const pivotedFieldName = pivots[0].label_short || "Pivot"; // TODO: não esta pegando o nome do campo pivotado dessa forma
+          const pivotedFieldName = pivot_label || "Pivot"; // TODO: não esta pegando o nome do campo pivotado dessa forma
           const pivotedFieldDiv = document.createElement("div");
           pivotedFieldDiv.className = "grid-cell grid-header-cell header-row-1 pivot-dimension";
           pivotedFieldDiv.style.gridColumn = `span ${dimensionCount}`;
