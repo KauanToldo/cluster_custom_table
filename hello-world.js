@@ -73,9 +73,8 @@ looker.plugins.visualizations.add({
                 text-decoration: none;
                 color: #000000;
                 max-width: 200px;
-                min-width: 100px;
+                min-width: 50px;
                 word-break: break-word; /* quebra palavra */
-                white-space: normal;     /* permite múltiplas linhas */
             }
             .grid-header-cell {
                 font-weight: bold;
