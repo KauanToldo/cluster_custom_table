@@ -28,6 +28,7 @@ looker.plugins.visualizations.add({
               border-radius: 8px;
               font-family: Arial, sans-serif;
               width: 100%;
+              overflow-x: auto;
             }
 
             .header-row-1 {
@@ -206,7 +207,7 @@ looker.plugins.visualizations.add({
 
         // Cria o grid
         const tableGrid = document.querySelector(".grid-table");
-        tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, minmax(100px, 1fr))`;
+        tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, 1fr)`;
 
         // HEADER ROW 1
         if (hasPivot) {
