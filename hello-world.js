@@ -192,17 +192,17 @@ looker.plugins.visualizations.add({
         });
 
         // Campos pivotados
-        if (queryResponse.pivots) {
-          queryResponse.pivots.forEach(pivot => {
-            const key = `label_pivot_${pivot.key}`;
-            newOptions[key] = {
-              label: `Label para Pivô ${pivot.key}`,
+        if (queryResponse.fields.pivots) {
+          queryResponse.fields.pivots.forEach(pivotField => {
+            newOptions[`label_pivot_${pivotField.name}`] = {
+              label: `Label para pivô ${pivotField.label}`,
               type: "string",
               display: "text",
-              default: pivot.key
+              default: pivotField.label
             };
           });
         }
+
 
         // Atualiza as opções da visualização
         this.options = newOptions;
