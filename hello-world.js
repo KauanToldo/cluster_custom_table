@@ -18,7 +18,7 @@ looker.plugins.visualizations.add({
         <style>
             .table-wrapper {
               width: 100%;
-              position: relative;
+              height: 100%;
               overflow: auto;
             }
 
@@ -27,8 +27,7 @@ looker.plugins.visualizations.add({
               border: 1px solid #000000;
               border-radius: 8px;
               font-family: Arial, sans-serif;
-              width: 100%;
-              overflow-x: auto;
+              grid-auto-columns: auto;
             }
 
             .header-row-1 {
@@ -150,7 +149,7 @@ looker.plugins.visualizations.add({
       `;
   
       this._tableContainer = element.appendChild(document.createElement("div"));
-      this._tableContainer.classList = "grid-table"
+      this._tableContainer.classList = "table-wrapper"
     },
     // Render in response to the data or settings changing
     updateAsync: function(data, element, config, queryResponse, details, done) {
@@ -206,7 +205,8 @@ looker.plugins.visualizations.add({
         this.trigger("registerOptions", this.options);
 
         // Cria o grid
-        const tableGrid = document.querySelector(".grid-table");
+        const tableGrid = document.createElement("div");
+        tableGrid.className = "grid-table";
         tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, 1fr)`;
 
         // HEADER ROW 1
@@ -508,6 +508,8 @@ looker.plugins.visualizations.add({
               });
           });
 
+        
+        this._tableContainer.appendChild(tableGrid);
 
         done();
 
