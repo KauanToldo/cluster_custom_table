@@ -222,7 +222,7 @@ looker.plugins.visualizations.add({
           pivotedFieldDiv.className = "grid-cell grid-header-cell header-row-1 pivot-dimension";
           pivotedFieldDiv.style.gridColumn = `span ${dimensionCount}`;
           const customLabel = config[`label_pivot_${pivot_label.name}`];
-          pivotedFieldDiv.textContent = customLabel || pivot_label;
+          pivotedFieldDiv.textContent = customLabel
           tableGrid.appendChild(pivotedFieldDiv);
 
           // Cada pivot ocupa o espaço de suas medidas
@@ -240,7 +240,7 @@ looker.plugins.visualizations.add({
             const dimDiv = document.createElement("div");
             dimDiv.className = "grid-cell grid-header-cell header-row-2 dimension";
             const customLabel = config[`label_dimension_${dim.name}`];
-            dimDiv.textContent = customLabel || dim.label;
+            dimDiv.textContent = customLabel
             tableGrid.appendChild(dimDiv);
           });
 
@@ -250,7 +250,7 @@ looker.plugins.visualizations.add({
               measureDiv.className = "grid-cell grid-header-cell header-row-2 measure";
               const measure_label = measure.label_short
               const customLabel = config[`label_measure_${measure.name}`];
-              measureDiv.textContent = customLabel || measure_label;
+              measureDiv.textContent = customLabel
               tableGrid.appendChild(measureDiv);
             });
             tableCalcs.forEach(calc => {
@@ -266,7 +266,7 @@ looker.plugins.visualizations.add({
             const div = document.createElement("div");
             div.className = "grid-cell grid-header-cell";
             const customLabel = config[`label_dimension_${dim.name}`];
-            dimDiv.textContent = customLabel || dim.label;
+            dimDiv.textContent = customLabel
             tableGrid.appendChild(div);
           });
 
@@ -275,7 +275,7 @@ looker.plugins.visualizations.add({
             div.className = "grid-cell grid-header-cell";
             const measure_label = measure.label_short
             const customLabel = config[`label_measure_${measure.name}`];
-            measureDiv.textContent = customLabel || measure_label;
+            measureDiv.textContent = customLabel
             tableGrid.appendChild(div);
           });
 
