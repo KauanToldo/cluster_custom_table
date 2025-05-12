@@ -258,6 +258,8 @@ looker.plugins.visualizations.add({
 
         data.forEach((row, i) => {
           const isSubtotal = Array.isArray(row["$$$__grouping__$$$"]);
+          console.log("Linha", i, row);
+          console.log("Tem subtotal?", "$$$__grouping__$$$" in row, row["$$$__grouping__$$$"]);
           const rowClass = isSubtotal ? "grid-subtotal-row" : (rowIndex % 2 === 0 ? "grid-row-even" : "grid-row-odd");
           let colIndex = 0;
 
