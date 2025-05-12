@@ -270,6 +270,8 @@ looker.plugins.visualizations.add({
           }
         });
 
+        console.log(subtotalMap)
+
         data.forEach((row, rowIndex) => {
           const rowClass = rowIndex % 2 === 0 ? "grid-row-even" : "grid-row-odd";
           let colIndex = 0;
@@ -350,6 +352,7 @@ looker.plugins.visualizations.add({
 
           const isLastRowOfGroup = currentDimValue !== nextDimValue;
           if (isLastRowOfGroup && subtotalMap.has(currentDimValue)) {
+            console.log("entrou")
             const subtotalRow = subtotalMap.get(currentDimValue);
             let subtotalColIndex = 0;
             const subtotalClass = "grid-subtotal-row";
