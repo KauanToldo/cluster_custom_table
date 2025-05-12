@@ -307,14 +307,52 @@ looker.plugins.visualizations.add({
           let colIndex = 0;
 
           // Dimensões
+
           dimensions.forEach((dim, dIndex) => {
-            const div = document.createElement("div");
-            const isLastDimension = dIndex === dimensions.length - 1;
-            div.className = `grid-cell ${rowClass} ${isLastDimension ? 'dim-separator' : ''}`;
-            div.dataset.row = rowIndex;
-            div.dataset.col = colIndex;
-            div.innerHTML = LookerCharts.Utils.htmlForCell(row[dim.name]);
-            tableGrid.appendChild(div);
+            const dimValue = row[dim.name]?.value;
+
+            // Lógica especial para a primeira dimensão
+            if (dIndex === 0) {
+              const prevRendered = renderedSpanMap.get(dimValue);
+              if (prevRendered !== undefined) {
+                // Já foi renderizado esse valor, então pula (não adiciona div)
+                colIndex++;
+                return;
+              }
+
+              // Conta quantas vezes esse valor aparece consecutivamente
+              let spanCount = 1;
+              for (let i = rowIndex + 1; i < data.length; i++) {
+                if (data[i][dim.name]?.value === dimValue) {
+                  spanCount++;
+                } else {
+                  break;
+                }
+              }
+
+              // Marca como já renderizado
+              renderedSpanMap.set(dimValue, true);
+
+              // Cria uma célula que representa esse valor fundido
+              const div = document.createElement("div");
+              const isLastDimension = dIndex === dimensions.length - 1;
+              div.className = `grid-cell ${rowClass} ${isLastDimension ? 'dim-separator' : ''}`;
+              div.dataset.row = rowIndex;
+              div.dataset.col = colIndex;
+              div.innerHTML = LookerCharts.Utils.htmlForCell(row[dim.name]);
+              div.style.gridRow = `span ${spanCount}`; // ← importante para CSS Grid
+              tableGrid.appendChild(div);
+            } else {
+              // Demais dimensões: renderizam normalmente
+              const div = document.createElement("div");
+              const isLastDimension = dIndex === dimensions.length - 1;
+              div.className = `grid-cell ${rowClass} ${isLastDimension ? 'dim-separator' : ''}`;
+              div.dataset.row = rowIndex;
+              div.dataset.col = colIndex;
+              div.innerHTML = LookerCharts.Utils.htmlForCell(row[dim.name]);
+              tableGrid.appendChild(div);
+            }
+
             colIndex++;
           });
 
