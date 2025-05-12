@@ -348,16 +348,18 @@ looker.plugins.visualizations.add({
           if (isLastRowOfGroup && subtotalMap.has(currentDimValue)) {
             const subtotalRow = subtotalMap.get(currentDimValue);
             let subtotalColIndex = 0;
-            const subtotalClass = "grid-subtotal-row";
+
+            const subtotalRowIndex = data.length + rowIndex; // ou qualquer lógica única de rowIndex para subtotais
 
             dimensions.forEach((dim, dIndex) => {
-                const div = document.createElement("div");
-                const isLastDimension = dIndex === dimensions.length - 1;
-                div.className = `grid-cell sticky-dimension grid-subtotal-row ${isLastDimension ? 'dim-separator' : ''}`;
-                div.textContent = dIndex === 0 ? `Subtotal: ${subtotalRow[dim.name]?.value}` : "";
-                div.dataset.col = subtotalColIndex;
-                tableGrid.appendChild(div);
-                subtotalColIndex++;
+              const div = document.createElement("div");
+              const isLastDimension = dIndex === dimensions.length - 1;
+              div.className = `grid-cell sticky-dimension grid-subtotal-row ${isLastDimension ? 'dim-separator' : ''}`;
+              div.textContent = dIndex === 0 ? `Subtotal: ${subtotalRow[dim.name]?.value}` : "";
+              div.dataset.col = subtotalColIndex;
+              div.dataset.row = subtotalRowIndex;
+              tableGrid.appendChild(div);
+              subtotalColIndex++;
             });
 
             if (hasPivot) {
@@ -367,6 +369,7 @@ looker.plugins.visualizations.add({
                   const div = document.createElement("div");
                   div.className = `grid-cell numeric grid-subtotal-row`;
                   div.dataset.col = subtotalColIndex;
+                  div.dataset.row = subtotalRowIndex;
                   div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
                   tableGrid.appendChild(div);
                   subtotalColIndex++;
@@ -377,6 +380,7 @@ looker.plugins.visualizations.add({
                   const div = document.createElement("div");
                   div.className = `grid-cell numeric grid-subtotal-row`;
                   div.dataset.col = subtotalColIndex;
+                  div.dataset.row = subtotalRowIndex;
                   div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
                   tableGrid.appendChild(div);
                   subtotalColIndex++;
@@ -386,7 +390,9 @@ looker.plugins.visualizations.add({
               measures.forEach(measure => {
                 const cellData = subtotalRow[measure.name];
                 const div = document.createElement("div");
-                div.className = `grid-cell numeric ${subtotalClass}`;
+                div.className = `grid-cell numeric grid-subtotal-row`;
+                div.dataset.col = subtotalColIndex;
+                div.dataset.row = subtotalRowIndex;
                 div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
                 tableGrid.appendChild(div);
                 subtotalColIndex++;
@@ -395,7 +401,9 @@ looker.plugins.visualizations.add({
               tableCalcs.forEach(calc => {
                 const cellData = subtotalRow[calc.name];
                 const div = document.createElement("div");
-                div.className = `grid-cell numeric ${subtotalClass}`;
+                div.className = `grid-cell numeric grid-subtotal-row`;
+                div.dataset.col = subtotalColIndex;
+                div.dataset.row = subtotalRowIndex;
                 div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
                 tableGrid.appendChild(div);
                 subtotalColIndex++;
