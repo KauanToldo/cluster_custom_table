@@ -351,15 +351,17 @@ looker.plugins.visualizations.add({
 
             const subtotalRowIndex = data.length + rowIndex; // ou qualquer lógica única de rowIndex para subtotais
 
-            dimensions.forEach((dim, dIndex) => {
-              const div = document.createElement("div");
-              const isLastDimension = dIndex === dimensions.length - 1;
-              div.className = `grid-cell sticky-dimension grid-subtotal-row ${!isLastDimension ? 'no-right-border' : 'dim-separator'}`;
-              div.textContent = dIndex === 0 ? `${subtotalRow[dim.name]?.value}` : "";
-              div.dataset.col = subtotalColIndex;
-              tableGrid.appendChild(div);
-              subtotalColIndex++;
-            });
+            // Cabeçalho de subtotal unificado
+            const subtotalHeaderDiv = document.createElement("div");
+            subtotalHeaderDiv.className = `grid-cell sticky-dimension grid-subtotal-row dim-separator`;
+            subtotalHeaderDiv.dataset.col = 0;
+            subtotalHeaderDiv.dataset.row = subtotalRowIndex;
+            subtotalHeaderDiv.style.gridColumn = `span ${dimensions.length}`;
+            subtotalHeaderDiv.textContent = `${subtotalRow[firstDimName]?.value || ""}`;
+            tableGrid.appendChild(subtotalHeaderDiv);
+
+            // Avança o índice de coluna
+            subtotalColIndex = dimensions.length;
 
             if (hasPivot) {
               pivots.forEach(pivot => {
