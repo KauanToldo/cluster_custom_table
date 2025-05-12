@@ -184,7 +184,7 @@ looker.plugins.visualizations.add({
         // HEADER ROW 1
         if (hasPivot) {
           // Nome do campo pivotado sobre as dimensões
-          const pivotedFieldName = pivot_label || "Pivot"; // TODO: não esta pegando o nome do campo pivotado dessa forma
+          const pivotedFieldName = pivot_label || "Pivot";
           const pivotedFieldDiv = document.createElement("div");
           pivotedFieldDiv.className = "grid-cell grid-header-cell header-row-1 pivot-dimension";
           pivotedFieldDiv.style.gridColumn = `span ${dimensionCount}`;
@@ -193,7 +193,7 @@ looker.plugins.visualizations.add({
 
           // Cada pivot ocupa o espaço de suas medidas
           pivots.forEach(pivot => {
-            const pivotLabel = pivot.key; // TODO: pegando o rotulo do campo errado "AUDI|FILED|AUDI"
+            const pivotLabel = pivot.key.split("|")[0]; // TODO: pegando o rotulo do campo errado "AUDI|FILED|AUDI"
             const pivotDiv = document.createElement("div");
             pivotDiv.className = "grid-cell grid-header-cell header-row-1 pivot-dimension";
             pivotDiv.style.gridColumn = `span ${measureCount + tableCalcs.length}`;
