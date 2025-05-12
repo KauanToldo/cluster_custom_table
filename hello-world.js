@@ -214,7 +214,10 @@ looker.plugins.visualizations.add({
         });
 
         // Chama novamente o update para que o Looker atualize os controles
-        if (details.changed && details.changed.includes("query")) {
+        if (details.changed && (
+          (Array.isArray(details.changed) && details.changed.includes("query")) ||
+          (typeof details.changed === "object" && "query" in details.changed)
+        )) {
           this.trigger("registerOptions", this.options);
         }
 
