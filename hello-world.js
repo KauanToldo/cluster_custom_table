@@ -69,7 +69,6 @@ looker.plugins.visualizations.add({
                 border-top: 1px solid #ddd;
                 padding: 10px;
                 background: white;
-                white-space: nowrap;
                 font-size: 12px;
                 text-decoration: none;
                 color: #000000;
