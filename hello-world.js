@@ -19,6 +19,7 @@ looker.plugins.visualizations.add({
             .table-wrapper {
               width: 100%;
               position: relative;
+              overflow: auto;
             }
 
             .grid-table {
@@ -70,7 +71,6 @@ looker.plugins.visualizations.add({
                 font-size: 10px;
                 text-decoration: none;
                 color: #000000;
-                min-width: 150px;
             }
             .grid-header-cell {
                 font-weight: bold;
