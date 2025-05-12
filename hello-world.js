@@ -214,14 +214,7 @@ looker.plugins.visualizations.add({
           }
         });
 
-        // Chama novamente o update para que o Looker atualize os controles
-        if (details.changed && (
-          (Array.isArray(details.changed) && details.changed.includes("query")) ||
-          (typeof details.changed === "object" && "query" in details.changed)
-        )) {
-          console.log("ENtrou")
-          this.trigger("registerOptions", this.options);
-        }
+        this.trigger("registerOptions", this.options);
 
         // Cria o grid
         const tableGrid = document.createElement("div");
