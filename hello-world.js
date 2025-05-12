@@ -161,6 +161,8 @@ looker.plugins.visualizations.add({
         this.clearErrors();
         this._tableContainer.innerHTML = "";
 
+        
+
         console.log(queryResponse)
 
         const pivots = queryResponse.pivots || [];
@@ -175,6 +177,46 @@ looker.plugins.visualizations.add({
         const measureCount = measures.length;
         const pivotCount = hasPivot ? pivots.length : 1;
         const totalCols = dimensionCount + (pivotCount * (measureCount + tableCalcs.length));
+
+        // CRIANDO OPTIONS PARA AS DIMENSÕES E MEDIDAS
+        this.options = this.options || {};
+
+        // Helper para gerar uma chave segura
+        const generateKey = (field) => `custom_label_${field.name.replace(/\W/g, "_")}`;
+
+        // Garante que os campos sejam criados apenas uma vez
+        const existingKeys = new Set(Object.keys(this.options));
+
+        // Adiciona campos para dimensões
+        dimensions.forEach((dim) => {
+          const key = generateKey(dim);
+          if (!existingKeys.has(key)) {
+            this.options[key] = {
+              type: "string",
+              label: `Label para dimensão: ${dim.label_short}`,
+              section: "Labels Personalizadas",
+              placeholder: dim.label_short
+            };
+          }
+        });
+
+        // Adiciona campos para medidas
+        measures.forEach((measure) => {
+          const key = generateKey(measure);
+          if (!existingKeys.has(key)) {
+            this.options[key] = {
+              type: "string",
+              label: `Label para medida: ${measure.label_short}`,
+              section: "Labels Personalizadas",
+              placeholder: measure.label_short
+            };
+          }
+        });
+
+        // Chama novamente o update para que o Looker atualize os controles
+        if (details.changed && details.changed.includes("query")) {
+          this.trigger("registerOptions", this.options);
+        }
 
         // Cria o grid
         const tableGrid = document.createElement("div");
@@ -193,7 +235,7 @@ looker.plugins.visualizations.add({
 
           // Cada pivot ocupa o espaço de suas medidas
           pivots.forEach(pivot => {
-            const pivotLabel = pivot.key.split("|")[0]; // TODO: pegando o rotulo do campo errado "AUDI|FILED|AUDI"
+            const pivotLabel = pivot.key.split("|")[0];
             const pivotDiv = document.createElement("div");
             pivotDiv.className = "grid-cell grid-header-cell header-row-1 pivot-dimension";
             pivotDiv.style.gridColumn = `span ${measureCount + tableCalcs.length}`;
