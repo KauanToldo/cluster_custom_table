@@ -28,6 +28,7 @@ looker.plugins.visualizations.add({
               border-radius: 8px;
               font-family: Arial, sans-serif;
               min-width: 100%;
+              overflow-y: visible; /* necessário para sticky no topo funcionar */
             }
 
             .header-row-1 {
