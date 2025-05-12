@@ -365,24 +365,30 @@ looker.plugins.visualizations.add({
 
             if (hasPivot) {
               pivots.forEach(pivot => {
-                measures.forEach(measure => {
+                measures.forEach((measure, mIndex) => {
                   const cellData = subtotalRow[measure.name]?.[pivot.key];
                   const div = document.createElement("div");
-                  div.className = `grid-cell numeric grid-subtotal-row`;
-                  div.dataset.col = subtotalColIndex;
-                  div.dataset.row = subtotalRowIndex;
+
+                  const isLastInPivotBlock = mIndex === measures.length - 1 && tableCalcs.length === 0;
+                  div.className = `grid-cell numeric ${subtotalClass} ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
+
                   div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
+                  div.dataset.row = subtotalRowIndex;
+                  div.dataset.col = subtotalColIndex;
                   tableGrid.appendChild(div);
                   subtotalColIndex++;
                 });
 
-                tableCalcs.forEach(calc => {
+                tableCalcs.forEach((calc, calcIndex) => {
                   const cellData = subtotalRow[calc.name]?.[pivot.key];
+                  const isLastInPivotBlock = calcIndex === tableCalcs.length - 1;
                   const div = document.createElement("div");
-                  div.className = `grid-cell numeric grid-subtotal-row`;
-                  div.dataset.col = subtotalColIndex;
-                  div.dataset.row = subtotalRowIndex;
+                  
+                  div.className = `grid-cell numeric ${subtotalClass} ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
+
                   div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
+                  div.dataset.row = subtotalRowIndex;
+                  div.dataset.col = subtotalColIndex;
                   tableGrid.appendChild(div);
                   subtotalColIndex++;
                 });
