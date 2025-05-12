@@ -201,7 +201,7 @@ looker.plugins.visualizations.add({
           dimensions.forEach(dim => {
             const dimDiv = document.createElement("div");
             dimDiv.className = "grid-cell grid-header-cell header-row-2 dimension";
-            dimDiv.textContent = dim.label;
+            dimDiv.textContent = dim.label_short;
             tableGrid.appendChild(dimDiv);
           });
 
