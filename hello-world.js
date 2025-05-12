@@ -35,6 +35,7 @@ looker.plugins.visualizations.add({
             }
 
             .header-row-1 {
+              overflow: auto;
               position: sticky;
               top: 0;
               z-index: 1;
@@ -42,6 +43,7 @@ looker.plugins.visualizations.add({
             }
 
             .header-row-2 {
+              overflow: auto;
               position: sticky;
               z-index: 1;
               background-color: #fff;
