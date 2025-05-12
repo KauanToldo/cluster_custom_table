@@ -146,7 +146,8 @@ looker.plugins.visualizations.add({
             .grid-subtotal-row {
               background-color: #f9f9f9;
               font-weight: bold;
-              border-top: 2px solid #ddd;
+              border-top: 2px solid black;
+              border-bottom: 2px solid black;
             }
 
         </style>
@@ -179,8 +180,6 @@ looker.plugins.visualizations.add({
         const tableGrid = document.createElement("div");
         tableGrid.className = "grid-table";
         tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, 1fr)`;
-
-        const dimensionLabel = config.dimension_label;
 
         // HEADER ROW 1
         if (hasPivot) {
@@ -354,7 +353,7 @@ looker.plugins.visualizations.add({
             dimensions.forEach((dim, dIndex) => {
               const div = document.createElement("div");
               const isLastDimension = dIndex === dimensions.length - 1;
-              div.className = `grid-cell ${subtotalClass} ${isLastDimension ? 'dim-separator' : ''}`;
+              div.className = `grid-cell sticky-dimension ${subtotalClass} ${isLastDimension ? 'dim-separator' : ''}`;
               div.textContent = dIndex === 0 ? `Subtotal: ${subtotalRow[dim.name]?.value}` : "";
               tableGrid.appendChild(div);
               subtotalColIndex++;
