@@ -22,12 +22,14 @@ looker.plugins.visualizations.add({
             }
 
             .grid-table {
+            
                 display: grid;
                 border: 1px solid #000000;
                 border-radius: 8px;
                 font-family: Arial, sans-serif;
-                width: max-content;
+                // width: max-content;
                 min-width: 100%;
+                overflow: auto
             }
 
             .header-row-1 {
@@ -65,14 +67,15 @@ looker.plugins.visualizations.add({
                 border-top: 1px solid #ddd;
                 padding: 15px;
                 background: white;
-                font-size: 12px;
+                font-size: 10px;
                 text-decoration: none;
                 color: #000000;
+                min-width: 150px;
             }
             .grid-header-cell {
                 font-weight: bold;
                 background-color: #f2f2f2;
-                font-size: 14px;
+                font-size: 12px;
                 text-align: center;
                 display: flex;
                 justify-content: center;
