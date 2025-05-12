@@ -266,6 +266,7 @@ looker.plugins.visualizations.add({
         queryResponse.subtotals_data?.[0]?.forEach(sub => {
           const dimValue = sub[firstDimName]?.value;
           if (dimValue !== undefined) {
+            console.log(`Adicionando subtotal para ${dimValue}`);
             subtotalMap.set(dimValue, sub);
           }
         });
