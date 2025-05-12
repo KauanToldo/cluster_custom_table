@@ -54,6 +54,16 @@ looker.plugins.visualizations.add({
               background-color: #fff;
               z-index: 2;
             }
+
+            .sticky-dimension::after {
+              content: '';
+              position: absolute;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              height: 1px; 
+              background-color: #ccc;
+            }
             
             .header-row-2.dimension.sticky-dimension {
               z-index: 3;
