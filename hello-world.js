@@ -344,9 +344,9 @@ looker.plugins.visualizations.add({
 
           // === SUBTOTAL LOGIC ===
           const currentDimValue = row[firstDimName]?.value;
+          const nextDimValue = data[rowIndex + 1]?.[firstDimName]?.value;
           console.log(currentDimValue)
           console.log(nextDimValue)
-          const nextDimValue = data[rowIndex + 1]?.[firstDimName]?.value;
 
           const isLastRowOfGroup = currentDimValue !== nextDimValue;
           if (isLastRowOfGroup && subtotalMap.has(currentDimValue)) {
