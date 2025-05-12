@@ -27,7 +27,8 @@ looker.plugins.visualizations.add({
               border: 1px solid #000000;
               border-radius: 8px;
               font-family: Arial, sans-serif;
-              min-width: 100%;
+              width: 100%;
+              overflow: auto;
             }
 
             .header-row-1 {
