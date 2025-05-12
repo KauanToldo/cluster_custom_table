@@ -164,7 +164,7 @@ looker.plugins.visualizations.add({
         console.log(queryResponse)
 
         const pivots = queryResponse.pivots || [];
-        const pivot_label = queryResponse.fields.pivots?.[0]?.label_short || 'Label não encontrado';
+        // const pivot_label = queryResponse.fields.pivots?.[0]?.label_short || 'Label não encontrado';
         const hasPivot = pivots.length > 0;
 
         const dimensions = queryResponse.fields.dimensions;
@@ -221,7 +221,7 @@ looker.plugins.visualizations.add({
           const pivotedFieldDiv = document.createElement("div");
           pivotedFieldDiv.className = "grid-cell grid-header-cell header-row-1 pivot-dimension";
           pivotedFieldDiv.style.gridColumn = `span ${dimensionCount}`;
-          const customLabel = config[`label_pivot_${pivot_label.name}`];
+          const customLabel = config[`label_pivot_${queryResponse.fields.pivots?.[0]?.name}`];
           pivotedFieldDiv.textContent = customLabel
           tableGrid.appendChild(pivotedFieldDiv);
 
@@ -239,7 +239,7 @@ looker.plugins.visualizations.add({
           dimensions.forEach(dim => {
             const dimDiv = document.createElement("div");
             dimDiv.className = "grid-cell grid-header-cell header-row-2 dimension";
-            const customLabel = config[`label_dimension_${dim.name}`];
+            const customLabel = config[`label_${dim.name}`];
             dimDiv.textContent = customLabel
             console.log(customLabel)
             tableGrid.appendChild(dimDiv);
@@ -250,7 +250,7 @@ looker.plugins.visualizations.add({
               const measureDiv = document.createElement("div");
               measureDiv.className = "grid-cell grid-header-cell header-row-2 measure";
               const measure_label = measure.label_short
-              const customLabel = config[`label_measure_${measure.name}`];
+              const customLabel = config[`label_${measure.name}`];
               console.log(customLabel)
               measureDiv.textContent = customLabel
               tableGrid.appendChild(measureDiv);
@@ -267,7 +267,7 @@ looker.plugins.visualizations.add({
           dimensions.forEach(dim => {
             const div = document.createElement("div");
             div.className = "grid-cell grid-header-cell";
-            const customLabel = config[`label_dimension_${dim.name}`];
+            const customLabel = config[`label_${dim.name}`];
             dimDiv.textContent = customLabel
             tableGrid.appendChild(div);
           });
@@ -276,7 +276,7 @@ looker.plugins.visualizations.add({
             const div = document.createElement("div");
             div.className = "grid-cell grid-header-cell";
             const measure_label = measure.label_short
-            const customLabel = config[`label_measure_${measure.name}`];
+            const customLabel = config[`label_${measure.name}`];
             measureDiv.textContent = customLabel
             tableGrid.appendChild(div);
           });
