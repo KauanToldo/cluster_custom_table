@@ -29,13 +29,13 @@ looker.plugins.visualizations.add({
                 font-family: Arial, sans-serif;
                 // width: max-content;
                 min-width: 100%;
-                overflow: auto
+                overflow: auto;
+                overflow-y: scroll;
                 grid-auto-flow: row;
                 grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
             }
 
             .header-row-1 {
-              overflow: auto;
               position: sticky;
               top: 0;
               z-index: 1;
@@ -43,7 +43,6 @@ looker.plugins.visualizations.add({
             }
 
             .header-row-2 {
-              overflow: auto;
               position: sticky;
               z-index: 1;
               background-color: #fff;
