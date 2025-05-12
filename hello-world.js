@@ -19,19 +19,15 @@ looker.plugins.visualizations.add({
             .table-wrapper {
               width: 100%;
               position: relative;
-
+              overflow: auto;
             }
 
             .grid-table {
-                display: grid;
-                border: 1px solid #000000;
-                border-radius: 8px;
-                font-family: Arial, sans-serif;
-                // width: max-content;
-                min-width: 100%;
-                overflow-x: auto;
-                grid-auto-flow: row;
-                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+              display: grid;
+              border: 1px solid #000000;
+              border-radius: 8px;
+              font-family: Arial, sans-serif;
+              min-width: 100%;
             }
 
             .header-row-1 {
