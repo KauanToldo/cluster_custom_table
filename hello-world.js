@@ -507,8 +507,6 @@ looker.plugins.visualizations.add({
               });
           });
 
-        
-        this._tableContainer.appendChild(tableGrid);
 
         done();
 
