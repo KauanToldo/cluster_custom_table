@@ -23,7 +23,6 @@ looker.plugins.visualizations.add({
             }
 
             .grid-table {
-            
                 display: grid;
                 border: 1px solid #000000;
                 border-radius: 8px;
@@ -31,6 +30,8 @@ looker.plugins.visualizations.add({
                 // width: max-content;
                 min-width: 100%;
                 overflow: auto
+                grid-auto-flow: row;
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
             }
 
             .header-row-1 {
