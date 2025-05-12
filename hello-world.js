@@ -29,8 +29,7 @@ looker.plugins.visualizations.add({
                 font-family: Arial, sans-serif;
                 // width: max-content;
                 min-width: 100%;
-                overflow: auto;
-                overflow-y: scroll;
+                overflow-x: auto;
                 grid-auto-flow: row;
                 grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
             }
