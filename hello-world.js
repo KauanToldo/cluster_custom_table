@@ -161,7 +161,6 @@ looker.plugins.visualizations.add({
         this._tableContainer.innerHTML = "";
 
         console.log(queryResponse)
-        console.log(data)
 
         const pivots = queryResponse.pivots || [];
         const pivot_label = queryResponse.fields.pivots?.[0]?.label_short || 'Label não encontrado';
@@ -255,15 +254,12 @@ looker.plugins.visualizations.add({
           });
         }
 
-        // Salva a quantidade de células de cabeçalho
-        const headerCellCount = tableGrid.childElementCount;
-
         // BODY ROWS
 
         const subtotalMap = new Map();
         const firstDimName = dimensions[0]?.name;
 
-        queryResponse.subtotals_data?.[0]?.forEach(sub => {
+        queryResponse.subtotals_data?.[1]?.forEach(sub => {
           const dimValue = sub[firstDimName]?.value;
           if (dimValue !== undefined) {
             console.log(`Adicionando subtotal para ${dimValue}`);
@@ -348,8 +344,6 @@ looker.plugins.visualizations.add({
           // === SUBTOTAL LOGIC ===
           const currentDimValue = row[firstDimName]?.value;
           const nextDimValue = data[rowIndex + 1]?.[firstDimName]?.value;
-          console.log(currentDimValue)
-          console.log(nextDimValue)
 
           const isLastRowOfGroup = currentDimValue !== nextDimValue;
           if (isLastRowOfGroup && subtotalMap.has(currentDimValue)) {
