@@ -26,7 +26,6 @@ looker.plugins.visualizations.add({
                 border: 1px solid #000000;
                 border-radius: 8px;
                 font-family: Arial, sans-serif;
-                width: max-content;
                 min-width: 100%;
             }
             .grid-header,
@@ -67,7 +66,7 @@ looker.plugins.visualizations.add({
             .grid-cell {
                 border-right: 1px solid #ddd;
                 border-top: 1px solid #ddd;
-                padding: 10px;
+                padding: 15px;
                 background: white;
                 font-size: 12px;
                 text-decoration: none;
