@@ -28,10 +28,6 @@ looker.plugins.visualizations.add({
                 font-family: Arial, sans-serif;
                 width: 100%;
             }
-            .grid-header,
-            .grid-row {
-                display: contents;
-            }
 
             .header-row-1 {
               position: sticky;
@@ -53,16 +49,6 @@ looker.plugins.visualizations.add({
               background-color: #fff;
               z-index: 2;
             }
-
-
-
-
-
-
-
-
-
-
             
             .header-row-2.dimension.sticky-dimension {
               z-index: 3;
@@ -222,7 +208,8 @@ looker.plugins.visualizations.add({
         // Cria o grid
         const tableGrid = document.createElement("div");
         tableGrid.className = "grid-table";
-        tableGrid.style.gridTemplateColumns = `150px repeat(10, minmax(80px, 1fr))`;
+        tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, 1fr)`;
+
         // HEADER ROW 1
         if (hasPivot) {
           // Nome do campo pivotado sobre as dimensões
