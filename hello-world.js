@@ -366,7 +366,7 @@ looker.plugins.visualizations.add({
 
               // Ícone de seta
               const icon = document.createElement("i");
-              icon.className = "fas fa-chevron-right"; // Começa expandido
+              icon.className = "fas fa-chevron-down"; // Começa expandido
               icon.style.marginLeft = "6px";
               toggleButton.appendChild(icon);
 
@@ -445,6 +445,12 @@ looker.plugins.visualizations.add({
                   div.dataset.row = rowIndex;
                   div.dataset.col = colIndex;
                   div.dataset.group = groupKey;
+
+                  if (dIndex === 1) {
+                    div.style.maxWidth = "150px";
+                    div.style.wordWrap = "break-word";
+                    div.style.whiteSpace = "normal"; // Permitir a quebra de linha
+                  }
 
                   if (subtotalMap.size > 0) {
                     // Se houver subtotais, só mostra a label da última dimensão
@@ -688,14 +694,14 @@ looker.plugins.visualizations.add({
             const cells = tableGrid.querySelectorAll(selector);
             cells.forEach(cell => {
               cell.classList.add("sticky-dimension");
-              cell.style.left = `${left}px`;
+              cell.style.left = `${left - 1}px`;
             });
 
             const headerCells = tableGrid.querySelectorAll(".grid-cell.header-row-2.dimension");
             const headerCell = headerCells[i];
             if (headerCell) {
               headerCell.classList.add("sticky-dimension");
-              headerCell.style.left = `${left}px`;
+              headerCell.style.left = `${left - 1}px`;
             }
           });
 
