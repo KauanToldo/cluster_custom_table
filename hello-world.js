@@ -134,10 +134,6 @@ looker.plugins.visualizations.add({
                 background-color: #66b3ff !important; /* azul mais escuro para a célula */
             }
 
-            // .negative-value {
-            //     color: red;
-            // }
-
             .grid-subtotal-row {
               background-color: #f9f9f9;
               font-weight: bold;
@@ -355,7 +351,7 @@ looker.plugins.visualizations.add({
               subtotalHeaderDiv.dataset.col = 0;
               subtotalHeaderDiv.dataset.row = subtotalRowIndex;
               subtotalHeaderDiv.dataset.group = groupKey;
-              subtotalHeaderDiv.style.gridColumn = `span ${dimensions.length}`;
+              subtotalHeaderDiv.style.gridColumn = `span 1`; // Agora ocupa apenas 1 coluna
 
               const labelSpan = document.createElement("span");
               labelSpan.textContent = ` ${groupKey}`;
@@ -375,7 +371,7 @@ looker.plugins.visualizations.add({
 
               tableGrid.appendChild(subtotalHeaderDiv);
 
-              colIndex = dimensions.length;
+              colIndex = 1;
 
               if (hasPivot) {
                 pivots.forEach(pivot => {
@@ -445,12 +441,6 @@ looker.plugins.visualizations.add({
                   div.dataset.row = rowIndex;
                   div.dataset.col = colIndex;
                   div.dataset.group = groupKey;
-
-                  if (dIndex === 1) {
-                    div.style.maxWidth = "150px";
-                    div.style.wordWrap = "break-word";
-                    div.style.whiteSpace = "normal"; // Permitir a quebra de linha
-                  }
 
                   if (subtotalMap.size > 0) {
                     // Se houver subtotais, só mostra a label da última dimensão
