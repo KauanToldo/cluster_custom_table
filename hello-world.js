@@ -18,7 +18,7 @@ looker.plugins.visualizations.add({
         <style>
             .table-wrapper {
               position: relative;
-              width: 100%;
+              width: max-content;
             }
 
             .grid-table {
@@ -473,6 +473,7 @@ looker.plugins.visualizations.add({
 
 
         this._tableContainer.appendChild(tableGrid);
+        document.querySelector("#container").appendChild(tableGrid)
 
         done();
 
