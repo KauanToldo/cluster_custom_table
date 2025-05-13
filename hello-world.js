@@ -228,6 +228,9 @@ looker.plugins.visualizations.add({
           groupCells.forEach(cell => {
             cell.style.display = isCollapsed ? "" : "none";
           });
+
+          // Garantir que o botão de alternância permaneça visível
+          button.style.display = "";  // Restabelece a visibilidade do botão
         }
 
         // HEADER ROW 1
