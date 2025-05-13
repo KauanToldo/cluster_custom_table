@@ -302,7 +302,7 @@ looker.plugins.visualizations.add({
           dimensions.forEach((dim, dIndex) => {
             const div = document.createElement("div");
             const isLastDimension = dIndex === dimensions.length - 1;
-            div.className = `grid-cell ${rowClass} ${isLastDimension ? 'dim-separator' : ''}`;
+            div.className = `grid-cell sticky-dimension ${rowClass} ${isLastDimension ? 'dim-separator' : ''}`;
             div.dataset.row = rowIndex;
             div.dataset.col = colIndex;
             div.innerHTML = LookerCharts.Utils.htmlForCell(row[dim.name]);
