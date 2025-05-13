@@ -429,7 +429,15 @@ looker.plugins.visualizations.add({
                   div.dataset.row = rowIndex;
                   div.dataset.col = colIndex;
                   div.dataset.group = groupKey;
-                  div.innerHTML = LookerCharts.Utils.htmlForCell(row[dim.name]);
+
+                  if (subtotalMap.size > 0) {
+                    // Se houver subtotais, só mostra a label da última dimensão
+                    div.innerHTML = isLastDimension ? LookerCharts.Utils.htmlForCell(row[dim.name]) : "";
+                  } else {
+                    // Caso contrário, mostra todas normalmente
+                    div.innerHTML = LookerCharts.Utils.htmlForCell(row[dim.name]);
+                  }
+
                   tableGrid.appendChild(div);
                   colIndex++;
                 });
