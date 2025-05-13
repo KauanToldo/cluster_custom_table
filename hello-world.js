@@ -366,7 +366,7 @@ looker.plugins.visualizations.add({
 
               // Ícone de seta
               const icon = document.createElement("i");
-              icon.className = "fas fa-chevron-down"; // Começa expandido
+              icon.className = "fas fa-chevron-right"; // Começa expandido
               icon.style.marginLeft = "6px";
               toggleButton.appendChild(icon);
 
@@ -436,6 +436,8 @@ looker.plugins.visualizations.add({
                 const rowClass = currentRowIndex % 2 === 0 ? "grid-row-even" : "grid-row-odd";
                 let colIndex = 0;
                 const rowIndex = currentRowIndex;
+
+                div.style.display = "none";
 
                 dimensions.forEach((dim, dIndex) => {
                   const div = document.createElement("div");
