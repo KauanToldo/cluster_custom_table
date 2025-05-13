@@ -360,7 +360,6 @@ looker.plugins.visualizations.add({
               const toggleButton = document.createElement("button");
               toggleButton.className = "collapse-toggle";
               toggleButton.onclick = () => toggleGroupVisibility(groupKey, toggleButton);
-              toggleGroupVisibility(groupKey, toggleButton);
               // Ícone de seta
               const icon = document.createElement("i");
               icon.className = "fas fa-chevron-down"; // Começa expandido
@@ -371,6 +370,7 @@ looker.plugins.visualizations.add({
               subtotalHeaderDiv.appendChild(toggleButton);
 
               tableGrid.appendChild(subtotalHeaderDiv);
+              toggleGroupVisibility(groupKey, toggleButton);
 
               colIndex = dimensions.length;
 
