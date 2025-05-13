@@ -17,7 +17,6 @@ looker.plugins.visualizations.add({
       element.innerHTML = `
         <style>
             .table-wrapper {
-              width: max-content;
               position: relative;
             }
 
