@@ -473,7 +473,6 @@ looker.plugins.visualizations.add({
 
 
         this._tableContainer.appendChild(tableGrid);
-        document.querySelector("#container").appendChild(tableGrid)
 
         done();
 
