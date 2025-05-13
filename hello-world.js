@@ -69,6 +69,12 @@ looker.plugins.visualizations.add({
                 text-decoration: none;
                 color: #000000;
             }
+
+            .grid-header-cell.grid-cell {
+                border-right: 2px solid #ddd;
+                border-top: 2px solid #ddd;
+            }
+
             .grid-header-cell {
                 font-weight: bold;
                 background-color: #f2f2f2;
