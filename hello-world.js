@@ -26,8 +26,7 @@ looker.plugins.visualizations.add({
                 border: 1px solid #000000;
                 border-radius: 8px;
                 font-family: Arial, sans-serif;
-                width: max-content;
-                min-width: 100%;
+                width: 100%;
             }
             .grid-header,
             .grid-row {
@@ -223,8 +222,7 @@ looker.plugins.visualizations.add({
         // Cria o grid
         const tableGrid = document.createElement("div");
         tableGrid.className = "grid-table";
-        tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, 1fr)`;
-
+        tableGrid.style.gridTemplateColumns = `150px repeat(10, minmax(80px, 1fr))`;
         // HEADER ROW 1
         if (hasPivot) {
           // Nome do campo pivotado sobre as dimensões
@@ -251,7 +249,6 @@ looker.plugins.visualizations.add({
             dimDiv.className = "grid-cell grid-header-cell header-row-2 dimension";
             const customLabel = config[`label_${dim.name}`];
             dimDiv.textContent = customLabel
-            console.log(customLabel)
             tableGrid.appendChild(dimDiv);
           });
 
@@ -259,9 +256,7 @@ looker.plugins.visualizations.add({
             measures.forEach(measure => {
               const measureDiv = document.createElement("div");
               measureDiv.className = "grid-cell grid-header-cell header-row-2 measure";
-              const measure_label = measure.label_short
               const customLabel = config[`label_${measure.name}`];
-              console.log(customLabel)
               measureDiv.textContent = customLabel
               tableGrid.appendChild(measureDiv);
             });
