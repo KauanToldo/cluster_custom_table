@@ -17,7 +17,7 @@ looker.plugins.visualizations.add({
       element.innerHTML = `
         <style>
             .table-wrapper {
-              width: 100%;
+              width: max-content;
               position: relative;
             }
 
@@ -26,7 +26,7 @@ looker.plugins.visualizations.add({
                 border: 1px solid #000000;
                 border-radius: 8px;
                 font-family: Arial, sans-serif;
-                min-width: 600px;
+                width: 100%;
             }
 
             .header-row-1 {
