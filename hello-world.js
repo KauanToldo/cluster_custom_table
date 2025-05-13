@@ -370,7 +370,6 @@ looker.plugins.visualizations.add({
               subtotalHeaderDiv.appendChild(toggleButton);
 
               tableGrid.appendChild(subtotalHeaderDiv);
-              toggleGroupVisibility(groupKey, toggleButton);
 
               colIndex = dimensions.length;
 
@@ -515,6 +514,8 @@ looker.plugins.visualizations.add({
 
                 currentRowIndex++;
               });
+
+              toggleGroupVisibility(groupKey, toggleButton);
             });
 
           } else {
