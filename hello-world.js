@@ -437,8 +437,6 @@ looker.plugins.visualizations.add({
                 let colIndex = 0;
                 const rowIndex = currentRowIndex;
 
-                div.style.display = "none";
-
                 dimensions.forEach((dim, dIndex) => {
                   const div = document.createElement("div");
                   const isLastDimension = dIndex === dimensions.length - 1;
@@ -446,6 +444,8 @@ looker.plugins.visualizations.add({
                   div.dataset.row = rowIndex;
                   div.dataset.col = colIndex;
                   div.dataset.group = groupKey;
+
+                  div.style.display = "none";
 
                   if (subtotalMap.size > 0) {
                     // Se houver subtotais, só mostra a label da última dimensão
