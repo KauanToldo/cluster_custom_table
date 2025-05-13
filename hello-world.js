@@ -134,6 +134,7 @@ looker.plugins.visualizations.add({
                 background-color: #66b3ff !important; /* azul mais escuro para a célula */
             }
 
+
             .grid-subtotal-row {
               background-color: #f9f9f9;
               font-weight: bold;
@@ -351,7 +352,7 @@ looker.plugins.visualizations.add({
               subtotalHeaderDiv.dataset.col = 0;
               subtotalHeaderDiv.dataset.row = subtotalRowIndex;
               subtotalHeaderDiv.dataset.group = groupKey;
-              subtotalHeaderDiv.style.gridColumn = `span 1`; // Agora ocupa apenas 1 coluna
+              subtotalHeaderDiv.style.gridColumn = `span 1`;
 
               const labelSpan = document.createElement("span");
               labelSpan.textContent = ` ${groupKey}`;
@@ -442,12 +443,12 @@ looker.plugins.visualizations.add({
                   div.dataset.col = colIndex;
                   div.dataset.group = groupKey;
 
-                  if (subtotalMap.size > 0) {
-                    // Se houver subtotais, só mostra a label da última dimensão
-                    div.innerHTML = isLastDimension ? LookerCharts.Utils.htmlForCell(row[dim.name]) : "";
-                  } else {
-                    // Caso contrário, mostra todas normalmente
+                  // Se for a primeira dimensão, exibe normalmente
+                  if (dIndex === 0) {
                     div.innerHTML = LookerCharts.Utils.htmlForCell(row[dim.name]);
+                  } else if (dIndex === 1) {
+                    // Se for a segunda dimensão e estiver na linha de subtotal, deixe vazia
+                    div.innerHTML = "";
                   }
 
                   tableGrid.appendChild(div);
