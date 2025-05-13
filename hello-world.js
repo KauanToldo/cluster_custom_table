@@ -231,8 +231,7 @@ looker.plugins.visualizations.add({
           icon.classList.toggle("fa-chevron-right", !isCollapsed);
           icon.classList.toggle("fa-chevron-down", isCollapsed);
 
-          const groupCells = Array.from(tableGrid.querySelectorAll(`[data-group="${groupKey}"]`))
-          .filter(el => !el.classList.contains("grid-subtotal-row"));
+          const groupCells = tableGrid.querySelectorAll(`[data-group="${groupKey}"]:not(.grid-subtotal-row)`);
           groupCells.forEach(cell => {
             cell.style.display = isCollapsed ? "" : "none";
           });
