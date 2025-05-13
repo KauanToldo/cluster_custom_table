@@ -352,7 +352,7 @@ looker.plugins.visualizations.add({
               subtotalHeaderDiv.dataset.col = 0;
               subtotalHeaderDiv.dataset.row = subtotalRowIndex;
               subtotalHeaderDiv.dataset.group = groupKey;
-              subtotalHeaderDiv.style.gridColumn = `span 1`;
+              subtotalHeaderDiv.style.gridColumn = `span ${dimensions.length}`;
 
               const labelSpan = document.createElement("span");
               labelSpan.textContent = ` ${groupKey}`;
@@ -372,7 +372,7 @@ looker.plugins.visualizations.add({
 
               tableGrid.appendChild(subtotalHeaderDiv);
 
-              colIndex = 1;
+              colIndex = dimensions.length;
 
               if (hasPivot) {
                 pivots.forEach(pivot => {
@@ -443,12 +443,12 @@ looker.plugins.visualizations.add({
                   div.dataset.col = colIndex;
                   div.dataset.group = groupKey;
 
-                  // Se for a primeira dimensão, exibe normalmente
-                  if (dIndex === 0) {
+                  if (subtotalMap.size > 0) {
+                    // Se houver subtotais, só mostra a label da última dimensão
+                    div.innerHTML = isLastDimension ? LookerCharts.Utils.htmlForCell(row[dim.name]) : "";
+                  } else {
+                    // Caso contrário, mostra todas normalmente
                     div.innerHTML = LookerCharts.Utils.htmlForCell(row[dim.name]);
-                  } else if (dIndex === 1) {
-                    // Se for a segunda dimensão e estiver na linha de subtotal, deixe vazia
-                    div.innerHTML = "";
                   }
 
                   tableGrid.appendChild(div);
