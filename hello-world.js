@@ -18,7 +18,7 @@ looker.plugins.visualizations.add({
         <style>
             .table-wrapper {
               position: relative;
-              width: max-content;
+              width: 100%;
             }
 
             .grid-table {
@@ -208,7 +208,7 @@ looker.plugins.visualizations.add({
         // Cria o grid
         const tableGrid = document.createElement("div");
         tableGrid.className = "grid-table";
-        tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, 1fr)`;
+        tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, max-content)`;
 
         // HEADER ROW 1
         if (hasPivot) {
