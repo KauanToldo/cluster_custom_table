@@ -72,7 +72,7 @@ looker.plugins.visualizations.add({
             .grid-header-cell {
                 font-weight: bold;
                 background-color: #f2f2f2;
-                font-size: 10px;
+                font-size: 12px;
                 text-align: center;
                 display: flex;
                 justify-content: center;
@@ -146,11 +146,11 @@ looker.plugins.visualizations.add({
             }
 
             .collapse-toggle {
-              margin-right: 4px;
-              cursor: pointer;
               background: none;
               border: none;
-              font-weight: bold;
+              cursor: pointer;
+              font-size: 14px;
+              vertical-align: middle;
             }
 
         </style>
@@ -219,8 +219,8 @@ looker.plugins.visualizations.add({
         tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, max-content)`;
 
         function toggleGroupVisibility(groupKey, button) {
-          const isCollapsed = button.textContent === "+";
-          button.textContent = isCollapsed ? "−" : "+";
+          const isCollapsed = button.innerHTML === "➤";
+          button.innerHTML = isCollapsed ? "▼" : "➤";
 
           // Seleciona todas as células do grupo (exceto subtotal)
           const groupCells = tableGrid.querySelectorAll(`[data-group="${groupKey}"]:not(.grid-subtotal-row)`);
@@ -345,18 +345,18 @@ looker.plugins.visualizations.add({
               subtotalHeaderDiv.dataset.group = groupKey;
               subtotalHeaderDiv.style.gridColumn = `span ${dimensions.length}`;
 
-              // Botão de expandir/colapsar
-              const toggleButton = document.createElement("button");
-              toggleButton.textContent = "−"; // Começa expandido
-              toggleButton.className = "collapse-toggle";
-              toggleButton.dataset.group = groupKey;
-              toggleButton.onclick = () => toggleGroupVisibility(groupKey, toggleButton);
-              subtotalHeaderDiv.appendChild(toggleButton);
-
-              // Texto do grupo
               const labelSpan = document.createElement("span");
               labelSpan.textContent = ` ${groupKey}`;
+
+              const toggleButton = document.createElement("button");
+              toggleButton.innerHTML = "▼"; // Começa expandido
+              toggleButton.className = "collapse-toggle";
+              toggleButton.style.marginLeft = "6px"; // Espaço entre label e flecha
+              toggleButton.dataset.group = groupKey;
+              toggleButton.onclick = () => toggleGroupVisibility(groupKey, toggleButton);
+
               subtotalHeaderDiv.appendChild(labelSpan);
+              subtotalHeaderDiv.appendChild(toggleButton);
 
               tableGrid.appendChild(subtotalHeaderDiv);
 
