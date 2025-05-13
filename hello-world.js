@@ -134,15 +134,15 @@ looker.plugins.visualizations.add({
                 background-color: #66b3ff !important; /* azul mais escuro para a célula */
             }
 
-            .negative-value {
-                color: red;
-            }
+            // .negative-value {
+            //     color: red;
+            // }
 
             .grid-subtotal-row {
               background-color: #f9f9f9;
               font-weight: bold;
-              border-top: 2px solid black;
-              border-bottom: 2px solid black;
+              // border-top: 2px solid black;
+              // border-bottom: 2px solid black;
             }
 
             .collapse-toggle {
