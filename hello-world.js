@@ -584,7 +584,7 @@ looker.plugins.visualizations.add({
           let accumulatedLeft = 0;
 
           for (let i = 0; i < dimensionCount; i++) {
-            const selector = `.grid-cell[data-col="${i}"]`;
+            const selector = `.grid-cell[data-col="${i}"]:not(.grid-subtotal-row)`;
             const cell = tableGrid.querySelector(selector);
             if (cell) {
               columnLeftOffsets.push(accumulatedLeft);
@@ -593,14 +593,13 @@ looker.plugins.visualizations.add({
           }
 
           columnLeftOffsets.forEach((left, i) => {
-            const selector = `.grid-cell[data-col="${i}"]`;
+            const selector = `.grid-cell[data-col="${i}"]:not(.grid-subtotal-row)`;
             const cells = tableGrid.querySelectorAll(selector);
             cells.forEach(cell => {
               cell.classList.add("sticky-dimension");
               cell.style.left = `${left}px`;
             });
 
-            // Também fixa o cabeçalho da header-row-2 (dimensões)
             const headerCells = tableGrid.querySelectorAll(".grid-cell.header-row-2.dimension");
             const headerCell = headerCells[i];
             if (headerCell) {
