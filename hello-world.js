@@ -231,7 +231,7 @@ looker.plugins.visualizations.add({
           icon.classList.toggle("fa-chevron-right", !isCollapsed);
           icon.classList.toggle("fa-chevron-down", isCollapsed);
 
-          const groupCells = tableGrid.querySelectorAll(`[data-group="${groupKey}"]:not(.collapse-toggle)`);
+          const groupCells = tableGrid.querySelectorAll(`[data-group="${groupKey}"]:not(.grid-subtotal-row)`);
           groupCells.forEach(cell => {
             cell.style.display = isCollapsed ? "" : "none";
           });
@@ -354,7 +354,6 @@ looker.plugins.visualizations.add({
 
               const toggleButton = document.createElement("button");
               toggleButton.className = "collapse-toggle";
-              toggleButton.dataset.group = groupKey;
               toggleButton.onclick = () => toggleGroupVisibility(groupKey, toggleButton);
 
               // Ícone de seta
