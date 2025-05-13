@@ -2,7 +2,7 @@ looker.plugins.visualizations.add({
     id: "hello_world",
     label: "Hello World",
     options: {
-      
+
       dimension_label_0: {
         type: "string",
         label: "Label para Dimensão 1",
@@ -18,15 +18,20 @@ looker.plugins.visualizations.add({
         <style>
             .table-wrapper {
               width: 100%;
-              overflow: auto;
               position: relative;
             }
 
             .grid-table {
-              display: grid;
-              border: 1px solid #000000;
-              border-radius: 8px;
-              font-family: Arial, sans-serif;
+                display: grid;
+                border: 1px solid #000000;
+                border-radius: 8px;
+                font-family: Arial, sans-serif;
+                width: max-content;
+                min-width: 100%;
+            }
+            .grid-header,
+            .grid-row {
+                display: contents;
             }
 
             .header-row-1 {
@@ -49,6 +54,16 @@ looker.plugins.visualizations.add({
               background-color: #fff;
               z-index: 2;
             }
+
+
+
+
+
+
+
+
+
+
             
             .header-row-2.dimension.sticky-dimension {
               z-index: 3;
@@ -62,16 +77,17 @@ looker.plugins.visualizations.add({
             .grid-cell {
                 border-right: 1px solid #ddd;
                 border-top: 1px solid #ddd;
-                padding: 15px;
+                padding: 10px;
                 background: white;
-                font-size: 10px;
+                white-space: nowrap;
+                font-size: 12px;
                 text-decoration: none;
                 color: #000000;
             }
             .grid-header-cell {
                 font-weight: bold;
                 background-color: #f2f2f2;
-                font-size: 12px;
+                font-size: 14px;
                 text-align: center;
                 display: flex;
                 justify-content: center;
@@ -146,7 +162,7 @@ looker.plugins.visualizations.add({
 
         </style>
       `;
-  
+
       this._tableContainer = element.appendChild(document.createElement("div"));
       this._tableContainer.classList = "table-wrapper"
     },
@@ -158,6 +174,7 @@ looker.plugins.visualizations.add({
         console.log(queryResponse)
 
         const pivots = queryResponse.pivots || [];
+        // const pivot_label = queryResponse.fields.pivots?.[0]?.label_short || 'Label não encontrado';
         const hasPivot = pivots.length > 0;
 
         const dimensions = queryResponse.fields.dimensions;
@@ -234,6 +251,7 @@ looker.plugins.visualizations.add({
             dimDiv.className = "grid-cell grid-header-cell header-row-2 dimension";
             const customLabel = config[`label_${dim.name}`];
             dimDiv.textContent = customLabel
+            console.log(customLabel)
             tableGrid.appendChild(dimDiv);
           });
 
@@ -241,7 +259,9 @@ looker.plugins.visualizations.add({
             measures.forEach(measure => {
               const measureDiv = document.createElement("div");
               measureDiv.className = "grid-cell grid-header-cell header-row-2 measure";
+              const measure_label = measure.label_short
               const customLabel = config[`label_${measure.name}`];
+              console.log(customLabel)
               measureDiv.textContent = customLabel
               tableGrid.appendChild(measureDiv);
             });
@@ -446,7 +466,7 @@ looker.plugins.visualizations.add({
                   const cellData = subtotalRow[calc.name]?.[pivot.key];
                   const isLastInPivotBlock = calcIndex === tableCalcs.length - 1;
                   const div = document.createElement("div");
-                  
+
                   div.className = `grid-cell numeric grid-subtotal-row ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
 
                   div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
@@ -487,10 +507,10 @@ looker.plugins.visualizations.add({
             if (cell.classList.contains("grid-header-cell")) return;
             if (cell.classList.contains("sticky-dimension")) return;
             if (!cell) return;
-          
+
             const row = cell.dataset.row;
             const col = cell.dataset.col;
-          
+
             tableGrid.querySelectorAll(".grid-cell").forEach(c => {
                 if (c.dataset.row === row || c.dataset.col === col) {
                     c.classList.add("hovered");
@@ -500,14 +520,14 @@ looker.plugins.visualizations.add({
                   }
             });
           });
-          
+
           tableGrid.addEventListener("mouseout", () => {
             tableGrid.querySelectorAll(".grid-cell.hovered, .grid-cell.hovered-cell").forEach(c => {
                 c.classList.remove("hovered", "hovered-cell");
               });
           });
 
-        
+
         this._tableContainer.appendChild(tableGrid);
 
         done();
@@ -517,7 +537,7 @@ looker.plugins.visualizations.add({
           if (firstRowCells.length > 0) {
             // Pega a maior altura da primeira linha (caso haja múltiplas células com quebras de linha)
             const firstRowHeight = Math.max(...Array.from(firstRowCells).map(el => el.offsetHeight));
-        
+
             const secondRowCells = tableGrid.querySelectorAll(".header-row-2");
             secondRowCells.forEach(cell => {
               cell.style.top = `${firstRowHeight}px`;
@@ -527,10 +547,10 @@ looker.plugins.visualizations.add({
 
         requestAnimationFrame(() => {
           const dimensionCount = dimensions.length;
-        
+
           const columnLeftOffsets = [];
           let accumulatedLeft = 0;
-        
+
           for (let i = 0; i < dimensionCount; i++) {
             const selector = `.grid-cell[data-col="${i}"]`;
             const cell = tableGrid.querySelector(selector);
@@ -539,7 +559,7 @@ looker.plugins.visualizations.add({
               accumulatedLeft += cell.offsetWidth;
             }
           }
-        
+
           columnLeftOffsets.forEach((left, i) => {
             const selector = `.grid-cell[data-col="${i}"]`;
             const cells = tableGrid.querySelectorAll(selector);
@@ -547,7 +567,7 @@ looker.plugins.visualizations.add({
               cell.classList.add("sticky-dimension");
               cell.style.left = `${left}px`;
             });
-        
+
             // Também fixa o cabeçalho da header-row-2 (dimensões)
             const headerCells = tableGrid.querySelectorAll(".grid-cell.header-row-2.dimension");
             const headerCell = headerCells[i];
@@ -556,7 +576,7 @@ looker.plugins.visualizations.add({
               headerCell.style.left = `${left}px`;
             }
           });
-        
+
           // Fixa a célula da header-row-1 que representa o campo pivotado
           const pivotHeaderCell = tableGrid.querySelector(
             `.grid-cell.header-row-1.pivot-dimension`
@@ -568,5 +588,7 @@ looker.plugins.visualizations.add({
           }
         });
 
-    }
-  });
+
+      } 
+
+});
