@@ -18,6 +18,7 @@ looker.plugins.visualizations.add({
         <style>
             .table-wrapper {
               position: relative;
+              width: 100%;
             }
 
             .grid-table {
