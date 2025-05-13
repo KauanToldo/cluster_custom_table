@@ -218,6 +218,18 @@ looker.plugins.visualizations.add({
         tableGrid.className = "grid-table";
         tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, max-content)`;
 
+        function toggleGroupVisibility(groupKey, button) {
+          const isCollapsed = button.textContent === "+";
+          button.textContent = isCollapsed ? "−" : "+";
+
+          // Seleciona todas as células do grupo (exceto subtotal)
+          const groupCells = tableGrid.querySelectorAll(`[data-group="${groupKey}"]:not(.grid-subtotal-row)`);
+
+          groupCells.forEach(cell => {
+            cell.style.display = isCollapsed ? "" : "none";
+          });
+        }
+
         // HEADER ROW 1
         if (hasPivot) {
           // Nome do campo pivotado sobre as dimensões
@@ -641,21 +653,5 @@ looker.plugins.visualizations.add({
         });
 
 
-      } 
-
+      }
 });
-
-function toggleGroupVisibility(groupKey, button) {
-  const isCollapsed = button.textContent === "+";
-  button.textContent = isCollapsed ? "−" : "+";
-
-  // Seleciona todas as células do grupo
-  const groupCells = tableGrid.querySelectorAll(`[data-group="${groupKey}"]`);
-
-  groupCells.forEach(cell => {
-    const isSubtotalRow = cell.classList.contains("grid-subtotal-row");
-    if (!isSubtotalRow) {
-      cell.style.display = isCollapsed ? "" : "none";
-    }
-  });
-}
