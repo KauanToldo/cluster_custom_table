@@ -149,9 +149,17 @@ looker.plugins.visualizations.add({
               background: none;
               border: none;
               cursor: pointer;
-              font-size: 14px;
+              font-size: 12px;
               vertical-align: middle;
               padding: 0;
+            }
+
+            .round-bottom-left {
+              border-bottom-left-radius: 8px;
+            }
+
+            .round-bottom-right {
+              border-bottom-right-radius: 8px;
             }
 
         </style>
@@ -612,6 +620,37 @@ looker.plugins.visualizations.add({
 
 
         this._tableContainer.appendChild(tableGrid);
+
+        function applyBottomCornerRounding() {
+          const allRows = Array.from(tableGrid.querySelectorAll("[data-row]"));
+
+          // Remove classes anteriores se existirem
+          allRows.forEach(cell => {
+            cell.classList.remove("round-bottom-left", "round-bottom-right");
+          });
+
+          const uniqueRowIndices = [...new Set(allRows.map(cell => cell.dataset.row))];
+          const lastRowIndex = Math.max(...uniqueRowIndices.map(Number));
+
+          // Total de colunas
+          const totalCols = dimensions.length + (hasPivot
+            ? pivots.length * (measures.length + tableCalcs.length)
+            : measures.length + tableCalcs.length);
+
+          // Célula da esquerda
+          const bottomLeftCell = tableGrid.querySelector(`[data-row="${lastRowIndex}"][data-col="0"]`);
+          if (bottomLeftCell) {
+            bottomLeftCell.classList.add("round-bottom-left");
+          }
+
+          // Célula da direita
+          const bottomRightCell = tableGrid.querySelector(`[data-row="${lastRowIndex}"][data-col="${totalCols - 1}"]`);
+          if (bottomRightCell) {
+            bottomRightCell.classList.add("round-bottom-right");
+          }
+        }
+
+        applyBottomCornerRounding();
 
         done();
 
