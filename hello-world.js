@@ -474,6 +474,7 @@ looker.plugins.visualizations.add({
                       div.dataset.row = rowIndex;
                       div.dataset.col = colIndex;
                       div.dataset.group = groupKey;
+                      div.style.display = "none";
                       div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
                       tableGrid.appendChild(div);
                       colIndex++;
@@ -487,6 +488,7 @@ looker.plugins.visualizations.add({
                       div.dataset.row = rowIndex;
                       div.dataset.col = colIndex;
                       div.dataset.group = groupKey;
+                      div.style.display = "none";
                       div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
                       tableGrid.appendChild(div);
                       colIndex++;
@@ -499,6 +501,7 @@ looker.plugins.visualizations.add({
                     div.dataset.row = rowIndex;
                     div.dataset.col = colIndex;
                     div.dataset.group = groupKey;
+                    div.style.display = "none";
                     div.innerHTML = LookerCharts.Utils.htmlForCell(row[measure.name]);
                     tableGrid.appendChild(div);
                     colIndex++;
@@ -511,6 +514,7 @@ looker.plugins.visualizations.add({
                     div.dataset.row = rowIndex;
                     div.dataset.col = colIndex;
                     div.dataset.group = groupKey;
+                    div.style.display = "none";
                     div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
                     tableGrid.appendChild(div);
                     colIndex++;
