@@ -145,6 +145,14 @@ looker.plugins.visualizations.add({
               border-bottom: 2px solid black;
             }
 
+            .collapse-toggle {
+              margin-right: 4px;
+              cursor: pointer;
+              background: none;
+              border: none;
+              font-weight: bold;
+            }
+
         </style>
       `;
 
@@ -321,7 +329,20 @@ looker.plugins.visualizations.add({
               subtotalHeaderDiv.dataset.row = subtotalRowIndex;
               subtotalHeaderDiv.dataset.group = groupKey;
               subtotalHeaderDiv.style.gridColumn = `span ${dimensions.length}`;
-              subtotalHeaderDiv.textContent = groupKey;
+
+              // Botão de expandir/colapsar
+              const toggleButton = document.createElement("button");
+              toggleButton.textContent = "−"; // Começa expandido
+              toggleButton.className = "collapse-toggle";
+              toggleButton.dataset.group = groupKey;
+              toggleButton.onclick = () => toggleGroupVisibility(groupKey, toggleButton);
+              subtotalHeaderDiv.appendChild(toggleButton);
+
+              // Texto do grupo
+              const labelSpan = document.createElement("span");
+              labelSpan.textContent = ` ${groupKey}`;
+              subtotalHeaderDiv.appendChild(labelSpan);
+
               tableGrid.appendChild(subtotalHeaderDiv);
 
               colIndex = dimensions.length;
@@ -623,3 +644,18 @@ looker.plugins.visualizations.add({
       } 
 
 });
+
+function toggleGroupVisibility(groupKey, button) {
+  const isCollapsed = button.textContent === "+";
+  button.textContent = isCollapsed ? "−" : "+";
+
+  // Seleciona todas as células do grupo
+  const groupCells = tableGrid.querySelectorAll(`[data-group="${groupKey}"]`);
+
+  groupCells.forEach(cell => {
+    const isSubtotalRow = cell.classList.contains("grid-subtotal-row");
+    if (!isSubtotalRow) {
+      cell.style.display = isCollapsed ? "" : "none";
+    }
+  });
+}
