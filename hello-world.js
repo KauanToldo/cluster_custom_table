@@ -151,6 +151,7 @@ looker.plugins.visualizations.add({
               cursor: pointer;
               font-size: 14px;
               vertical-align: middle;
+              padding: 0;
             }
 
         </style>
@@ -163,6 +164,11 @@ looker.plugins.visualizations.add({
     updateAsync: function(data, element, config, queryResponse, details, done) {
         this.clearErrors();
         this._tableContainer.innerHTML = "";
+
+        const faLink = document.createElement("link");
+        faLink.rel = "stylesheet";
+        faLink.href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css";
+        document.head.appendChild(faLink);
 
         console.log(queryResponse)
 
@@ -219,18 +225,16 @@ looker.plugins.visualizations.add({
         tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, max-content)`;
 
         function toggleGroupVisibility(groupKey, button) {
-          const isCollapsed = button.innerHTML === "➤";
-          button.innerHTML = isCollapsed ? "▼" : "➤";
+          const icon = button.querySelector("i");
+          const isCollapsed = icon.classList.contains("fa-chevron-right");
 
-          // Seleciona todas as células do grupo (exceto subtotal)
+          icon.classList.toggle("fa-chevron-right", !isCollapsed);
+          icon.classList.toggle("fa-chevron-down", isCollapsed);
+
           const groupCells = tableGrid.querySelectorAll(`[data-group="${groupKey}"]:not(.grid-subtotal-row)`);
-
           groupCells.forEach(cell => {
             cell.style.display = isCollapsed ? "" : "none";
           });
-
-          // Garantir que o botão de alternância permaneça visível
-          button.style.display = "";  // Restabelece a visibilidade do botão
         }
 
         // HEADER ROW 1
@@ -349,11 +353,15 @@ looker.plugins.visualizations.add({
               labelSpan.textContent = ` ${groupKey}`;
 
               const toggleButton = document.createElement("button");
-              toggleButton.innerHTML = "▼"; // Começa expandido
               toggleButton.className = "collapse-toggle";
-              toggleButton.style.marginLeft = "6px"; // Espaço entre label e flecha
               toggleButton.dataset.group = groupKey;
               toggleButton.onclick = () => toggleGroupVisibility(groupKey, toggleButton);
+
+              // Ícone de seta
+              const icon = document.createElement("i");
+              icon.className = "fas fa-chevron-down"; // Começa expandido
+              icon.style.marginLeft = "6px";
+              toggleButton.appendChild(icon);
 
               subtotalHeaderDiv.appendChild(labelSpan);
               subtotalHeaderDiv.appendChild(toggleButton);
