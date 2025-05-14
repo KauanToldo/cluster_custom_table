@@ -168,6 +168,10 @@ looker.plugins.visualizations.add({
               color: black !important;
             }
 
+            .table-calc-cell {
+              background-color: rgba(0, 122, 65, 0.57);
+            }
+
         </style>
       `;
 
@@ -401,7 +405,7 @@ looker.plugins.visualizations.add({
                     const cellData = subtotalRow[calc.name]?.[pivot.key];
                     const isLastInPivotBlock = calcIndex === tableCalcs.length - 1;
                     const div = document.createElement("div");
-                    div.className = `grid-cell numeric grid-subtotal-row ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
+                    div.className = `grid-cell table-calc-cell numeric grid-subtotal-row ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
                     div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
                     div.dataset.row = subtotalRowIndex;
                     div.dataset.col = colIndex;
@@ -426,7 +430,7 @@ looker.plugins.visualizations.add({
                 tableCalcs.forEach(calc => {
                   const cellData = subtotalRow[calc.name];
                   const div = document.createElement("div");
-                  div.className = `grid-cell numeric grid-subtotal-row`;
+                  div.className = `grid-cell table-calc-cell numeric grid-subtotal-row`;
                   div.dataset.col = colIndex;
                   div.dataset.row = subtotalRowIndex;
                   div.dataset.group = groupKey;
@@ -487,7 +491,7 @@ looker.plugins.visualizations.add({
                       const isLastInPivotBlock = calcIndex === tableCalcs.length - 1;
                       const div = document.createElement("div");
                       const cellData = row[calc.name]?.[pivot.key];
-                      div.className = `grid-cell numeric ${rowClass} ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
+                      div.className = `grid-cell table-calc-cell numeric ${rowClass} ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
                       div.dataset.row = rowIndex;
                       div.dataset.col = colIndex;
                       div.dataset.group = groupKey;
@@ -511,7 +515,7 @@ looker.plugins.visualizations.add({
                   tableCalcs.forEach(calc => {
                     const div = document.createElement("div");
                     const cellData = row[calc.name];
-                    div.className = `grid-cell numeric ${rowClass}`;
+                    div.className = `grid-cell table-calc-cell numeric ${rowClass}`;
                     div.dataset.row = rowIndex;
                     div.dataset.col = colIndex;
                     div.dataset.group = groupKey;
@@ -570,7 +574,7 @@ looker.plugins.visualizations.add({
                     const isLastInPivotBlock = calcIndex === tableCalcs.length - 1;
                     const div = document.createElement("div");
                     const cellData = row[calc.name]?.[pivot.key];
-                    div.className = `grid-cell numeric ${rowClass} ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
+                    div.className = `grid-cell table-calc-cell numeric ${rowClass} ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
                     div.dataset.row = rowIndex;
                     div.dataset.col = colIndex;
                     div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
@@ -592,7 +596,7 @@ looker.plugins.visualizations.add({
                 tableCalcs.forEach(calc => {
                   const div = document.createElement("div");
                   const cellData = row[calc.name];
-                  div.className = `grid-cell numeric ${rowClass}`;
+                  div.className = `grid-cell table-calc-cell numeric ${rowClass}`;
                   div.dataset.row = rowIndex;
                   div.dataset.col = colIndex;
                   div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
