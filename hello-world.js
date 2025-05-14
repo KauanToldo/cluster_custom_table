@@ -521,8 +521,10 @@ looker.plugins.visualizations.add({
               });
 
               requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
                   toggleGroupVisibility(groupKey, toggleButton);
                 });
+              });
           });
           } else {
             // === SEM SUBTOTAIS ===
