@@ -116,7 +116,7 @@ looker.plugins.visualizations.add({
             }
             .numeric {
                 text-align: right;
-                color: black !important;
+                color: black;
             }
 
             .grid-cell span span a {
@@ -364,7 +364,7 @@ looker.plugins.visualizations.add({
               subtotalDim1Div.dataset.group = groupKey;
 
               const labelSpan = document.createElement("span");
-              labelSpan.textContent = groupKey;
+              labelSpan.textContent = groupKey; // TODO : trazer o drilldown
 
               const toggleButton = document.createElement("button");
               toggleButton.className = "collapse-toggle";
