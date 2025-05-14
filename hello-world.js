@@ -699,12 +699,20 @@ looker.plugins.visualizations.add({
 
           // 1. Calcula os offsets com base em QUALQUER célula de dado (pode incluir subtotal aqui)
           for (let i = 0; i < dimensionCount; i++) {
-            const selector = `.grid-cell[data-col="${i}"]:not(.header-row-2)`; // Inclui subtotais
-            const cell = tableGrid.querySelector(selector);
-            if (cell) {
-              columnLeftOffsets.push(accumulatedLeft);
-              accumulatedLeft += cell.offsetWidth;
-            }
+            const selector = `.grid-cell[data-col="${i}"]`;
+            const cells = tableGrid.querySelectorAll(selector);
+            let maxWidth = 0;
+
+            cells.forEach(cell => {
+              // Garante que está visível e tem conteúdo
+              const isVisible = cell.offsetParent !== null;
+              if (isVisible && cell.offsetWidth > maxWidth) {
+                maxWidth = cell.offsetWidth;
+              }
+            });
+
+            columnLeftOffsets.push(accumulatedLeft);
+            accumulatedLeft += maxWidth;
           }
 
           // 2. Aplica sticky + left para TODAS as células com aquela coluna (dimensões)
