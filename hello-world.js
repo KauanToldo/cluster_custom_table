@@ -164,6 +164,10 @@ looker.plugins.visualizations.add({
               border-bottom-right-radius: 8px;
             }
 
+            .negative-value {
+              color: black !important;
+            }
+
         </style>
       `;
 
