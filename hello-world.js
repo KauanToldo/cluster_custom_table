@@ -697,8 +697,9 @@ looker.plugins.visualizations.add({
           const columnLeftOffsets = [];
           let accumulatedLeft = 0;
 
+          // 1. Calcula os offsets com base em QUALQUER célula de dado (pode incluir subtotal aqui)
           for (let i = 0; i < dimensionCount; i++) {
-            const selector = `.grid-cell[data-col="${i}"]:not(.grid-subtotal-row)`;
+            const selector = `.grid-cell[data-col="${i}"]:not(.header-row-2)`; // Inclui subtotais
             const cell = tableGrid.querySelector(selector);
             if (cell) {
               columnLeftOffsets.push(accumulatedLeft);
@@ -706,14 +707,17 @@ looker.plugins.visualizations.add({
             }
           }
 
+          // 2. Aplica sticky + left para TODAS as células com aquela coluna (dimensões)
           columnLeftOffsets.forEach((left, i) => {
-            const selector = `.grid-cell[data-col="${i}"]:not(.grid-subtotal-row)`;
+            // Aplica para células de dados e subtotais
+            const selector = `.grid-cell[data-col="${i}"]`;
             const cells = tableGrid.querySelectorAll(selector);
             cells.forEach(cell => {
               cell.classList.add("sticky-dimension");
               cell.style.left = `${left}px`;
             });
 
+            // Aplica para os headers das dimensões
             const headerCells = tableGrid.querySelectorAll(".grid-cell.header-row-2.dimension");
             const headerCell = headerCells[i];
             if (headerCell) {
@@ -729,9 +733,9 @@ looker.plugins.visualizations.add({
           if (pivotHeaderCell) {
             pivotHeaderCell.classList.add("sticky-dimension");
             pivotHeaderCell.style.left = "0px";
-            pivotHeaderCell.style.zIndex = "5"; // acima dos demais
+            pivotHeaderCell.style.zIndex = "5";
           }
-
         });
+
       }
 });
