@@ -719,18 +719,6 @@ looker.plugins.visualizations.add({
             pivotHeaderCell.style.zIndex = "5"; // acima dos demais
           }
 
-
-          requestAnimationFrame(() => {
-            groupedData.forEach((_, groupKey) => {
-              const toggleButton = tableGrid.querySelector(
-                `.grid-subtotal-row[data-group="${groupKey}"] .collapse-toggle`
-              );
-              if (toggleButton) {
-                toggleGroupVisibility(groupKey, toggleButton);
-              }
-            });
-          });
-
         });
       }
 });
