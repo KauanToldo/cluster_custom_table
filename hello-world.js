@@ -169,7 +169,7 @@ looker.plugins.visualizations.add({
             }
 
             .table-calc-cell {
-              background-color: rgba(0, 122, 65, 0.57);
+              background-color: rgba(2, 230, 123, 0.32);
             }
 
         </style>
