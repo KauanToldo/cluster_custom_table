@@ -692,57 +692,56 @@ looker.plugins.visualizations.add({
         });
 
         requestAnimationFrame(() => {
-          const dimensionCount = dimensions.length;
+          requestAnimationFrame(() => {
+            const dimensionCount = dimensions.length;
+            const columnLeftOffsets = [];
+            let accumulatedLeft = 0;
 
-          const columnLeftOffsets = [];
-          let accumulatedLeft = 0;
+            for (let i = 0; i < dimensionCount; i++) {
+              const selector = `.grid-cell[data-col="${i}"]`;
+              const cells = tableGrid.querySelectorAll(selector);
+              let maxWidth = 0;
 
-          // 1. Calcula os offsets com base em QUALQUER célula de dado (pode incluir subtotal aqui)
-          for (let i = 0; i < dimensionCount; i++) {
-            const selector = `.grid-cell[data-col="${i}"]`;
-            const cells = tableGrid.querySelectorAll(selector);
-            let maxWidth = 0;
+              cells.forEach(cell => {
+                const rect = cell.getBoundingClientRect();
+                if (rect.width > maxWidth) {
+                  maxWidth = rect.width;
+                }
+              });
 
-            cells.forEach(cell => {
-              // Garante que está visível e tem conteúdo
-              const isVisible = cell.offsetParent !== null;
-              if (isVisible && cell.offsetWidth > maxWidth) {
-                maxWidth = cell.offsetWidth;
+              columnLeftOffsets.push(accumulatedLeft);
+              accumulatedLeft += maxWidth;
+            }
+
+            // Aplica o `left` corretamente para todas as células fixas
+            for (let i = 0; i < dimensionCount; i++) {
+              const left = columnLeftOffsets[i];
+              const selector = `.grid-cell[data-col="${i}"]`;
+              const cells = tableGrid.querySelectorAll(selector);
+
+              cells.forEach(cell => {
+                cell.classList.add("sticky-dimension");
+                cell.style.left = `${left}px`;
+              });
+
+              const headerCells = tableGrid.querySelectorAll(".grid-cell.header-row-2.dimension");
+              const headerCell = headerCells[i];
+              if (headerCell) {
+                headerCell.classList.add("sticky-dimension");
+                headerCell.style.left = `${left}px`;
               }
-            });
+            }
 
-            columnLeftOffsets.push(accumulatedLeft);
-            accumulatedLeft += maxWidth;
-          }
-
-          // 2. Aplica sticky + left para TODAS as células com aquela coluna (dimensões)
-          columnLeftOffsets.forEach((left, i) => {
-            // Aplica para células de dados e subtotais
-            const selector = `.grid-cell[data-col="${i}"]`;
-            const cells = tableGrid.querySelectorAll(selector);
-            cells.forEach(cell => {
-              cell.classList.add("sticky-dimension");
-              cell.style.left = `${left}px`;
-            });
-
-            // Aplica para os headers das dimensões
-            const headerCells = tableGrid.querySelectorAll(".grid-cell.header-row-2.dimension");
-            const headerCell = headerCells[i];
-            if (headerCell) {
-              headerCell.classList.add("sticky-dimension");
-              headerCell.style.left = `${left}px`;
+            // Fixar a célula do header-row-1 (pivot) também
+            const pivotHeaderCell = tableGrid.querySelector(
+              `.grid-cell.header-row-1.pivot-dimension`
+            );
+            if (pivotHeaderCell) {
+              pivotHeaderCell.classList.add("sticky-dimension");
+              pivotHeaderCell.style.left = "0px";
+              pivotHeaderCell.style.zIndex = "5";
             }
           });
-
-          // Fixa a célula da header-row-1 que representa o campo pivotado
-          const pivotHeaderCell = tableGrid.querySelector(
-            `.grid-cell.header-row-1.pivot-dimension`
-          );
-          if (pivotHeaderCell) {
-            pivotHeaderCell.classList.add("sticky-dimension");
-            pivotHeaderCell.style.left = "0px";
-            pivotHeaderCell.style.zIndex = "5";
-          }
         });
 
       }
