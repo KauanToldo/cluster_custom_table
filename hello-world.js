@@ -116,7 +116,7 @@ looker.plugins.visualizations.add({
             }
             .numeric {
                 text-align: right;
-                color: black;
+                color: black !important; //TODO tentar fugir desse important para tirar a cor vermelha dos negativos
             }
 
             .grid-cell span span a {
