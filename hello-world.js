@@ -116,6 +116,7 @@ looker.plugins.visualizations.add({
             }
             .numeric {
                 text-align: right;
+                color: black !important;
             }
 
             .grid-cell span span a {
@@ -162,10 +163,6 @@ looker.plugins.visualizations.add({
 
             .round-bottom-right {
               border-bottom-right-radius: 8px;
-            }
-
-            .negative-value {
-              color: black !important;
             }
 
             .table-calc-cell {
