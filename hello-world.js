@@ -42,7 +42,6 @@ looker.plugins.visualizations.add({
               background-color: #fff;
             }
 
-
             .sticky-dimension {
               position: sticky;
               left: 0;
@@ -699,7 +698,7 @@ looker.plugins.visualizations.add({
             const headerCell = headerCells[i];
             if (headerCell) {
               headerCell.classList.add("sticky-dimension");
-              headerCell.style.left = `${left - 1}px`;
+              headerCell.style.left = `${left}px`;
             }
           });
 
