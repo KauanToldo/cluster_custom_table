@@ -520,7 +520,7 @@ looker.plugins.visualizations.add({
                 currentRowIndex++;
               });
 
-              toggleGroupVisibility(groupKey, toggleButton);
+              // toggleGroupVisibility(groupKey, toggleButton);
             });
 
           } else {
@@ -691,7 +691,7 @@ looker.plugins.visualizations.add({
             const cells = tableGrid.querySelectorAll(selector);
             cells.forEach(cell => {
               cell.classList.add("sticky-dimension");
-              cell.style.left = `${left - 1}px`;
+              cell.style.left = `${left}px`;
             });
 
             const headerCells = tableGrid.querySelectorAll(".grid-cell.header-row-2.dimension");
