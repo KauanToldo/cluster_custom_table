@@ -520,7 +520,71 @@ looker.plugins.visualizations.add({
                 currentRowIndex++;
               });
 
-              toggleGroupVisibility(groupKey, toggleButton);
+
+              // Aguarda um frame para layout ser calculado
+            requestAnimationFrame(() => {
+              // Aqui você faz o cálculo dos offsets e aplica `left`
+              requestAnimationFrame(() => {
+                const dimensionCount = dimensions.length;
+
+                const columnLeftOffsets = [];
+                let accumulatedLeft = 0;
+
+                for (let i = 0; i < dimensionCount; i++) {
+                  const selector = `.grid-cell[data-col="${i}"]:not(.grid-subtotal-row)`;
+                  const cell = tableGrid.querySelector(selector);
+                  if (cell) {
+                    columnLeftOffsets.push(accumulatedLeft);
+                    accumulatedLeft += cell.offsetWidth;
+                  }
+                }
+
+                columnLeftOffsets.forEach((left, i) => {
+                  const selector = `.grid-cell[data-col="${i}"]:not(.grid-subtotal-row)`;
+                  const cells = tableGrid.querySelectorAll(selector);
+                  cells.forEach(cell => {
+                    cell.classList.add("sticky-dimension");
+                    cell.style.left = `${left}px`;
+                  });
+
+                  const headerCells = tableGrid.querySelectorAll(".grid-cell.header-row-2.dimension");
+                  const headerCell = headerCells[i];
+                  if (headerCell) {
+                    headerCell.classList.add("sticky-dimension");
+                    headerCell.style.left = `${left}px`;
+                  }
+                });
+
+                // Fixa a célula da header-row-1 que representa o campo pivotado
+                const pivotHeaderCell = tableGrid.querySelector(
+                  `.grid-cell.header-row-1.pivot-dimension`
+                );
+                if (pivotHeaderCell) {
+                  pivotHeaderCell.classList.add("sticky-dimension");
+                  pivotHeaderCell.style.left = "0px";
+                  pivotHeaderCell.style.zIndex = "5"; // acima dos demais
+                }
+
+
+                requestAnimationFrame(() => {
+                  groupedData.forEach((_, groupKey) => {
+                    const toggleButton = tableGrid.querySelector(
+                      `.grid-subtotal-row[data-group="${groupKey}"] .collapse-toggle`
+                    );
+                    if (toggleButton) {
+                      toggleGroupVisibility(groupKey, toggleButton);
+                    }
+                  });
+                });
+
+              });
+
+              // Aguarda mais um frame para garantir que os estilos anteriores foram aplicados
+              requestAnimationFrame(() => {
+                // Agora sim, esconde os grupos
+                  toggleGroupVisibility(groupKey, toggleButton);
+              });
+            });
             });
 
           } else {
@@ -671,59 +735,6 @@ looker.plugins.visualizations.add({
           }
         });
 
-        requestAnimationFrame(() => {
-          const dimensionCount = dimensions.length;
 
-          const columnLeftOffsets = [];
-          let accumulatedLeft = 0;
-
-          for (let i = 0; i < dimensionCount; i++) {
-            const selector = `.grid-cell[data-col="${i}"]:not(.grid-subtotal-row)`;
-            const cell = tableGrid.querySelector(selector);
-            if (cell) {
-              columnLeftOffsets.push(accumulatedLeft);
-              accumulatedLeft += cell.offsetWidth;
-            }
-          }
-
-          columnLeftOffsets.forEach((left, i) => {
-            const selector = `.grid-cell[data-col="${i}"]:not(.grid-subtotal-row)`;
-            const cells = tableGrid.querySelectorAll(selector);
-            cells.forEach(cell => {
-              cell.classList.add("sticky-dimension");
-              cell.style.left = `${left}px`;
-            });
-
-            const headerCells = tableGrid.querySelectorAll(".grid-cell.header-row-2.dimension");
-            const headerCell = headerCells[i];
-            if (headerCell) {
-              headerCell.classList.add("sticky-dimension");
-              headerCell.style.left = `${left}px`;
-            }
-          });
-
-          // Fixa a célula da header-row-1 que representa o campo pivotado
-          const pivotHeaderCell = tableGrid.querySelector(
-            `.grid-cell.header-row-1.pivot-dimension`
-          );
-          if (pivotHeaderCell) {
-            pivotHeaderCell.classList.add("sticky-dimension");
-            pivotHeaderCell.style.left = "0px";
-            pivotHeaderCell.style.zIndex = "5"; // acima dos demais
-          }
-
-
-          requestAnimationFrame(() => {
-            groupedData.forEach((_, groupKey) => {
-              const toggleButton = tableGrid.querySelector(
-                `.grid-subtotal-row[data-group="${groupKey}"] .collapse-toggle`
-              );
-              if (toggleButton) {
-                toggleGroupVisibility(groupKey, toggleButton);
-              }
-            });
-          });
-
-        });
       }
 });
