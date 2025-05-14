@@ -359,30 +359,39 @@ looker.plugins.visualizations.add({
 
               const subtotalRowIndex = currentRowIndex++;
 
-              // === LINHA DE SUBTOTAL ===
-              const subtotalHeaderDiv = document.createElement("div");
-              subtotalHeaderDiv.className = `grid-cell sticky-dimension grid-subtotal-row dim-separator`;
-              subtotalHeaderDiv.dataset.col = 0;
-              subtotalHeaderDiv.dataset.row = subtotalRowIndex;
-              subtotalHeaderDiv.dataset.group = groupKey;
-              subtotalHeaderDiv.style.gridColumn = `span ${dimensions.length}`;
+              // === CÉLULA 1: Label da dimensão principal com toggle ===
+              const subtotalDim1Div = document.createElement("div");
+              subtotalDim1Div.className = "grid-cell sticky-dimension grid-subtotal-row";
+              subtotalDim1Div.dataset.col = 0;
+              subtotalDim1Div.dataset.row = subtotalRowIndex;
+              subtotalDim1Div.dataset.group = groupKey;
 
               const labelSpan = document.createElement("span");
-              labelSpan.textContent = ` ${groupKey}`;
+              labelSpan.textContent = groupKey;
 
               const toggleButton = document.createElement("button");
               toggleButton.className = "collapse-toggle";
               toggleButton.onclick = () => toggleGroupVisibility(groupKey, toggleButton);
-              // Ícone de seta
+
+              // Ícone da seta
               const icon = document.createElement("i");
-              icon.className = "fas fa-chevron-down"; // Começa expandido
+              icon.className = "fas fa-chevron-down";
               icon.style.marginLeft = "6px";
+
               toggleButton.appendChild(icon);
+              subtotalDim1Div.appendChild(labelSpan);
+              subtotalDim1Div.appendChild(toggleButton);
 
-              subtotalHeaderDiv.appendChild(labelSpan);
-              subtotalHeaderDiv.appendChild(toggleButton);
+              // === CÉLULA 2: Placeholder vazia para segunda dimensão ===
+              const subtotalDim2Div = document.createElement("div");
+              subtotalDim2Div.className = "grid-cell sticky-dimension grid-subtotal-row dim-separator";
+              subtotalDim2Div.dataset.col = 1;
+              subtotalDim2Div.dataset.row = subtotalRowIndex;
+              subtotalDim2Div.dataset.group = groupKey;
 
-              tableGrid.appendChild(subtotalHeaderDiv);
+              // === Adiciona ambas ao grid ===
+              tableGrid.appendChild(subtotalDim1Div);
+              tableGrid.appendChild(subtotalDim2Div);
 
               colIndex = dimensions.length;
 
