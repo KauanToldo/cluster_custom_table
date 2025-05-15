@@ -4,9 +4,9 @@ looker.plugins.visualizations.add({
     options: {
 
     order_metrics: {
-      name: "metric_order",
       type: "array",
       label: "Ordem das Métricas",
+      section: "Order",
       default: [],
       description: "Selecione a ordem desejada das métricas (medidas + table calculations)"
     }
