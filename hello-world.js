@@ -187,6 +187,7 @@ looker.plugins.visualizations.add({
 
       this._tableContainer = element.appendChild(document.createElement("div"));
       this._tableContainer.classList = "table-wrapper"
+      this.trigger("registerOptions", this.options);
     },
     // Render in response to the data or settings changing
     updateAsync: function(data, element, config, queryResponse, details, done) {
