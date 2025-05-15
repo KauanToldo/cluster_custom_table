@@ -275,7 +275,9 @@ looker.plugins.visualizations.add({
           display: "select",
           section: "Order",
           default: [],
-          values: allMetrics.map(m => [m.label, m.name]) // [[label visível, valor armazenado], ...]
+          values: Object.fromEntries(
+            allMetrics.map(m => [m.name, m.label])
+          )
         };
 
         let orderedMetrics;
