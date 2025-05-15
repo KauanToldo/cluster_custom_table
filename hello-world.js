@@ -214,13 +214,6 @@ looker.plugins.visualizations.add({
           
         ];
 
-        const metricValues = {};
-        allMetrics.forEach(metric => {
-          if (metric.name && metric.label) {
-            metricValues[metric.name] = metric.label;
-          }
-        });
-
         console.log(allMetrics)
         console.log(metricValues)
 
@@ -288,16 +281,19 @@ looker.plugins.visualizations.add({
 
         allMetrics.forEach((metric, index) => {
           const optionKey = `metric_position_${index + 1}`;
+
+          // Gera os valores no formato de array de objetos
+          const metricValues = allMetrics.map(m => ({
+            [m.label]: m.name
+          }));
+
           mergedOptions[optionKey] = {
             type: "string",
-            label: `${ordinal(index + 1)} métrica`, // Primeira, Segunda, etc.
+            label: `${ordinal(index + 1)} métrica`, // Ex: Primeira, Segunda, etc.
             display: "select",
             section: "Order",
-            default: metric.name,  // <- ADICIONE ISSO
-            values: allMetrics.reduce((acc, m) => {
-              acc[m.name] = m.label;
-              return acc;
-            }, {})
+            values: metricValues,
+            default: metric.name
           };
         });
 
