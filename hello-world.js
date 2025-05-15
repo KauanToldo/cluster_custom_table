@@ -104,6 +104,10 @@ looker.plugins.visualizations.add({
                 border-right: none !important;
             }
 
+            .no-right-border {
+                border-right: none !important;
+            }
+
             .grid-cell.dim-separator {
                 border-right: 2px solid #012C75;
             }
@@ -178,6 +182,7 @@ looker.plugins.visualizations.add({
               border-top: 2px solid #012C75;
               background-color:#012C75;
               position: sticky;
+              color: white;
               bottom: 0;
             }
 
