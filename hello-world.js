@@ -203,7 +203,7 @@ looker.plugins.visualizations.add({
         const newOptions = {};
 
         // Campos diretos (dimensões e medidas)
-        const fields = [...queryResponse.fields.dimensions, ...queryResponse.fields.measures];
+        const fields = [...queryResponse.fields.dimensions, ...queryResponse.fields.measures, ...queryResponse.fields.table_calculations];
         fields.forEach(field => {
           newOptions[`label_${field.name}`] = {
             label: `Label para ${field.label}`,
@@ -272,7 +272,7 @@ looker.plugins.visualizations.add({
             tableGrid.appendChild(pivotDiv);
           });
 
-          // HEADER ROW 2 (dimensões + medidas)
+          // HEADER ROW 2 (dimensões + medidas+ table calculations)
           dimensions.forEach(dim => {
             const dimDiv = document.createElement("div");
             dimDiv.className = "grid-cell grid-header-cell header-row-2 dimension";
