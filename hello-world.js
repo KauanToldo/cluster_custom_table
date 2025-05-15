@@ -169,10 +169,14 @@ looker.plugins.visualizations.add({
               background-color: #EEF5EC;
             }
 
+            .grid-cell.grid-total-row {
+              border-right: 1px solid #FFFFFF;
+            }
+
             .grid-total-row {
               font-weight: bold;
               border-top: 2px solid #012C75;
-              background-color:rgb(219, 219, 219);
+              background-color:#012C75;
               position: sticky;
               bottom: 0;
             }
