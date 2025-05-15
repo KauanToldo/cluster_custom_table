@@ -286,9 +286,10 @@ looker.plugins.visualizations.add({
           return map[n] || `${n}ª`;
         }
 
+        const newOptions = {};
         allMetrics.forEach((metric, index) => {
           const optionKey = `metric_position_${index + 1}`;
-          mergedOptions[optionKey] = {
+          newOptions[optionKey] = {
             type: "string",
             label: `${ordinal(index + 1)} métrica`, // Ex: Primeira, Segunda, etc.
             display: "select",
@@ -306,6 +307,7 @@ looker.plugins.visualizations.add({
         console.log("Config atual:", config);
 
         this.options = mergedOptions;
+        this.options = Object.assign(this.options, newOptions);
         this.trigger("registerOptions", this.options);
         done();
 
