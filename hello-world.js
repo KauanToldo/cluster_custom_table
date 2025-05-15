@@ -636,9 +636,11 @@ looker.plugins.visualizations.add({
 
               div.className = "grid-cell sticky-dimension grid-total-row";
 
-              if (isSecondDimension) {
-                div.classList.add("no-left-border");
-              } else if (dIndex === dimensions.length - 1) {
+              if (isFirstDimension) {
+                div.classList.add("no-right-border");
+              } 
+              
+              if (dIndex === dimensions.length - 1) {
                 div.classList.add("dim-separator");
               }
 
