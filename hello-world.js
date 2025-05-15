@@ -217,6 +217,9 @@ looker.plugins.visualizations.add({
           allMetrics.map(metric => [metric.name, metric.label])
         );
 
+        console.log(allMetrics)
+        console.log(metricValues)
+
         // Campos diretos (dimensões e medidas)
         const mergedOptions = { ...this.options };
 
