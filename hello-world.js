@@ -125,7 +125,6 @@ looker.plugins.visualizations.add({
 
             .grid-cell span span a {
                 text-decoration: none;
-                color: #000000;
             }
 
             .grid-row-even {
