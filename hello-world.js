@@ -215,6 +215,10 @@ looker.plugins.visualizations.add({
         const dimensions = queryResponse.fields.dimensions;
         const measures = queryResponse.fields.measures;
         const tableCalcs = queryResponse.fields.table_calculations || [];
+        const allMetrics = [
+          ...measures.map(m => ({ ...m, _type: "measure" })),
+          ...tableCalcs.map(tc => ({ ...tc, _type: "table_calc" }))
+        ];
 
         const dimensionCount = dimensions.length;
         const measureCount = measures.length;
@@ -303,18 +307,11 @@ looker.plugins.visualizations.add({
           });
 
           pivots.forEach(() => {
-            measures.forEach(measure => {
-              const measureDiv = document.createElement("div");
-              measureDiv.className = "grid-cell grid-header-cell header-row-2 measure";
-              const customLabel = config[`label_${measure.name}`];
-              measureDiv.textContent = customLabel
-              tableGrid.appendChild(measureDiv);
-            });
-            tableCalcs.forEach(calc => {
+            allMetrics.forEach(field => {
               const div = document.createElement("div");
-              div.className = "grid-cell grid-header-cell header-row-2 table-calc";
-              const customLabel = config[`label_${calc.name}`];
-              div.textContent = customLabel
+              div.className = `grid-cell grid-header-cell header-row-2 ${field._type === 'table_calc' ? 'table-calc' : 'measure'}`;
+              const customLabel = config[`label_${field.name}`];
+              div.textContent = customLabel;
               tableGrid.appendChild(div);
             });
           });
@@ -417,31 +414,18 @@ looker.plugins.visualizations.add({
 
               if (hasPivot) {
                 pivots.forEach(pivot => {
-                  measures.forEach((measure, mIndex) => {
-                    const cellData = subtotalRow[measure.name]?.[pivot.key];
-                    const div = document.createElement("div");
-                    const isLastInPivotBlock = mIndex === measures.length - 1 && tableCalcs.length === 0;
-                    div.className = `grid-cell numeric grid-subtotal-row ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
-                    div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
-                    div.dataset.row = subtotalRowIndex;
-                    div.dataset.col = colIndex;
-                    div.dataset.group = groupKey;
-                    tableGrid.appendChild(div);
-                    colIndex++;
-                  });
-
-                  tableCalcs.forEach((calc, calcIndex) => {
-                    const cellData = subtotalRow[calc.name]?.[pivot.key];
-                    const isLastInPivotBlock = calcIndex === tableCalcs.length - 1;
-                    const div = document.createElement("div");
-                    div.className = `grid-cell table-calc-cell numeric grid-subtotal-row ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
-                    div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
-                    div.dataset.row = subtotalRowIndex;
-                    div.dataset.col = colIndex;
-                    div.dataset.group = groupKey;
-                    tableGrid.appendChild(div);
-                    colIndex++;
-                  });
+                  allMetrics.forEach((field, index) => {
+                  const cellData = subtotalRow[field.name]?.[pivot.key];
+                  const isLastInPivotBlock = index === allMetrics.length - 1;
+                  const div = document.createElement("div");
+                  div.className = `grid-cell numeric grid-subtotal-row ${field._type === 'table_calc' ? 'table-calc-cell' : ''} ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
+                  div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
+                  div.dataset.row = subtotalRowIndex;
+                  div.dataset.col = colIndex;
+                  div.dataset.group = groupKey;
+                  tableGrid.appendChild(div);
+                  colIndex++;
+                });
                 });
               } else {
                 measures.forEach(measure => {
