@@ -3,14 +3,6 @@ looker.plugins.visualizations.add({
     label: "Hello World",
     options: {
 
-      dimension_label_0: {
-        type: "string",
-        label: "Label para Dimensão 1",
-        section: "Series",
-        display: "text",
-        default: ""
-      },
-
       ordem_metrics: {
         name: "metric_order",
         type: "array",
@@ -252,6 +244,16 @@ looker.plugins.visualizations.add({
             placeholder: field.label_short
           };
         });
+
+        newOptions[`order_metrics`] = {
+            name: "metric_order",
+            type: "array",
+            label: "Ordem das Métricas",
+            section: "Order",
+            default: [],
+            description: "Selecione e ordene as métricas na ordem desejada",
+            values: ["revenue", "percent_revenue", "calc_margin"]
+          };
 
         // Campos pivotados
         if (queryResponse.fields.pivots) {
