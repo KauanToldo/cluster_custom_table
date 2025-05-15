@@ -261,19 +261,7 @@ looker.plugins.visualizations.add({
         }
 
         function ordinal(n) {
-          // const map = {
-          //   1: "Primeira",
-          //   2: "Segunda",
-          //   3: "Terceira",
-          //   4: "Quarta",
-          //   5: "Quinta",
-          //   6: "Sexta",
-          //   7: "Sétima",
-          //   8: "Oitava",
-          //   9: "Nona",
-          //   10: "Décima"
-          // };
-          return `${n}ª`;
+          return n < 10 ? `0${n}` : `${n}`;
         }
 
         allMetrics.forEach((metric, index) => {
