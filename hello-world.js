@@ -11,6 +11,17 @@ looker.plugins.visualizations.add({
         default: ""
       },
 
+      ordem_metrics: {
+        name: "metric_order",
+        type: "array",
+        label: "Ordem das Métricas",
+        required: no,
+        section: "Order",
+        default: [],
+        description: "Selecione e ordene as métricas na ordem desejada",
+        values: ["revenue", "percent_revenue", "calc_margin"]
+      }
+
     },
     create: function(element, config) {
 
