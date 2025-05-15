@@ -213,9 +213,12 @@ looker.plugins.visualizations.add({
           
         ];
 
-        const metricValues = Object.fromEntries(
-          allMetrics.map(metric => [metric.name, metric.label])
-        );
+        const metricValues = {};
+        allMetrics.forEach(metric => {
+          if (metric.name && metric.label) {
+            metricValues[metric.name] = metric.label;
+          }
+        });
 
         console.log(allMetrics)
         console.log(metricValues)
