@@ -295,7 +295,7 @@ looker.plugins.visualizations.add({
             display: "select",
             section: "Order",
             default: metric.name,
-            values: metricValues
+            values: {'metric_position_1': "tese", 'metric_position_2': "orders.total_orders", "metric_position_3": "order_items.total_sale_price"}
           };
         });
 
