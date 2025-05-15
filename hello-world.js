@@ -168,7 +168,7 @@ looker.plugins.visualizations.add({
               background-color: #EEF5EC;
             }
 
-            ..grid-total-row {
+            .grid-total-row {
               border: none;
               margin-left: 1px;
             }
