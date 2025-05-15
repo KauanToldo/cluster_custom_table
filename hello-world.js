@@ -3,15 +3,6 @@ looker.plugins.visualizations.add({
     label: "Hello World",
     options: {
 
-    order_metrics: {
-      type: "array",
-      label: "Ordem das Métricas",
-      section: "Order",
-      display: "select",
-      default: [],
-      description: "Selecione a ordem desejada das métricas (medidas + table calculations)"
-    }
-
     },
     create: function(element, config) {
 
@@ -222,15 +213,17 @@ looker.plugins.visualizations.add({
           
         ];
 
-        console.log(allMetrics)
+        const metricValues = Object.fromEntries(
+          allMetrics.map(metric => [metric.name, metric.label])
+        );
+
+        // Campos diretos (dimensões e medidas)
+        const mergedOptions = { ...this.options };
 
         const dimensionCount = dimensions.length;
         const measureCount = measures.length;
         const pivotCount = hasPivot ? pivots.length : 1;
         const totalCols = dimensionCount + (pivotCount * (measureCount + tableCalcs.length));
-
-        // Campos diretos (dimensões e medidas)
-        const mergedOptions = { ...this.options };
 
         // Adiciona dinamicamente labels para dimensões, medidas e cálculos
         const fields = [
@@ -270,39 +263,35 @@ looker.plugins.visualizations.add({
           });
         }
 
-        mergedOptions["order_metrics"] = {
-          type: "array",
-          label: "Ordem das Métricas",
-          display: "select",
-          section: "Order",
-          default: [],
-          values: Object.fromEntries(
-            allMetrics.map(m => [m.name, m.label])
-          )
-        };
-
-        let orderedMetrics;
-
-        if (Array.isArray(config.order_metrics) && config.order_metrics.length > 0) {
-          orderedMetrics = [];
-
-          // Adiciona os campos na ordem do usuário
-          config.order_metrics.forEach(metricName => {
-            const metric = allMetrics.find(m => m.name === metricName);
-            if (metric) {
-              orderedMetrics.push(metric);
-            }
-          });
-
-          // Adiciona os que não foram incluídos (fallback)
-          allMetrics.forEach(metric => {
-            if (!orderedMetrics.find(m => m.name === metric.name)) {
-              orderedMetrics.push(metric);
-            }
-          });
-        } else {
-          orderedMetrics = allMetrics;
+        function ordinal(n) {
+          const map = {
+            1: "Primeira",
+            2: "Segunda",
+            3: "Terceira",
+            4: "Quarta",
+            5: "Quinta",
+            6: "Sexta",
+            7: "Sétima",
+            8: "Oitava",
+            9: "Nona",
+            10: "Décima"
+          };
+          return map[n] || `${n}ª`;
         }
+
+        allMetrics.forEach((metric, index) => {
+          const optionKey = `metric_position_${index + 1}`;
+          mergedOptions[optionKey] = {
+            type: "string",
+            label: `${ordinal(index + 1)} métrica`, // Ex: Primeira, Segunda, etc.
+            display: "select",
+            section: "Order",
+            default: metric.name,
+            values: metricValues
+          };
+        });
+
+
 
         // Aplica as opções finalizadas sem sobrescrever as do manifest
         this.options = mergedOptions;
