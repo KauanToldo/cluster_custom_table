@@ -11,7 +11,6 @@ looker.plugins.visualizations.add({
             .table-wrapper {
               position: relative;
               width: max-content;
-              scrollbar-gutter: stable both-edges;
             }
 
             .grid-table {
@@ -96,12 +95,8 @@ looker.plugins.visualizations.add({
               color: white !important;
             }
 
-            .grid-cell.numeric.no-right-border {
-                border-right: none !important;
-            }
-
             .no-right-border {
-                border-right: none !important;
+                border-right: 1px solid transparent;
             }
 
             .grid-cell.dim-separator {
