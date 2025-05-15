@@ -214,9 +214,6 @@ looker.plugins.visualizations.add({
           
         ];
 
-        console.log(allMetrics)
-        console.log(metricValues)
-
         // Campos diretos (dimensões e medidas)
         const mergedOptions = { ...this.options };
 
@@ -299,14 +296,7 @@ looker.plugins.visualizations.add({
 
 
         this.options = mergedOptions;
-
-        console.log("Config:", config);
-        console.log("Options:", this.options);
-
         this.trigger("registerOptions", this.options);
-
-        console.log("Options registrados:", this.options);
-
         // Cria o grid
         const tableGrid = document.createElement("div");
         tableGrid.className = "grid-table";
