@@ -182,7 +182,7 @@ looker.plugins.visualizations.add({
               border-top: 2px solid #012C75;
               background-color:#012C75;
               position: sticky;
-              color: white;
+              color: white !important;
               bottom: 0;
             }
 
