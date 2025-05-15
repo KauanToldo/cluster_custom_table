@@ -64,6 +64,10 @@ looker.plugins.visualizations.add({
                 margin-top: -1px;
             }
 
+            .grid-cell.sticky-dimension {
+              transform: translateZ(0);
+            }
+
             .grid-header-cell.grid-cell {
                 border-right: 2px solid #ddd;
                 border-top: 2px solid #ddd;
@@ -171,7 +175,6 @@ looker.plugins.visualizations.add({
               position: sticky;
               color: white !important;
               bottom: 0;
-              z-index: 10;
             }
 
             .grid-total-row span span a {
