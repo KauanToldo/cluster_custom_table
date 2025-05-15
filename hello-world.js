@@ -629,18 +629,21 @@ looker.plugins.visualizations.add({
             const totalRowIndex = tableGrid.childElementCount / dimensions.length; // base razoável p/ ordenação
 
             // === DIMENSÕES ===
-            dimensions.forEach((dim, dIndex) => {
-              const div = document.createElement("div");
-              const isLastDimension = dIndex === dimensions.length - 1;
-              div.className = `grid-cell sticky-dimension grid-total-row ${isLastDimension ? 'dim-separator' : ''}`;
-              div.dataset.row = totalRowIndex;
-              div.dataset.col = colIndex;
 
-              // Só a última dimensão mostra "Total"
-              div.innerHTML = isLastDimension ? "<b>Total</b>" : "";
-              tableGrid.appendChild(div);
-              colIndex++;
-            });
+            // === TOTAL: Dimensão 1 com label "Total" ===
+            const totalDim1Div = document.createElement("div");
+            totalDim1Div.className = "grid-cell sticky-dimension total-label-cell no-right-border";
+            totalDim1Div.textContent = "Total";
+            totalDim1Div.dataset.row = totalRowIndex;
+            totalDim1Div.dataset.col = 0;
+            totalFooter.appendChild(totalDim1Div);
+
+            // === TOTAL: Dimensão 2 vazia, sem borda ===
+            const totalDim2Div = document.createElement("div");
+            totalDim2Div.className = "grid-cell sticky-dimension total-dim2-cell";
+            totalDim2Div.dataset.row = totalRowIndex;
+            totalDim2Div.dataset.col = 1;
+            totalFooter.appendChild(totalDim2Div);
 
             // === MÉTRICAS (MEASURES) E CÁLCULOS (TABLE CALCS) ===
             if (hasPivot) {
