@@ -612,78 +612,79 @@ looker.plugins.visualizations.add({
                   colIndex++;
                 });
               }
+            });
+          }
 
-              // === LINHA DE TOTAIS ===
-              if (queryResponse.totals_data) {
-                let colIndex = 0;
-                const totalRowIndex = data.length;
+          // === LINHA FINAL DE TOTAIS GERAIS ===
+          if (queryResponse.totals_data) {
+            const totalRow = queryResponse.totals_data;
+            let colIndex = 0;
+            const totalRowIndex = tableGrid.childElementCount / dimensions.length; // base razoável p/ ordenação
 
-                // === DIMENSÕES ===
-                dimensions.forEach((dim, dIndex) => {
+            // === DIMENSÕES ===
+            dimensions.forEach((dim, dIndex) => {
+              const div = document.createElement("div");
+              const isLastDimension = dIndex === dimensions.length - 1;
+              div.className = `grid-cell sticky-dimension grid-total-row ${isLastDimension ? 'dim-separator' : ''}`;
+              div.dataset.row = totalRowIndex;
+              div.dataset.col = colIndex;
+
+              // Só a última dimensão mostra "Total"
+              div.innerHTML = isLastDimension ? "<b>Total</b>" : "";
+              tableGrid.appendChild(div);
+              colIndex++;
+            });
+
+            // === MÉTRICAS (MEASURES) E CÁLCULOS (TABLE CALCS) ===
+            if (hasPivot) {
+              pivots.forEach(pivot => {
+                measures.forEach((measure, mIndex) => {
+                  const value = totalRow[measure.name]?.[pivot.key];
+                  const isLastInPivotBlock = mIndex === measures.length - 1 && tableCalcs.length === 0;
                   const div = document.createElement("div");
-                  const isLastDimension = dIndex === dimensions.length - 1;
-                  div.className = `grid-cell sticky-dimension grid-total-row ${isLastDimension ? 'dim-separator' : ''}`;
+                  div.className = `grid-cell numeric grid-total-row ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
                   div.dataset.row = totalRowIndex;
                   div.dataset.col = colIndex;
-
-                  // Mostra label "Total" apenas na última dimensão
-                  div.innerHTML = isLastDimension ? "<b>Total</b>" : "";
+                  div.innerHTML = LookerCharts.Utils.htmlForCell(value);
                   tableGrid.appendChild(div);
                   colIndex++;
                 });
 
-                // === MEDIDAS E TABLE CALCULATIONS ===
-                if (hasPivot) {
-                  pivots.forEach(pivot => {
-                    measures.forEach((measure, mIndex) => {
-                      const totalValue = queryResponse.totals_data[measure.name]?.[pivot.key];
-                      const div = document.createElement("div");
-                      const isLastInPivotBlock = mIndex === measures.length - 1 && tableCalcs.length === 0;
-                      div.className = `grid-cell numeric grid-total-row ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
-                      div.dataset.row = totalRowIndex;
-                      div.dataset.col = colIndex;
-                      div.innerHTML = LookerCharts.Utils.htmlForCell(totalValue);
-                      tableGrid.appendChild(div);
-                      colIndex++;
-                    });
+                tableCalcs.forEach((calc, calcIndex) => {
+                  const value = totalRow[calc.name]?.[pivot.key];
+                  const isLastInPivotBlock = calcIndex === tableCalcs.length - 1;
+                  const div = document.createElement("div");
+                  div.className = `grid-cell table-calc-cell numeric grid-total-row ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
+                  div.dataset.row = totalRowIndex;
+                  div.dataset.col = colIndex;
+                  div.innerHTML = LookerCharts.Utils.htmlForCell(value);
+                  tableGrid.appendChild(div);
+                  colIndex++;
+                });
+              });
+            } else {
+              measures.forEach(measure => {
+                const value = totalRow[measure.name];
+                const div = document.createElement("div");
+                div.className = `grid-cell numeric grid-total-row`;
+                div.dataset.row = totalRowIndex;
+                div.dataset.col = colIndex;
+                div.innerHTML = LookerCharts.Utils.htmlForCell(value);
+                tableGrid.appendChild(div);
+                colIndex++;
+              });
 
-                    tableCalcs.forEach((calc, calcIndex) => {
-                      const totalValue = queryResponse.totals_data[calc.name]?.[pivot.key];
-                      const isLastInPivotBlock = calcIndex === tableCalcs.length - 1;
-                      const div = document.createElement("div");
-                      div.className = `grid-cell table-calc-cell numeric grid-total-row ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
-                      div.dataset.row = totalRowIndex;
-                      div.dataset.col = colIndex;
-                      div.innerHTML = LookerCharts.Utils.htmlForCell(totalValue);
-                      tableGrid.appendChild(div);
-                      colIndex++;
-                    });
-                  });
-                } else {
-                  measures.forEach(measure => {
-                    const totalValue = queryResponse.totals_data[measure.name];
-                    const div = document.createElement("div");
-                    div.className = `grid-cell numeric grid-total-row`;
-                    div.dataset.row = totalRowIndex;
-                    div.dataset.col = colIndex;
-                    div.innerHTML = LookerCharts.Utils.htmlForCell(totalValue);
-                    tableGrid.appendChild(div);
-                    colIndex++;
-                  });
-
-                  tableCalcs.forEach(calc => {
-                    const totalValue = queryResponse.totals_data[calc.name];
-                    const div = document.createElement("div");
-                    div.className = `grid-cell table-calc-cell numeric grid-total-row`;
-                    div.dataset.row = totalRowIndex;
-                    div.dataset.col = colIndex;
-                    div.innerHTML = LookerCharts.Utils.htmlForCell(totalValue);
-                    tableGrid.appendChild(div);
-                    colIndex++;
-                  });
-                }
-              }
-            });
+              tableCalcs.forEach(calc => {
+                const value = totalRow[calc.name];
+                const div = document.createElement("div");
+                div.className = `grid-cell table-calc-cell numeric grid-total-row`;
+                div.dataset.row = totalRowIndex;
+                div.dataset.col = colIndex;
+                div.innerHTML = LookerCharts.Utils.htmlForCell(value);
+                tableGrid.appendChild(div);
+                colIndex++;
+              });
+            }
           }
 
 
