@@ -172,7 +172,7 @@ looker.plugins.visualizations.add({
             .grid-total-row {
               font-weight: bold;
               border-top: 2px solid black;
-              background-color:rgb(197, 197, 197);
+              background-color:rgb(219, 219, 219);
               position: sticky;
               bottom: 0;
             }
