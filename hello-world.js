@@ -175,6 +175,7 @@ looker.plugins.visualizations.add({
               position: sticky;
               color: white !important;
               bottom: 0;
+              z-index: 10;
             }
 
             .grid-total-row span span a {
