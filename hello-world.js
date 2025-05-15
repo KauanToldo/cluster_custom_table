@@ -611,11 +611,10 @@ looker.plugins.visualizations.add({
               const isSecondDimension = dIndex === 1;
 
               div.className = "grid-cell sticky-dimension grid-total-row";
-              
-              if (dIndex === dimensions.length - 1) {
-                div.classList.add("dim-separator");
+
+              if (isFirstDimension) {
                 div.classList.add("no-right-border");
-              }
+              } 
 
               div.dataset.row = totalRowIndex;
               div.dataset.col = colIndex;
