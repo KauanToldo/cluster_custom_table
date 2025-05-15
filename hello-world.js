@@ -3,15 +3,13 @@ looker.plugins.visualizations.add({
     label: "Hello World",
     options: {
 
-      ordem_metrics: {
-        name: "metric_order",
-        type: "array",
-        label: "Ordem das Métricas",
-        section: "Order",
-        default: [],
-        description: "Selecione e ordene as métricas na ordem desejada",
-        values: ["revenue", "percent_revenue", "calc_margin"]
-      }
+    option: {
+      name: "metric_order",
+      type: "array",
+      label: "Ordem das Métricas",
+      default: [],
+      description: "Selecione a ordem desejada das métricas (medidas + table calculations)"
+    }
 
     },
     create: function(element, config) {
@@ -230,50 +228,49 @@ looker.plugins.visualizations.add({
         const pivotCount = hasPivot ? pivots.length : 1;
         const totalCols = dimensionCount + (pivotCount * (measureCount + tableCalcs.length));
 
-        const newOptions = {};
-
         // Campos diretos (dimensões e medidas)
-        const fields = [...queryResponse.fields.dimensions, ...queryResponse.fields.measures, ...queryResponse.fields.table_calculations];
-        fields.forEach(field => {
-          newOptions[`label_${field.name}`] = {
-            label: `Label para ${field.label}`,
-            type: "string",
-            display: "text",
-            section: "Series",
-            default: field.label,
-            placeholder: field.label_short
-          };
-        });
+        const mergedOptions = { ...this.options };
 
-        newOptions[`order_metrics`] = {
-            name: "metric_order",
-            type: "array",
-            label: "Ordem das Métricas",
-            section: "Order",
-            default: [],
-            description: "Selecione e ordene as métricas na ordem desejada",
-            values: ["revenue", "percent_revenue", "calc_margin"]
-          };
+        // Adiciona dinamicamente labels para dimensões, medidas e cálculos
+        const fields = [
+          ...queryResponse.fields.dimensions,
+          ...queryResponse.fields.measures,
+          ...queryResponse.fields.table_calculations,
+        ];
+
+        fields.forEach(field => {
+          const key = `label_${field.name}`;
+          if (!mergedOptions[key]) { // só adiciona se ainda não existir
+            mergedOptions[key] = {
+              label: `Label para ${field.label}`,
+              type: "string",
+              display: "text",
+              section: "Series",
+              default: field.label,
+              placeholder: field.label_short
+            };
+          }
+        });
 
         // Campos pivotados
         if (queryResponse.fields.pivots) {
           queryResponse.fields.pivots.forEach(pivotField => {
-            newOptions[`label_pivot_${pivotField.name}`] = {
-              label: `Label para pivô ${pivotField.label}`,
-              type: "string",
-              display: "text",
-              section: "Series",
-              default: pivotField.label,
-              placeholder: pivotField.label_short
-            };
+            const key = `label_pivot_${pivotField.name}`;
+            if (!mergedOptions[key]) {
+              mergedOptions[key] = {
+                label: `Label para pivô ${pivotField.label}`,
+                type: "string",
+                display: "text",
+                section: "Series",
+                default: pivotField.label,
+                placeholder: pivotField.label_short
+              };
+            }
           });
         }
 
-
-        // Atualiza as opções da visualização
-        this.options = newOptions;
-
-        // Sempre registra novamente as opções, independente de "details.changed"
+        // Aplica as opções finalizadas sem sobrescrever as do manifest
+        this.options = mergedOptions;
         this.trigger("registerOptions", this.options);
 
         // Cria o grid
