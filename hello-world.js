@@ -724,6 +724,7 @@ looker.plugins.visualizations.add({
             const cell = e.target.closest(".grid-cell");
             if (cell.classList.contains("grid-header-cell")) return;
             if (cell.classList.contains("sticky-dimension")) return;
+            if (cell.classList.contains("grid-total-row")) return;
             if (!cell) return;
 
             const row = cell.dataset.row;
