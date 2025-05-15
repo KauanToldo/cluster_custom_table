@@ -15,7 +15,6 @@ looker.plugins.visualizations.add({
         name: "metric_order",
         type: "array",
         label: "Ordem das Métricas",
-        required: no,
         section: "Order",
         default: [],
         description: "Selecione e ordene as métricas na ordem desejada",
