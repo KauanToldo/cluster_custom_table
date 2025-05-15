@@ -526,7 +526,6 @@ looker.plugins.visualizations.add({
                     div.className = `grid-cell numeric ${rowClass} ${field._type === 'table_calc' ? 'table-calc-cell' : ''} ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
                     div.dataset.row = rowIndex;
                     div.dataset.col = colIndex;
-                    div.dataset.group = groupKey;
                     div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
                     tableGrid.appendChild(div);
                     colIndex++;
@@ -540,7 +539,6 @@ looker.plugins.visualizations.add({
                     div.className = `grid-cell numeric ${rowClass} ${field._type === 'table_calc' ? 'table-calc-cell' : ''} ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
                     div.dataset.row = rowIndex;
                     div.dataset.col = colIndex;
-                    div.dataset.group = groupKey;
                     div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
                     tableGrid.appendChild(div);
                     colIndex++;
