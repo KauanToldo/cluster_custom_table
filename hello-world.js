@@ -269,6 +269,38 @@ looker.plugins.visualizations.add({
           });
         }
 
+        mergedOptions["order_metrics"] = {
+          type: "array",
+          label: "Ordem das Métricas",
+          display: "select",
+          section: "Order",
+          default: [],
+          values: allMetrics.map(m => [m.label, m.name]) // [[label visível, valor armazenado], ...]
+        };
+
+        let orderedMetrics;
+
+        if (Array.isArray(config.order_metrics) && config.order_metrics.length > 0) {
+          orderedMetrics = [];
+
+          // Adiciona os campos na ordem do usuário
+          config.order_metrics.forEach(metricName => {
+            const metric = allMetrics.find(m => m.name === metricName);
+            if (metric) {
+              orderedMetrics.push(metric);
+            }
+          });
+
+          // Adiciona os que não foram incluídos (fallback)
+          allMetrics.forEach(metric => {
+            if (!orderedMetrics.find(m => m.name === metric.name)) {
+              orderedMetrics.push(metric);
+            }
+          });
+        } else {
+          orderedMetrics = allMetrics;
+        }
+
         // Aplica as opções finalizadas sem sobrescrever as do manifest
         this.options = mergedOptions;
         this.trigger("registerOptions", this.options);
@@ -321,7 +353,7 @@ looker.plugins.visualizations.add({
           });
 
           pivots.forEach(() => {
-            allMetrics.forEach(field => {
+            orderedMetrics.forEach(field => {
               const div = document.createElement("div");
               div.className = `grid-cell grid-header-cell header-row-2 ${field._type === 'table_calc' ? 'table-calc' : 'measure'}`;
               const customLabel = config[`label_${field.name}`];
@@ -339,7 +371,7 @@ looker.plugins.visualizations.add({
             tableGrid.appendChild(div);
           });
 
-          allMetrics.forEach(field => {
+          orderedMetrics.forEach(field => {
             const div = document.createElement("div");
             div.className = `grid-cell grid-header-cell header-row-2 ${field._type === 'table_calc' ? 'table-calc' : 'measure'}`;
             const customLabel = config[`label_${field.name}`];
