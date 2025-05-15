@@ -292,7 +292,8 @@ looker.plugins.visualizations.add({
             tableCalcs.forEach(calc => {
               const div = document.createElement("div");
               div.className = "grid-cell grid-header-cell header-row-2 table-calc";
-              div.textContent = calc.label;
+              const customLabel = config[`label_${calc.name}`];
+              div.textContent = customLabel
               tableGrid.appendChild(div);
             });
           });
@@ -318,7 +319,8 @@ looker.plugins.visualizations.add({
           tableCalcs.forEach(calc => {
             const div = document.createElement("div");
             div.className = "grid-cell grid-header-cell";
-            div.textContent = calc.label;
+            const customLabel = config[`label_${calc.name}`];
+            div.textContent = customLabel
             tableGrid.appendChild(div);
           });
         }
