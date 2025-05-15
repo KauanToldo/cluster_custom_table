@@ -19,6 +19,7 @@ looker.plugins.visualizations.add({
                 border-radius: 8px;
                 font-family: Arial, sans-serif;
                 width: 100%;
+                gap: 0;
             }
 
             .header-row-1 {
@@ -60,6 +61,8 @@ looker.plugins.visualizations.add({
                 text-decoration: none;
                 color: #000000;
                 box-sizing: border-box;
+                margin-top: -1px;
+                margin-right: -1px;
             }
 
             .grid-header-cell.grid-cell {
