@@ -290,15 +290,14 @@ looker.plugins.visualizations.add({
           const optionKey = `metric_position_${index + 1}`;
           mergedOptions[optionKey] = {
             type: "string",
-            label: `${ordinal(index + 1)} métrica`, // Ex: Primeira, Segunda, etc.
+            label: `${ordinal(index + 1)} métrica`, // Primeira, Segunda, etc.
             display: "select",
             section: "Order",
-            // default: metric.name,
-            values: {
-              "tese": "Tese",
-              "orders.total_orders": "Orders Total Orders",
-              "order_items.total_sale_price": "Order Items Total Sale Price"
-            }
+            default: metric.name,  // <- ADICIONE ISSO
+            values: allMetrics.reduce((acc, m) => {
+              acc[m.name] = m.label;
+              return acc;
+            }, {})
           };
         });
 
@@ -309,7 +308,7 @@ looker.plugins.visualizations.add({
         console.log("Options:", this.options);
 
         this.trigger("registerOptions", this.options);
-        
+
         console.log("Options registrados:", this.options);
 
         // Cria o grid
