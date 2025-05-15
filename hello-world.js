@@ -390,7 +390,7 @@ looker.plugins.visualizations.add({
             tableGrid.appendChild(div);
           });
 
-          orderedMetrics.forEach(field => {
+          finalMetrics.forEach(field => {
             const div = document.createElement("div");
             div.className = `grid-cell grid-header-cell header-row-2 ${field._type === 'table_calc' ? 'table-calc' : 'measure'}`;
             const customLabel = config[`label_${field.name}`];
@@ -470,7 +470,7 @@ looker.plugins.visualizations.add({
 
               if (hasPivot) {
                 pivots.forEach(pivot => {
-                  allMetrics.forEach((field, index) => {
+                  finalMetrics.forEach((field, index) => {
                   const cellData = subtotalRow[field.name]?.[pivot.key];
                   const isLastInPivotBlock = index === allMetrics.length - 1;
                   const div = document.createElement("div");
@@ -484,7 +484,7 @@ looker.plugins.visualizations.add({
                 });
                 });
               } else {
-                allMetrics.forEach((field, index) => {
+                finalMetrics.forEach((field, index) => {
                   const cellData = subtotalRow[field.name]?.[pivot.key];
                   const isLastInPivotBlock = index === allMetrics.length - 1;
                   const div = document.createElement("div");
@@ -527,7 +527,7 @@ looker.plugins.visualizations.add({
 
                 if (hasPivot) {
                   pivots.forEach(pivot => {
-                    allMetrics.forEach((field, index) => {
+                    finalMetrics.forEach((field, index) => {
                     const div = document.createElement("div");
                     const cellData = row[field.name]?.[pivot.key]; // ou row[field.name] sem pivot
                     const isLastInPivotBlock = index === allMetrics.length - 1;
@@ -541,7 +541,7 @@ looker.plugins.visualizations.add({
                   });
                   });
                 } else {
-                  allMetrics.forEach((field, index) => {
+                  finalMetrics.forEach((field, index) => {
                     const div = document.createElement("div");
                     const cellData = row[field.name]?.[pivot.key]; // ou row[field.name] sem pivot
                     const isLastInPivotBlock = index === allMetrics.length - 1;
@@ -583,7 +583,7 @@ looker.plugins.visualizations.add({
 
               if (hasPivot) {
                 pivots.forEach(pivot => {
-                  allMetrics.forEach((field, index) => {
+                  finalMetrics.forEach((field, index) => {
                     const div = document.createElement("div");
                     const cellData = row[field.name]?.[pivot.key]; // ou row[field.name] sem pivot
                     const isLastInPivotBlock = index === allMetrics.length - 1;
@@ -596,7 +596,7 @@ looker.plugins.visualizations.add({
                   });
                 });
               } else {
-                allMetrics.forEach((field, index) => {
+                finalMetrics.forEach((field, index) => {
                     const div = document.createElement("div");
                     const cellData = row[field.name]?.[pivot.key]; // ou row[field.name] sem pivot
                     const isLastInPivotBlock = index === allMetrics.length - 1;
@@ -645,7 +645,7 @@ looker.plugins.visualizations.add({
             // === MÉTRICAS (MEASURES) E CÁLCULOS (TABLE CALCS) ===
             if (hasPivot) {
               pivots.forEach(pivot => {
-                allMetrics.forEach((field, index) => {
+                finalMetrics.forEach((field, index) => {
                   const value = totalRow[field.name]?.[pivot.key];
                   const isLastInPivotBlock = index === allMetrics.length - 1;
                   const div = document.createElement("div");
@@ -658,7 +658,7 @@ looker.plugins.visualizations.add({
                 });
               });
             } else {
-              allMetrics.forEach((field, index) => {
+              finalMetrics.forEach((field, index) => {
                 const value = totalRow[field.name];
                 const isLast = index === allMetrics.length - 1;
                 const div = document.createElement("div");
