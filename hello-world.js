@@ -466,11 +466,6 @@ looker.plugins.visualizations.add({
                     allMetrics.forEach((field, index) => {
                     const div = document.createElement("div");
                     const cellData = row[field.name]?.[pivot.key]; // ou row[field.name] sem pivot
-                    const rawValue = cellData?.value;
-                    const numericValue = parseFloat(String(rawValue)?.replace(/[^\d.-]/g, ''));
-                    if (!isNaN(numericValue) && numericValue < 0) {
-                      div.style.color = "red";
-                    }
                     const isLastInPivotBlock = index === allMetrics.length - 1;
                     div.className = `grid-cell numeric ${rowClass} ${field._type === 'table_calc' ? 'table-calc-cell' : ''} ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
                     div.dataset.row = rowIndex;
@@ -485,11 +480,6 @@ looker.plugins.visualizations.add({
                   allMetrics.forEach((field, index) => {
                     const div = document.createElement("div");
                     const cellData = row[field.name]?.[pivot.key]; // ou row[field.name] sem pivot
-                    const rawValue = cellData?.value;
-                    const numericValue = parseFloat(String(rawValue)?.replace(/[^\d.-]/g, ''));
-                    if (!isNaN(numericValue) && numericValue < 0) {
-                      div.style.color = "red";
-                    }
                     const isLastInPivotBlock = index === allMetrics.length - 1;
                     div.className = `grid-cell numeric ${rowClass} ${field._type === 'table_calc' ? 'table-calc-cell' : ''} ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
                     div.dataset.row = rowIndex;
@@ -529,55 +519,31 @@ looker.plugins.visualizations.add({
 
               if (hasPivot) {
                 pivots.forEach(pivot => {
-                  measures.forEach((measure, mIndex) => {
-                    const cellData = row[measure.name][pivot.key];
+                  allMetrics.forEach((field, index) => {
                     const div = document.createElement("div");
-                    const rawValue = cellData?.value;
-                    const numericValue = parseFloat(String(rawValue)?.replace(/[^\d.-]/g, ''));
-                    if (!isNaN(numericValue) && numericValue < 0) {
-                      div.style.color = "red";
-                    }
-                    const isLastInPivotBlock = mIndex === measures.length - 1 && tableCalcs.length === 0;
-                    div.className = `grid-cell numeric ${rowClass} ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
+                    const cellData = row[field.name]?.[pivot.key]; // ou row[field.name] sem pivot
+                    const isLastInPivotBlock = index === allMetrics.length - 1;
+                    div.className = `grid-cell numeric ${rowClass} ${field._type === 'table_calc' ? 'table-calc-cell' : ''} ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
                     div.dataset.row = rowIndex;
                     div.dataset.col = colIndex;
-                    div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
-                    tableGrid.appendChild(div);
-                    colIndex++;
-                  });
-
-                  tableCalcs.forEach((calc, calcIndex) => {
-                    const isLastInPivotBlock = calcIndex === tableCalcs.length - 1;
-                    const div = document.createElement("div");
-                    const cellData = row[calc.name]?.[pivot.key];
-                    div.className = `grid-cell table-calc-cell numeric ${rowClass} ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
-                    div.dataset.row = rowIndex;
-                    div.dataset.col = colIndex;
+                    div.dataset.group = groupKey;
                     div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
                     tableGrid.appendChild(div);
                     colIndex++;
                   });
                 });
               } else {
-                measures.forEach(measure => {
-                  const div = document.createElement("div");
-                  div.className = `grid-cell numeric ${rowClass}`;
-                  div.dataset.row = rowIndex;
-                  div.dataset.col = colIndex;
-                  div.innerHTML = LookerCharts.Utils.htmlForCell(row[measure.name]);
-                  tableGrid.appendChild(div);
-                  colIndex++;
-                });
-
-                tableCalcs.forEach(calc => {
-                  const div = document.createElement("div");
-                  const cellData = row[calc.name];
-                  div.className = `grid-cell table-calc-cell numeric ${rowClass}`;
-                  div.dataset.row = rowIndex;
-                  div.dataset.col = colIndex;
-                  div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
-                  tableGrid.appendChild(div);
-                  colIndex++;
+                allMetrics.forEach((field, index) => {
+                    const div = document.createElement("div");
+                    const cellData = row[field.name]?.[pivot.key]; // ou row[field.name] sem pivot
+                    const isLastInPivotBlock = index === allMetrics.length - 1;
+                    div.className = `grid-cell numeric ${rowClass} ${field._type === 'table_calc' ? 'table-calc-cell' : ''} ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
+                    div.dataset.row = rowIndex;
+                    div.dataset.col = colIndex;
+                    div.dataset.group = groupKey;
+                    div.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
+                    tableGrid.appendChild(div);
+                    colIndex++;
                 });
               }
             });
