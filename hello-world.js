@@ -209,8 +209,8 @@ looker.plugins.visualizations.add({
         const measures = queryResponse.fields.measures;
         const tableCalcs = queryResponse.fields.table_calculations || [];
         const allMetrics = [
-          ...tableCalcs.map(tc => ({ ...tc, _type: "table_calc" })),
-          ...measures.map(m => ({ ...m, _type: "measure" }))
+          ...measures.map(m => ({ ...m, _type: "measure" })),
+          ...tableCalcs.map(tc => ({ ...tc, _type: "table_calc" }))
           
         ];
 
