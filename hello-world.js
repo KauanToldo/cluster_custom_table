@@ -7,6 +7,7 @@ looker.plugins.visualizations.add({
       type: "array",
       label: "Ordem das Métricas",
       section: "Order",
+      display: "select",
       default: [],
       description: "Selecione a ordem desejada das métricas (medidas + table calculations)"
     }
