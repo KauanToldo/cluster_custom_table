@@ -290,13 +290,40 @@ looker.plugins.visualizations.add({
             display: "select",
             section: "Order",
             values: metricValues,
-            default: metric.name
           };
         });
 
 
         this.options = mergedOptions;
         this.trigger("registerOptions", this.options);
+
+
+        const metricOrderRaw = [];
+        for(let i = 0; i < allMetrics.length; i++) {
+          const selectedMetricName = config[`metric_position_${i+1}`];
+          if(selectedMetricName) {
+            metricOrderRaw.push(selectedMetricName);
+          }
+        }
+
+        // Remove duplicatas, mantendo a primeira ocorrência só
+        const metricOrder = [];
+        metricOrderRaw.forEach(name => {
+          if (!metricOrder.includes(name)) {
+            metricOrder.push(name);
+          }
+        });
+
+        const orderedMetrics = metricOrder.map(name =>
+          allMetrics.find(metric => metric.name === name)
+        ).filter(Boolean);
+
+        const remainingMetrics = allMetrics.filter(metric =>
+          !metricOrder.includes(metric.name)
+        );
+
+        const finalMetrics = [...orderedMetrics, ...remainingMetrics];
+
         // Cria o grid
         const tableGrid = document.createElement("div");
         tableGrid.className = "grid-table";
@@ -345,7 +372,7 @@ looker.plugins.visualizations.add({
           });
 
           pivots.forEach(() => {
-            allMetrics.forEach(field => {
+            finalMetrics.forEach(field => {
               const div = document.createElement("div");
               div.className = `grid-cell grid-header-cell header-row-2 ${field._type === 'table_calc' ? 'table-calc' : 'measure'}`;
               const customLabel = config[`label_${field.name}`];
