@@ -221,6 +221,8 @@ looker.plugins.visualizations.add({
           
         ];
 
+        console.log(allMetrics)
+
         const dimensionCount = dimensions.length;
         const measureCount = measures.length;
         const pivotCount = hasPivot ? pivots.length : 1;
