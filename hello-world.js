@@ -637,7 +637,7 @@ looker.plugins.visualizations.add({
                   const value = totalRow[field.name]?.[pivot.key];
                   const isLastInPivotBlock = index === allMetrics.length - 1;
                   const div = document.createElement("div");
-                  div.className = `grid-cell numeric grid-total-row ${field._type === 'table_calc' ? 'table-calc-cell' : ''} ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
+                  div.className = `grid-cell numeric grid-total-row ${field._type === 'table_calc' ? 'table-calc-cell' : ''} `;
                   div.dataset.row = totalRowIndex;
                   div.dataset.col = colIndex;
                   div.innerHTML = LookerCharts.Utils.htmlForCell(value);
@@ -650,7 +650,7 @@ looker.plugins.visualizations.add({
                 const value = totalRow[field.name];
                 const isLast = index === allMetrics.length - 1;
                 const div = document.createElement("div");
-                div.className = `grid-cell numeric grid-total-row ${field._type === 'table_calc' ? 'table-calc-cell' : ''} ${!isLast ? 'no-right-border' : ''}`;
+                div.className = `grid-cell numeric grid-total-row ${field._type === 'table_calc' ? 'table-calc-cell' : ''} `;
                 div.dataset.row = totalRowIndex;
                 div.dataset.col = colIndex;
                 div.innerHTML = LookerCharts.Utils.htmlForCell(value);
