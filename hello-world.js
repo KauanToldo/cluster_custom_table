@@ -305,6 +305,10 @@ looker.plugins.visualizations.add({
 
         console.log("Config atual:", config);
 
+        this.options = mergedOptions;
+        this.trigger("registerOptions", this.options);
+        done();
+
         // Cria o grid
         const tableGrid = document.createElement("div");
         tableGrid.className = "grid-table";
@@ -714,8 +718,6 @@ looker.plugins.visualizations.add({
         }
 
         applyBottomCornerRounding();
-        this.options = mergedOptions;
-        this.trigger("registerOptions", this.options);
         done();
 
         requestAnimationFrame(() => {
