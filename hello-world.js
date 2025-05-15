@@ -273,7 +273,7 @@ looker.plugins.visualizations.add({
           //   9: "Nona",
           //   10: "Décima"
           // };
-          return map[n] || `${n}ª`;
+          return `${n}ª`;
         }
 
         allMetrics.forEach((metric, index) => {
