@@ -62,7 +62,6 @@ looker.plugins.visualizations.add({
                 color: #000000;
                 box-sizing: border-box;
                 margin-top: -1px;
-                margin-right: -1px;
             }
 
             .grid-header-cell.grid-cell {
@@ -169,8 +168,9 @@ looker.plugins.visualizations.add({
               background-color: #EEF5EC;
             }
 
-            .grid-cell.grid-total-row {
-              border-right: 1px solid #FFFFFF;
+            ..grid-total-row {
+              border: none;
+              margin-left: 1px;
             }
 
             .grid-total-row {
