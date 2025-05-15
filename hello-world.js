@@ -300,8 +300,7 @@ looker.plugins.visualizations.add({
 
         console.log("metricValues", metricValues);
         // Aplica as opções finalizadas sem sobrescrever as do manifest
-        this.options = mergedOptions;
-        this.trigger("registerOptions", this.options);
+
 
         console.log("Config atual:", config);
 
@@ -714,7 +713,8 @@ looker.plugins.visualizations.add({
         }
 
         applyBottomCornerRounding();
-
+        this.options = mergedOptions;
+        this.trigger("registerOptions", this.options);
         done();
 
         requestAnimationFrame(() => {
