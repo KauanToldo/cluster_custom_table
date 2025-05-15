@@ -286,30 +286,31 @@ looker.plugins.visualizations.add({
           return map[n] || `${n}ª`;
         }
 
-        const newOptions = {};
         allMetrics.forEach((metric, index) => {
           const optionKey = `metric_position_${index + 1}`;
-          newOptions[optionKey] = {
+          mergedOptions[optionKey] = {
             type: "string",
             label: `${ordinal(index + 1)} métrica`, // Ex: Primeira, Segunda, etc.
             display: "select",
             section: "Order",
-            default: metric.name,
-            values: {'metric_position_1': "tese", 'metric_position_2': "orders.total_orders", "metric_position_3": "order_items.total_sale_price"}
+            // default: metric.name,
+            values: {
+              "tese": "Tese",
+              "orders.total_orders": "Orders Total Orders",
+              "order_items.total_sale_price": "Order Items Total Sale Price"
+            }
           };
         });
 
 
-        console.log("metricValues", metricValues);
-        // Aplica as opções finalizadas sem sobrescrever as do manifest
-
-
-        console.log("Config atual:", config);
-
         this.options = mergedOptions;
-        this.options = Object.assign(this.options, newOptions);
+
+        console.log("Config:", config);
+        console.log("Options:", this.options);
+
         this.trigger("registerOptions", this.options);
-        done();
+        
+        console.log("Options registrados:", this.options);
 
         // Cria o grid
         const tableGrid = document.createElement("div");
