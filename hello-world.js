@@ -617,23 +617,11 @@ looker.plugins.visualizations.add({
             // === MÉTRICAS (MEASURES) E CÁLCULOS (TABLE CALCS) ===
             if (hasPivot) {
               pivots.forEach(pivot => {
-                measures.forEach((measure, mIndex) => {
-                  const value = totalRow[measure.name]?.[pivot.key];
-                  const isLastInPivotBlock = mIndex === measures.length - 1 && tableCalcs.length === 0;
+                allMetrics.forEach((field, index) => {
+                  const value = totalRow[field.name]?.[pivot.key];
+                  const isLastInPivotBlock = index === allMetrics.length - 1;
                   const div = document.createElement("div");
-                  div.className = `grid-cell numeric grid-total-row ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
-                  div.dataset.row = totalRowIndex;
-                  div.dataset.col = colIndex;
-                  div.innerHTML = LookerCharts.Utils.htmlForCell(value);
-                  tableGrid.appendChild(div);
-                  colIndex++;
-                });
-
-                tableCalcs.forEach((calc, calcIndex) => {
-                  const value = totalRow[calc.name]?.[pivot.key];
-                  const isLastInPivotBlock = calcIndex === tableCalcs.length - 1;
-                  const div = document.createElement("div");
-                  div.className = `grid-cell table-calc-cell numeric grid-total-row ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
+                  div.className = `grid-cell numeric grid-total-row ${field._type === 'table_calc' ? 'table-calc-cell' : ''} ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
                   div.dataset.row = totalRowIndex;
                   div.dataset.col = colIndex;
                   div.innerHTML = LookerCharts.Utils.htmlForCell(value);
@@ -642,21 +630,11 @@ looker.plugins.visualizations.add({
                 });
               });
             } else {
-              measures.forEach(measure => {
-                const value = totalRow[measure.name];
+              allMetrics.forEach((field, index) => {
+                const value = totalRow[field.name];
+                const isLast = index === allMetrics.length - 1;
                 const div = document.createElement("div");
-                div.className = `grid-cell numeric grid-total-row`;
-                div.dataset.row = totalRowIndex;
-                div.dataset.col = colIndex;
-                div.innerHTML = LookerCharts.Utils.htmlForCell(value);
-                tableGrid.appendChild(div);
-                colIndex++;
-              });
-
-              tableCalcs.forEach(calc => {
-                const value = totalRow[calc.name];
-                const div = document.createElement("div");
-                div.className = `grid-cell table-calc-cell numeric grid-total-row`;
+                div.className = `grid-cell numeric grid-total-row ${field._type === 'table_calc' ? 'table-calc-cell' : ''} ${!isLast ? 'no-right-border' : ''}`;
                 div.dataset.row = totalRowIndex;
                 div.dataset.col = colIndex;
                 div.innerHTML = LookerCharts.Utils.htmlForCell(value);
