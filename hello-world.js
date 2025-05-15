@@ -345,7 +345,7 @@ looker.plugins.visualizations.add({
           });
 
           pivots.forEach(() => {
-            orderedMetrics.forEach(field => {
+            allMetrics.forEach(field => {
               const div = document.createElement("div");
               div.className = `grid-cell grid-header-cell header-row-2 ${field._type === 'table_calc' ? 'table-calc' : 'measure'}`;
               const customLabel = config[`label_${field.name}`];
