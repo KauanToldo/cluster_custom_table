@@ -3,7 +3,7 @@ looker.plugins.visualizations.add({
     label: "Hello World",
     options: {
 
-    option: {
+    order_metrics: {
       name: "metric_order",
       type: "array",
       label: "Ordem das Métricas",
