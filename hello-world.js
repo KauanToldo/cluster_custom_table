@@ -11,6 +11,8 @@ looker.plugins.visualizations.add({
             .table-wrapper {
               position: relative;
               width: max-content;
+              scrollbar-gutter: stable both-edges;
+              overflow: scroll; /* em vez de auto */
             }
 
             .grid-table {
