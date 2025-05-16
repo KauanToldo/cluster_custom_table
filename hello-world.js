@@ -178,7 +178,6 @@ looker.plugins.visualizations.add({
               outline: 1px solid transparent;
               z-index: 1;
               box-sizing: border-box;
-              display: contents;
             }
 
             .grid-table .grid-total-row:last-of-type {
