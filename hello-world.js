@@ -431,7 +431,8 @@ looker.plugins.visualizations.add({
               subtotalDim1Div.dataset.group = groupKey;
 
               const labelSpan = document.createElement("span");
-              const cellData = subtotalRow[groupKey];
+              const dimensionField = dimensions[0].name;
+              const cellData = subtotalRow[dimensionField];
               labelSpan.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
 
               const toggleButton = document.createElement("button");
