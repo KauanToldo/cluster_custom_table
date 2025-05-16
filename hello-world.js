@@ -177,6 +177,7 @@ looker.plugins.visualizations.add({
             .grid-total-row {
               font-weight: bold;
               color: white !important;
+              background-color: #012C75;
             }
 
             .grid-total-row span span a {
