@@ -174,23 +174,14 @@ looker.plugins.visualizations.add({
               background-color: #EEF5EC;
             }
 
-            // .grid-total-row {
-            //   font-weight: bold;
-            //   border-top: 2px solid #012C75;
-            //   background-color:#012C75;
-            //   position: sticky;
-            //   color: white !important;
-            //   bottom: 0;
-            //   box-sizing: border-box;
-            // }
+            .grid-total-row {
+              font-weight: bold;
+              color: white !important;
+            }
 
-            // .grid-table .grid-total-row:last-of-type {
-            //   border-right: none;
-            // }
-
-            // .grid-total-row span span a {
-            //   color: white !important;
-            // }
+            .grid-total-row span span a {
+              color: white !important;
+            }
 
             .grid-total-container {
               display: grid;
@@ -198,8 +189,13 @@ looker.plugins.visualizations.add({
               grid-column: 1 / -1;
               position: sticky;
               bottom: 0;
-              background: white;
-              z-index: 3; /* garanta que fique sobre as outras linhas */
+              color: white;
+              background-color: #012C75;
+              z-index: 3;
+            }
+
+            .grid-total-container:first-child {
+              border-radius: 8px 0px 0px 0px;
             }
 
         </style>
