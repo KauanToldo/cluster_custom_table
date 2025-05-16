@@ -20,6 +20,7 @@ looker.plugins.visualizations.add({
                 font-family: Arial, sans-serif;
                 width: 100%;
                 gap: 0;
+                box-sizing: border-box;
             }
 
             .header-row-1 {
@@ -321,7 +322,7 @@ looker.plugins.visualizations.add({
         // Cria o grid
         const tableGrid = document.createElement("div");
         tableGrid.className = "grid-table";
-        tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, max-content)`;
+        tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, minmax(50px, max-content))`;
 
         function toggleGroupVisibility(groupKey, button) {
           const icon = button.querySelector("i");
