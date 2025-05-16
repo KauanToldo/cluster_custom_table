@@ -181,6 +181,10 @@ looker.plugins.visualizations.add({
               box-sizing: border-box;
             }
 
+            .grid-table .grid-total-row:first-of-type {
+              z-index: 2;
+            }
+
             .grid-table .grid-total-row:last-of-type {
               border-right: none;
             }
