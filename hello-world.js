@@ -149,8 +149,7 @@ looker.plugins.visualizations.add({
             .grid-subtotal-row {
               background-color: #f9f9f9;
               font-weight: bold;
-              // border-top: 2px solid black;
-              // border-bottom: 2px solid black;
+              border-top: 1px solid black;
             }
 
             .collapse-toggle {
