@@ -65,6 +65,11 @@ looker.plugins.visualizations.add({
                 margin-top: -1px;
             }
 
+            .grid-cell[data-col="1"], .grid-table > .grid-cell.header-row-2.dimension:last-child {
+              max-width: 350px;
+              white-space: wrap;
+            }
+
             .grid-cell.sticky-dimension {
               transform: translateZ(0);
             }
