@@ -178,6 +178,10 @@ looker.plugins.visualizations.add({
               bottom: 0;
             }
 
+            .grid-table .grid-total-row:last-of-type {
+              border-right: none;
+            }
+
             .grid-total-row span span a {
               color: white !important;
             }
