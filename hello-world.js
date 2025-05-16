@@ -71,7 +71,7 @@ looker.plugins.visualizations.add({
             // }
 
             .grid-cell.sticky-dimension {
-              transform: translateZ(0);
+              border-right: 1px solid #ddd
             }
 
             .grid-header-cell.grid-cell {
@@ -106,7 +106,7 @@ looker.plugins.visualizations.add({
             }
 
             .no-right-border {
-                border-right: 1px solid transparent;
+                border-right: 1px solid transparent !important;
             }
 
             .grid-cell.dim-separator {
