@@ -134,7 +134,7 @@ looker.plugins.visualizations.add({
             }
 
             .grid-row-odd {
-                background-color: #f5f5f5;
+                background-color:rgb(223, 223, 223);
             }
 
             .grid-cell.hovered {
