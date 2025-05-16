@@ -171,7 +171,6 @@ looker.plugins.visualizations.add({
             .grid-total-row {
               font-weight: bold;
               border-top: 2px solid #012C75;
-              border-right: 2px solid #ddd;
               background-color:#012C75;
               position: sticky;
               color: white !important;
@@ -432,7 +431,8 @@ looker.plugins.visualizations.add({
               subtotalDim1Div.dataset.group = groupKey;
 
               const labelSpan = document.createElement("span");
-              labelSpan.textContent = groupKey; // TODO : trazer o drilldown
+              const cellData = subtotalRow[groupKey];
+              labelSpan.innerHTML = LookerCharts.Utils.htmlForCell(cellData);
 
               const toggleButton = document.createElement("button");
               toggleButton.className = "collapse-toggle";
