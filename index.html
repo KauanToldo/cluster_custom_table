@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        .table-grid {
+            display: grid;
+            grid-template-columns: repeat(5, max-content); /* ou baseado no número de colunas */
+            }
+
+            .sticky-footer {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            z-index: 2;
+            }
+
+            .footer-grid {
+                display: grid;
+                grid-template-columns: subgrid;
+                grid-column: 1 / -1;
+                position: sticky;
+                bottom: 0;
+                background: white;
+            }
+
+            .cell {
+                border-right: 1px solid black;
+                padding: 10px;
+            }
+    </style>
+    <div class="table-wrapper">
+    <div class="table-grid">
+        <!-- Cabeçalho -->
+        <div class="cell header">Header 1</div>
+        <div class="cell header">Header 2</div>
+        <div class="cell header">Header 2</div>
+        <div class="cell header">Header 2</div>
+        <div class="cell header">Header 2</div>
+
+        <!-- Corpo -->
+        <div class="cell">Row 1, Col 1</div>
+        <div class="cell">Row 1, Col 2aaaaaaaa</div>
+        <div class="cell">Row 1, Col 2</div>
+        <div class="cell">Row 1, Col 2</div>
+        <div class="cell">Row 1, Col 2</div>
+                <div class="cell">Row 1, Col 1</div>
+        <div class="cell">Row 1, Col 2</div>
+        <div class="cell">Row 1, Col 2</div>
+        <div class="cell">Row 1, Col 2</div>
+        <div class="cell">Row 1, Col 2</div>
+                <div class="cell">Row 1, Col 1</div>
+        <div class="cell">Row 1, Col 2</div>
+        <div class="cell">Row 1, Col 2</div>
+        <div class="cell">Row 1, Col 2</div>
+        <div class="cell">Row 1, Col 2</div>
+                <div class="cell">Row 1, Col 1</div>
+        <div class="cell">Row 1, Col 2</div>
+        <div class="cell">Row 1, Col 2</div>
+        <div class="cell">Row 1, Col 2</div>
+        <div class="cell">Row 1, Col 2</div>
+                <div class="cell">Row 1, Col 1</div>
+        <div class="cell">Row 1, Col 2</div>
+        <div class="cell">Row 1, Col 2</div>
+        <div class="cell">Row 1, Col 2</div>
+        <div class="cell">Row 1, Col 2</div>
+                <div class="cell">Row 1, Col 1</div>
+        <div class="cell">Row 1, Col 2</div>
+        <div class="cell">Row 1, Col 2</div>
+        <div class="cell">Row 1, Col 2</div>
+        <div class="cell">Row 1, Col 2</div>
+
+        <!-- Footer wrapper -->
+        <div class="footer-grid">
+            <div class="cell footer">Total 1</div>
+            <div class="cell footer">Total 2</div>
+            <div class="cell footer">Total 2</div>
+            <div class="cell footer">Total 2</div>
+            <div class="cell footer">Total 2</div>
+        </div>
+    </div>
+
+    
+    </div>
+</body>
+</html>
