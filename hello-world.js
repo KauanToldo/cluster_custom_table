@@ -173,18 +173,10 @@ looker.plugins.visualizations.add({
               font-weight: bold;
               border-top: 2px solid #012C75;
               background-color:#012C75;
+              position: sticky;
               color: white !important;
-              box-sizing: border-box;
-            }
-
-            .grid-total-row-container {
-              position: sticky; /* se quiser fixar na parte inferior */
               bottom: 0;
-              z-index: 2;
-              background-color: #002f6c;
-              color: white;
-              font-weight: bold;
-              display: grid;
+              box-sizing: border-box;
             }
 
             .grid-table .grid-total-row:last-of-type {
@@ -618,47 +610,41 @@ looker.plugins.visualizations.add({
           if (queryResponse.totals_data) {
             const totalRow = queryResponse.totals_data;
             let colIndex = 0;
-            const totalRowIndex = tableGrid.childElementCount / dimensions.length;
-
-            // Cria container para a linha de totais
-            const totalRowContainer = document.createElement("div");
-            totalRowContainer.className = "grid-total-row-container";
-            totalRowContainer.style.display = "grid";
-
-            // Copia a estrutura de colunas do grid principal
-            const gridStyle = getComputedStyle(tableGrid);
-            totalRowContainer.style.gridTemplateColumns = gridStyle.gridTemplateColumns;
+            const totalRowIndex = tableGrid.childElementCount / dimensions.length; // base razoável p/ ordenação
 
             // === DIMENSÕES ===
             dimensions.forEach((dim, dIndex) => {
               const div = document.createElement("div");
               const isFirstDimension = dIndex === 0;
+              const isSecondDimension = dIndex === 1;
 
               div.className = "grid-cell sticky-dimension grid-total-row";
+
               if (isFirstDimension) {
                 div.classList.add("no-right-border");
-                div.innerHTML = "<b>Total</b>";
-              }
+              } 
 
               div.dataset.row = totalRowIndex;
               div.dataset.col = colIndex;
-              totalRowContainer.appendChild(div);
+
+              // "Total" só na primeira dimensão
+              div.innerHTML = isFirstDimension ? "<b>Total</b>" : "";
+              tableGrid.appendChild(div);
               colIndex++;
             });
 
-            // === MÉTRICAS E TABLE CALCS ===
+            // === MÉTRICAS (MEASURES) E CÁLCULOS (TABLE CALCS) ===
             if (hasPivot) {
               pivots.forEach(pivot => {
                 finalMetrics.forEach((field, index) => {
                   const value = totalRow[field.name]?.[pivot.key];
                   const isLastInPivotBlock = index === allMetrics.length - 1;
                   const div = document.createElement("div");
-
-                  div.className = `grid-cell numeric grid-total-row ${field._type === 'table_calc' ? 'table-calc-cell' : ''} ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
+                  div.className = `grid-cell numeric grid-total-row ${field._type === 'table_calc' ? 'table-calc-cell' : '' } ${!isLastInPivotBlock ? 'no-right-border' : ''}`;
                   div.dataset.row = totalRowIndex;
                   div.dataset.col = colIndex;
                   div.innerHTML = LookerCharts.Utils.htmlForCell(value);
-                  totalRowContainer.appendChild(div);
+                  tableGrid.appendChild(div);
                   colIndex++;
                 });
               });
@@ -667,18 +653,14 @@ looker.plugins.visualizations.add({
                 const value = totalRow[field.name];
                 const isLast = index === allMetrics.length - 1;
                 const div = document.createElement("div");
-
                 div.className = `grid-cell numeric grid-total-row ${field._type === 'table_calc' ? 'table-calc-cell' : ''} ${!isLast ? 'no-right-border' : ''}`;
                 div.dataset.row = totalRowIndex;
                 div.dataset.col = colIndex;
                 div.innerHTML = LookerCharts.Utils.htmlForCell(value);
-                totalRowContainer.appendChild(div);
+                tableGrid.appendChild(div);
                 colIndex++;
               });
             }
-
-            // Adiciona o container da linha de total no final do grid
-            tableGrid.appendChild(totalRowContainer);
           }
 
 
