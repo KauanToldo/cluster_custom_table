@@ -221,7 +221,7 @@ looker.plugins.visualizations.add({
           totalContainer.style.display = config.show_totals ? 'grid' : 'none';
         }
 
-        doneRendering();
+        done();
 
         const faLink = document.createElement("link");
         faLink.rel = "stylesheet";
