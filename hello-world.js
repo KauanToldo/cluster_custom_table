@@ -5,7 +5,8 @@ looker.plugins.visualizations.add({
       show_totals: {
         type: "boolean",
         label: "Mostrar linha de totais",
-        default: true
+        default: true,
+        section: "Geral"
       }
     },
     create: function(element, config) {
