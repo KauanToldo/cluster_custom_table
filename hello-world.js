@@ -303,11 +303,6 @@ looker.plugins.visualizations.add({
           };
         });
 
-        const totalContainer = element.querySelector('.grid-total-container');
-        if (totalContainer) {
-          totalContainer.style.display = config.show_totals ? 'grid' : 'none';
-        }
-
 
         this.options = mergedOptions;
         this.trigger("registerOptions", this.options);
@@ -758,6 +753,11 @@ looker.plugins.visualizations.add({
           }
         }
 
+
+        const totalContainer = element.querySelector('.grid-total-container');
+        if (totalContainer) {
+          totalContainer.style.display = config.show_totals ? 'grid' : 'none';
+        }
         applyBottomCornerRounding();
         done();
 
