@@ -216,13 +216,6 @@ looker.plugins.visualizations.add({
         this.clearErrors();
         this._tableContainer.innerHTML = "";
 
-        const totalContainer = element.querySelector('.grid-total-container');
-        if (totalContainer) {
-          totalContainer.style.display = config.show_totals ? 'grid' : 'none';
-        }
-
-        done();
-
         const faLink = document.createElement("link");
         faLink.rel = "stylesheet";
         faLink.href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css";
@@ -309,6 +302,11 @@ looker.plugins.visualizations.add({
             values: metricValues,
           };
         });
+
+        const totalContainer = element.querySelector('.grid-total-container');
+        if (totalContainer) {
+          totalContainer.style.display = config.show_totals ? 'grid' : 'none';
+        }
 
 
         this.options = mergedOptions;
