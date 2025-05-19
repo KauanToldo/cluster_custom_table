@@ -2,7 +2,11 @@ looker.plugins.visualizations.add({
     id: "hello_world",
     label: "Hello World",
     options: {
-
+      show_totals: {
+        type: "boolean",
+        label: "Mostrar linha de totais",
+        default: true
+      }
     },
     create: function(element, config) {
 
