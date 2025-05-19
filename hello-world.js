@@ -216,6 +216,13 @@ looker.plugins.visualizations.add({
         this.clearErrors();
         this._tableContainer.innerHTML = "";
 
+        const totalContainer = element.querySelector('.grid-total-container');
+        if (totalContainer) {
+          totalContainer.style.display = config.show_totals ? 'block' : 'none';
+        }
+
+        doneRendering();
+
         const faLink = document.createElement("link");
         faLink.rel = "stylesheet";
         faLink.href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css";
