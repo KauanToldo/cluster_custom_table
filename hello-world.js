@@ -218,7 +218,7 @@ looker.plugins.visualizations.add({
 
         const totalContainer = element.querySelector('.grid-total-container');
         if (totalContainer) {
-          totalContainer.style.display = config.show_totals ? 'block' : 'none';
+          totalContainer.style.display = config.show_totals ? 'grid' : 'none';
         }
 
         doneRendering();
