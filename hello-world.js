@@ -204,6 +204,16 @@ looker.plugins.visualizations.add({
               border-radius: 8px 0px 0px 0px;
             }
 
+            .header-subgrid-container {
+              display: grid;
+              grid-template-columns: subgrid;
+              grid-column: 1 / -1;
+              position: sticky;
+              top: 0;
+              color: white;
+              z-index: 3;
+            }
+
         </style>
       `;
 
@@ -354,6 +364,9 @@ looker.plugins.visualizations.add({
           render_left();
         }
 
+        const headerContainer = document.createElement("div");
+        headerContainer.className = "header-subgrid-container";
+
         // HEADER ROW 1
         if (hasPivot) {
           // Nome do campo pivotado sobre as dimensões
@@ -362,7 +375,7 @@ looker.plugins.visualizations.add({
           pivotedFieldDiv.style.gridColumn = `span ${dimensionCount}`;
           const customLabel = config[`label_pivot_${queryResponse.fields.pivots?.[0]?.name}`];
           pivotedFieldDiv.textContent = customLabel
-          tableGrid.appendChild(pivotedFieldDiv);
+          headerContainer.appendChild(pivotedFieldDiv);
 
           // Cada pivot ocupa o espaço de suas medidas
           pivots.forEach(pivot => {
@@ -371,7 +384,7 @@ looker.plugins.visualizations.add({
             pivotDiv.className = "grid-cell grid-header-cell header-row-1 pivot-dimension";
             pivotDiv.style.gridColumn = `span ${measureCount + tableCalcs.length}`;
             pivotDiv.textContent = pivotLabel;
-            tableGrid.appendChild(pivotDiv);
+            headerContainer.appendChild(pivotDiv);
           });
 
           // HEADER ROW 2 (dimensões + medidas+ table calculations)
@@ -380,7 +393,7 @@ looker.plugins.visualizations.add({
             dimDiv.className = "grid-cell grid-header-cell header-row-2 dimension";
             const customLabel = config[`label_${dim.name}`];
             dimDiv.textContent = customLabel
-            tableGrid.appendChild(dimDiv);
+            headerContainer.appendChild(dimDiv);
           });
 
           pivots.forEach(() => {
@@ -389,7 +402,7 @@ looker.plugins.visualizations.add({
               div.className = `grid-cell grid-header-cell header-row-2 ${field._type === 'table_calc' ? 'table-calc' : 'measure'}`;
               const customLabel = config[`label_${field.name}`];
               div.textContent = customLabel;
-              tableGrid.appendChild(div);
+              headerContainer.appendChild(div);
             });
           });
         } else {
@@ -399,7 +412,7 @@ looker.plugins.visualizations.add({
             div.className = "grid-cell grid-header-cell";
             const customLabel = config[`label_${dim.name}`];
             div.textContent = customLabel
-            tableGrid.appendChild(div);
+            headerContainer.appendChild(div);
           });
 
           finalMetrics.forEach(field => {
@@ -407,9 +420,11 @@ looker.plugins.visualizations.add({
             div.className = `grid-cell grid-header-cell header-row-2 ${field._type === 'table_calc' ? 'table-calc' : 'measure'}`;
             const customLabel = config[`label_${field.name}`];
             div.textContent = customLabel;
-            tableGrid.appendChild(div);
+            headerContainer.appendChild(div);
           });
         }
+        
+        tableGrid.appendChild(headerContainer);
 
           // BODY ROWS (com verificação de subtotal)
 
