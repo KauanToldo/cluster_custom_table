@@ -776,18 +776,18 @@ looker.plugins.visualizations.add({
         applyBottomCornerRounding();
         done();
 
-        requestAnimationFrame(() => {
-          const firstRowCells = tableGrid.querySelectorAll(".header-row-1");
-          if (firstRowCells.length > 0) {
-            // Pega a maior altura da primeira linha (caso haja múltiplas células com quebras de linha)
-            const firstRowHeight = Math.max(...Array.from(firstRowCells).map(el => el.offsetHeight));
+        // requestAnimationFrame(() => {
+        //   const firstRowCells = tableGrid.querySelectorAll(".header-row-1");
+        //   if (firstRowCells.length > 0) {
+        //     // Pega a maior altura da primeira linha (caso haja múltiplas células com quebras de linha)
+        //     const firstRowHeight = Math.max(...Array.from(firstRowCells).map(el => el.offsetHeight));
 
-            const secondRowCells = tableGrid.querySelectorAll(".header-row-2");
-            secondRowCells.forEach(cell => {
-              cell.style.top = `${firstRowHeight}px`;
-            });
-          }
-        });
+        //     const secondRowCells = tableGrid.querySelectorAll(".header-row-2");
+        //     secondRowCells.forEach(cell => {
+        //       cell.style.top = `${firstRowHeight}px`;
+        //     });
+        //   }
+        // });
 
        function render_left() {
         requestAnimationFrame(() => {
