@@ -214,6 +214,16 @@ looker.plugins.visualizations.add({
               z-index: 3;
             }
 
+            .left-header-subgrid {
+              display: grid;
+              grid-template-rows: subgrid;
+              grid-auto-flow: row;
+              grid-column: 1 / -1;
+              position: sticky;
+              left: 0;
+              z-index: 2;
+            }
+
         </style>
       `;
 
