@@ -428,6 +428,9 @@ looker.plugins.visualizations.add({
 
           // BODY ROWS (com verificação de subtotal)
 
+          const leftHeaderGrid = document.createElement("div");
+          leftHeaderGrid.className = "left-header-subgrid"; // classe CSS com subgrid
+
           const subtotalMap = new Map();
           const firstDimName = dimensions[0]?.name;
 
@@ -492,8 +495,10 @@ looker.plugins.visualizations.add({
               subtotalDim2Div.dataset.group = groupKey;
 
               // === Adiciona ambas ao grid ===
-              tableGrid.appendChild(subtotalDim1Div);
-              tableGrid.appendChild(subtotalDim2Div);
+              leftHeaderGrid.appendChild(subtotalDim1Div);
+              leftHeaderGrid.appendChild(subtotalDim2Div);
+
+              tableGrid.appendChild(leftHeaderGrid)
 
               colIndex = dimensions.length;
 
@@ -550,7 +555,7 @@ looker.plugins.visualizations.add({
                     div.innerHTML = LookerCharts.Utils.htmlForCell(row[dim.name]);
                   }
 
-                  tableGrid.appendChild(div);
+                  leftHeaderGrid.appendChild(div);
                   colIndex++;
                 });
 
@@ -606,7 +611,7 @@ looker.plugins.visualizations.add({
                 div.dataset.row = rowIndex;
                 div.dataset.col = colIndex;
                 div.innerHTML = LookerCharts.Utils.htmlForCell(row[dim.name]);
-                tableGrid.appendChild(div);
+                leftHeaderGrid.appendChild(div);
                 colIndex++;
               });
 
