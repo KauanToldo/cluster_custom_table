@@ -214,16 +214,6 @@ looker.plugins.visualizations.add({
               z-index: 3;
             }
 
-            .left-header-subgrid {
-              display: grid;
-              grid-template-rows: subgrid;
-              grid-auto-flow: row;
-              grid-column: 1 / -1;
-              position: sticky;
-              left: 0;
-              z-index: 2;
-            }
-
         </style>
       `;
 
@@ -354,11 +344,7 @@ looker.plugins.visualizations.add({
 
         const finalMetrics = [...orderedMetrics, ...remainingMetrics];
 
-        // Cria o grid
-        const tableGrid = document.createElement("div");
-        tableGrid.className = "grid-table";
-        tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, minmax(50px, max-content))`;
-
+        
         function toggleGroupVisibility(groupKey, button) {
           const icon = button.querySelector("i");
           const isCollapsed = icon.classList.contains("fa-chevron-right");
@@ -373,6 +359,12 @@ looker.plugins.visualizations.add({
 
           render_left();
         }
+
+        // Cria o grid
+        const tableGrid = document.createElement("div");
+        tableGrid.className = "grid-table";
+        tableGrid.style.gridTemplateColumns = `repeat(${totalCols}, minmax(50px, max-content))`;
+
 
         const headerContainer = document.createElement("div");
         headerContainer.className = "header-subgrid-container";
@@ -438,9 +430,6 @@ looker.plugins.visualizations.add({
 
           // BODY ROWS (com verificação de subtotal)
 
-          const leftHeaderGrid = document.createElement("div");
-          leftHeaderGrid.className = "left-header-subgrid"; // classe CSS com subgrid
-
           const subtotalMap = new Map();
           const firstDimName = dimensions[0]?.name;
 
@@ -505,10 +494,8 @@ looker.plugins.visualizations.add({
               subtotalDim2Div.dataset.group = groupKey;
 
               // === Adiciona ambas ao grid ===
-              leftHeaderGrid.appendChild(subtotalDim1Div);
-              leftHeaderGrid.appendChild(subtotalDim2Div);
-
-              tableGrid.appendChild(leftHeaderGrid)
+              tableGrid.appendChild(subtotalDim1Div);
+              tableGrid.appendChild(subtotalDim2Div);
 
               colIndex = dimensions.length;
 
@@ -565,7 +552,7 @@ looker.plugins.visualizations.add({
                     div.innerHTML = LookerCharts.Utils.htmlForCell(row[dim.name]);
                   }
 
-                  leftHeaderGrid.appendChild(div);
+                  tableGrid.appendChild(div);
                   colIndex++;
                 });
 
@@ -621,7 +608,7 @@ looker.plugins.visualizations.add({
                 div.dataset.row = rowIndex;
                 div.dataset.col = colIndex;
                 div.innerHTML = LookerCharts.Utils.htmlForCell(row[dim.name]);
-                leftHeaderGrid.appendChild(div);
+                tableGrid.appendChild(div);
                 colIndex++;
               });
 
